@@ -5,25 +5,28 @@ import SEO from "../components/seo"
 import { buildEmailPreview } from "../emails/email-builder"
 
 const IndexPage = () => {
-  const [emailId, setEmailId] = useState("")
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState([])
-  const [emailBodyArgs, setEmailBodyArgs] = useState({})
+  const [emailBodyArgs, setEmailBodyArgs] = useState({ name: "YOUR NAME HERE" })
 
-  useEffect(() => {
+  function setEmailIdHandler(emailId) {
     const email = buildEmailPreview({
       emailId,
       stringInputs: emailBodyArgs,
     })
     setEmailSubject(email.subject)
     setEmailBody(email.body)
-    setEmailBodyArgs({ name: "michael" })
-  }, [emailId])
+  }
+
+  // set defaults
+  useEffect(() => {
+    setEmailIdHandler("police-brutality-la")
+  }, [])
 
   // Should probably move this to a store or context
   const layoutProps = {
-    setEmailId,
+    setEmailId: setEmailIdHandler,
     emailRecipients: [...emailRecipients],
     addEmailRecipient: email => {
       setEmailRecipients(emailRecipients => [...emailRecipients, email])
