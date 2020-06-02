@@ -13,6 +13,7 @@ import Receiver from "../components/receiver"
 import EmailLink from "../components/email-link"
 import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
+import { emailIdTitleMap } from "../emails/email-builder"
 
 import {
   isMobile,
@@ -153,6 +154,7 @@ const Layout = ({
   setEmailBodyArgs,
   emailSubject,
   emailBody,
+  emailId,
   emailBodyArgs,
   emailRecipients,
   children,
@@ -174,6 +176,9 @@ const Layout = ({
       email: "councilmember.cedillo3@la.org",
     },
   ]
+  const dropdownOptions = Object.entries(
+    emailIdTitleMap
+  ).map(([id, title]) => ({ value: id, label: title }))
 
   const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
   const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
@@ -220,12 +225,9 @@ const Layout = ({
       <StyledControlHeader>
         <div style={{ width: "100%" }}>
           <Select
+            defaultInputValue={emailId}
             onChange={({ value }) => setEmailId(value)}
-            options={[
-              { value: "chocolate", label: "Chocolate" },
-              { value: "strawberry", label: "Strawberry" },
-              { value: "vanilla", label: "Vanilla" },
-            ]}
+            options={dropdownOptions}
           ></Select>
         </div>
       </StyledControlHeader>
