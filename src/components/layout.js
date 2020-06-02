@@ -79,7 +79,7 @@ const StyledControlForm = styled.div`
 const StyledControlAction = styled.div`
   position: absolute;
   background-color: ${colors.whitePrimary};
-  width: ${props => (props.isMobile ? "100%;" : "18rem;")}
+  width: ${props => (props.isMobile ? "100%;" : "20rem;")}
   ${props => props.isMobile && "display: flex; justify-content: space-between;"}
   ${paddingDefault}
   bottom: 0;

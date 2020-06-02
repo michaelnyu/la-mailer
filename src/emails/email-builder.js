@@ -6,7 +6,6 @@ const emailIdMap = {
 
 export const emailIdTitleMap = {
   "police-brutality-la": "Defund LAPD Template",
-  "police-brutality-la2": "Defund LAPD Template2",
 }
 
 export function buildEmailPreview({ emailId, stringInputs }) {
