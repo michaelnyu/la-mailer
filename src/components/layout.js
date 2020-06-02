@@ -72,7 +72,7 @@ const StyledControlHeader = styled.div`
 const StyledControlForm = styled.div`
   ${paddingDefault}
 
-  display: flex;
+  // display: flex;
   height: auto;
 `
 
@@ -124,6 +124,20 @@ const Spacer = styled.div`
   width: ${props => props.width + "rem"};
 `
 
+const StyledInput = styled.input`
+  padding: 0.5em;
+  background: ${colors.whitePrimary};
+  border: ${colors.blackTertiary} solid 1px;
+  width: 100%;
+  border-radius: 3px;
+`
+
+const StyledInputHeader = styled.div`
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 12px;
+`
+
 const Layout = ({ children }) => {
   // const data = useStaticQuery(graphql`
   //   query SiteTitleQuery {
@@ -139,7 +153,18 @@ const Layout = ({ children }) => {
     <StyledContainer>
       <StyledControlContainer>
         <StyledControlHeader>Header for choosing form</StyledControlHeader>
-        <StyledControlForm>Form area</StyledControlForm>
+        <StyledControlForm>
+          <div style={{ width: "100%", marginBottom: 50 }}>
+            {" "}
+            <StyledInputHeader>Your name</StyledInputHeader>
+            <StyledInput></StyledInput>
+          </div>
+          <div style={{ width: "100%" }}>
+            {" "}
+            <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
+            <StyledInput></StyledInput>
+          </div>
+        </StyledControlForm>
         <StyledControlAction>
           <StyledButton stretch={true}>Open in Email App</StyledButton>
         </StyledControlAction>
