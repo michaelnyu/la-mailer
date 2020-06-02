@@ -10,6 +10,9 @@ const StyledReceiver = styled.div`
   border-radius: 3px;
   cursor: pointer;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 const StyledCheckbox = styled.input`
   display: inline-block;
@@ -38,22 +41,20 @@ const Receiver = ({ label, name, email, onClick }) => {
         onClick(!selected)
       }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <div style={{ marginRight: 20, display: "inline-block" }}>
-          <div style={{ marginBottom: 5 }}>
-            <StyledLabel>{label}</StyledLabel>
-            <StyledName>{name}</StyledName>
-          </div>
-          <StyledEmail>{email}</StyledEmail>
+      <div style={{ marginRight: 20, display: "inline-block" }}>
+        <div style={{ marginBottom: 5 }}>
+          <StyledLabel>{label}</StyledLabel>
+          <StyledName>{name}</StyledName>
         </div>
-        <StyledCheckbox
-          readOnly
-          checked
-          type="checkbox"
-          id={name}
-          style={{ opacity: selected ? 1 : 0 }}
-        ></StyledCheckbox>
+        <StyledEmail>{email}</StyledEmail>
       </div>
+      <StyledCheckbox
+        readOnly
+        checked
+        type="checkbox"
+        id={name}
+        style={{ opacity: selected ? 1 : 0 }}
+      ></StyledCheckbox>
     </StyledReceiver>
   )
 }

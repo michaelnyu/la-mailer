@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
+import React, { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 // import { useStaticQuery, graphql } from "gatsby"
 // import Header from "./header"
@@ -14,6 +14,13 @@ import Receiver from "../components/receiver"
 import EmailLink from "../components/email-link"
 import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
+
+import {
+  isMobile,
+  isBrowser,
+  BrowserView,
+  MobileView,
+} from "react-device-detect"
 
 const paddingDefault = css`
   padding: 1rem;
@@ -49,9 +56,11 @@ const StyledControlContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  flex: 0 0 18rem;
+  ${props => !props.isMobile && "flex: 0 0 18rem;"}
+  width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
+  overflow: scroll;
 `
 
 const StyledControlHeader = styled.div`
@@ -63,7 +72,6 @@ const StyledControlHeader = styled.div`
 
 const StyledControlForm = styled.div`
   ${paddingDefault}
-
   // display: flex;
   height: auto;
 `
@@ -71,7 +79,8 @@ const StyledControlForm = styled.div`
 const StyledControlAction = styled.div`
   position: absolute;
   background-color: ${colors.whitePrimary};
-  width: 18rem;
+  width: ${props => (props.isMobile ? "100%;" : "18rem;")}
+  ${props => props.isMobile && "display: flex; justify-content: space-between;"}
   ${paddingDefault}
   bottom: 0;
   ${shadowAbove}
@@ -116,6 +125,25 @@ const StyledInputHeader = styled.div`
   display: block;
   margin-bottom: 12px;
 `
+
+const StyledButton = styled.button`
+  display: inline-block;
+  border-radius: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 2.5rem;
+  border: none;
+  background-color: ${colors.blackPrimary};
+  color: ${colors.whitePrimary};
+  &:hover {
+    cursor: pointer;
+  }
+  width: ${props => (props.stretch ? "100%" : "auto")};
+`
+
+const MobileStates = {
+  CONTROL: 0,
+  PREVIEW: 1,
+}
 
 const Layout = ({
   setEmailId,
@@ -162,59 +190,108 @@ const Layout = ({
   const removeEmailRecipient = email =>
     setEmailRecipients(emailRecipients.filter(e => email != e))
 
+  const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
+  const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
+  const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
+
+  const controlActionComponent = (
+    <StyledControlAction isMobile={isMobile}>
+      {isMobile && (
+        <StyledButton
+          onClick={() =>
+            setMobileState(
+              mobileState === MobileStates.CONTROL
+                ? MobileStates.PREVIEW
+                : MobileStates.CONTROL
+            )
+          }
+          style={{ flexBasis: "50%", marginRight: 10 }}
+        >
+          {mobileState === MobileStates.CONTROL
+            ? "Preview email"
+            : "Back to edit"}
+        </StyledButton>
+      )}
+      <EmailLink
+        style={{ flexBasis: "50%" }}
+        stretch={true}
+        recipients={emailRecipients}
+        subject={emailSubject}
+        body={emailBody}
+      />
+    </StyledControlAction>
+  )
+
+  const previewComponent = (
+    <StyledPreviewContainer>
+      <StyledPreviewHeader>Preview</StyledPreviewHeader>
+      <Spacer height={0.5} />
+      <StyledPreviewEmail> Email contents</StyledPreviewEmail>
+    </StyledPreviewContainer>
+  )
+
+  const controlContainerComponent = (
+    <StyledControlContainer isMobile={isMobile}>
+      <StyledControlHeader>Header for choosing form</StyledControlHeader>
+      <StyledControlForm>
+        <div style={{ width: "100%", marginBottom: 50 }}>
+          <StyledInputHeader>Your name</StyledInputHeader>
+          <StyledInput
+            type="text"
+            onChange={e =>
+              setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
+            }
+          ></StyledInput>
+        </div>
+        <div style={{ width: "100%" }}>
+          <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
+          {receivers.map(receiver => {
+            return (
+              <Receiver
+                key={receiver.name}
+                {...receiver}
+                onClick={selected => {
+                  if (selected) {
+                    addEmailRecipient(receiver.email)
+                  } else {
+                    removeEmailRecipient(receiver.email)
+                  }
+                  // setEmailRecipients(
+                  //   [...emailRecipients, receiver.email].filter(
+                  //     email =>
+                  //       selected || (!selected && email != receiver.email)
+                  //   )
+                  // )
+                }}
+              />
+            )
+          })}
+        </div>
+      </StyledControlForm>
+      {controlActionComponent}
+    </StyledControlContainer>
+  )
+
   return (
-    <StyledContainer>
-      <StyledControlContainer>
-        <StyledControlHeader>Header for choosing form</StyledControlHeader>
-        <StyledControlForm>
-          <div style={{ width: "100%", marginBottom: 50 }}>
-            <StyledInputHeader>Your name</StyledInputHeader>
-            <StyledInput
-              type="text"
-              onChange={e =>
-                setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
-              }
-            ></StyledInput>
-          </div>
-          <div style={{ width: "100%" }}>
-            <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
-            {receivers.map(receiver => {
-              return (
-                <Receiver
-                  key={receiver.name}
-                  {...receiver}
-                  onClick={selected => {
-                    if (selected) {
-                      addEmailRecipient(receiver.email)
-                    } else {
-                      removeEmailRecipient(receiver.email)
-                    }
-                    // setEmailRecipients(
-                    //   [...emailRecipients, receiver.email].filter(
-                    //     email =>
-                    //       selected || (!selected && email != receiver.email)
-                    //   )
-                    // )
-                  }}
-                />
-              )
-            })}
-          </div>
-        </StyledControlForm>
-        <StyledControlAction>
-          <EmailLink
-            recipients={emailRecipients}
-            subject={emailSubject}
-            body={emailBody}
-          />
-        </StyledControlAction>
-      </StyledControlContainer>
-      <StyledPreviewContainer>
-        <StyledPreviewHeader>Preview</StyledPreviewHeader>
-        <Spacer height={0.5} />
-        <StyledPreviewEmail> Email contents</StyledPreviewEmail>
-      </StyledPreviewContainer>
-    </StyledContainer>
+    <>
+      <BrowserView style={{ height: "100%" }}>
+        <StyledContainer>
+          {controlContainerComponent}
+          {previewComponent}
+        </StyledContainer>
+      </BrowserView>
+      <MobileView style={{ height: "100%" }}>
+        <StyledContainer>
+          {mobileState === MobileStates.CONTROL && controlContainerComponent}
+          {mobileState === MobileStates.PREVIEW && (
+            <>
+              {previewComponent}
+              {controlActionComponent}
+            </>
+          )}
+        </StyledContainer>
+      </MobileView>
+    </>
   )
 }
 
@@ -223,4 +300,4 @@ Layout.propTypes = {
 }
 
 export default Layout
-export { colors }
+export { colors, StyledButton }
