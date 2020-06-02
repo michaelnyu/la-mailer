@@ -210,7 +210,7 @@ const Layout = ({
     <StyledPreviewContainer>
       <StyledPreviewHeader>Preview</StyledPreviewHeader>
       <Spacer height={0.5} />
-      <StyledPreviewEmail> Email contents</StyledPreviewEmail>
+      <StyledPreviewEmail>{emailBody}</StyledPreviewEmail>
     </StyledPreviewContainer>
   )
 

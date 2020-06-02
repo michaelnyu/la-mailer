@@ -11,22 +11,23 @@ const IndexPage = () => {
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({})
 
-  // set defaults
-  useEffect(() => {
-    setEmailId("police-brutality-la")
-
+  function setEmailIdHandler(emailId) {
     const email = buildEmailPreview({
       emailId,
       stringInputs: emailBodyArgs,
     })
     setEmailSubject(email.subject)
     setEmailBody(email.body)
-    setEmailBodyArgs({ name: "michael" })
+  }
+
+  // set defaults
+  useEffect(() => {
+    setEmailIdHandler("police-brutality-la")
   }, [emailId])
 
   // Should probably move this to a store or context
   const layoutProps = {
-    setEmailId,
+    setEmailId: setEmailIdHandler,
     emailRecipients: [...emailRecipients],
     addEmailRecipient: email => {
       setEmailRecipients(emailRecipients => [...emailRecipients, email])
