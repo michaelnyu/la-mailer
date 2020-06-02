@@ -9,7 +9,7 @@ const EmailLink = ({ recipients = [], body, subject }) => {
   }
 
   href += `&subject=${subject}`
-  href += `&body=${body}`
+  href += `&body=${body.replace(/\n/g, "%0A%0A")}`
 
   return (
     <a href={href}>

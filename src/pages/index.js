@@ -27,7 +27,7 @@ const IndexPage = () => {
       emailId,
       stringInputs: { name: "michael" },
     })
-    setEmailSubject("this is the subject")
+    setEmailSubject(email.subject)
     setEmailBody(email.body)
   }, [emailId])
 
