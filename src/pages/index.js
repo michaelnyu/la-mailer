@@ -36,6 +36,7 @@ const IndexPage = () => {
         emailRecipients.filter(e => email !== e)
       )
     },
+    emailId,
     emailSubject,
     emailBody,
     emailBodyArgs: { ...emailBodyArgs },
