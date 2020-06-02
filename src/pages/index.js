@@ -11,10 +11,7 @@ const IndexPage = () => {
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({})
 
-  // set defaults
   useEffect(() => {
-    setEmailId("police-brutality-la")
-
     const email = buildEmailPreview({
       emailId,
       stringInputs: emailBodyArgs,
@@ -36,6 +33,7 @@ const IndexPage = () => {
         emailRecipients.filter(e => email !== e)
       )
     },
+    emailId,
     emailSubject,
     emailBody,
     emailBodyArgs: { ...emailBodyArgs },
