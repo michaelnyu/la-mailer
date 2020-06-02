@@ -5,11 +5,10 @@ import SEO from "../components/seo"
 import { buildEmailPreview } from "../emails/email-builder"
 
 const IndexPage = () => {
-  const [emailId, setEmailId] = useState("")
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState([])
-  const [emailBodyArgs, setEmailBodyArgs] = useState({})
+  const [emailBodyArgs, setEmailBodyArgs] = useState({ name: "YOUR NAME HERE" })
 
   function setEmailIdHandler(emailId) {
     const email = buildEmailPreview({
@@ -23,7 +22,7 @@ const IndexPage = () => {
   // set defaults
   useEffect(() => {
     setEmailIdHandler("police-brutality-la")
-  }, [emailId])
+  }, [])
 
   // Should probably move this to a store or context
   const layoutProps = {

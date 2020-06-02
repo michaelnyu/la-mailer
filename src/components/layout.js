@@ -105,6 +105,20 @@ const StyledPreviewEmail = styled.div`
 
 const StyledPreviewEmailHeader = styled.h4``
 
+const StyledPreviewEmailRow = styled.div`
+  display: grid;
+  grid-template-columns: 8em auto;
+`
+
+const StyledPreviewEmailRowLabel = styled.p`
+  color: ${colors.blackTertiary};
+  margin: 0;
+`
+
+const StyledPreviewEmailRowContent = styled.p`
+  margin: 0;
+`
+
 const Spacer = styled.div`
   height: ${props => props.height + "rem"};
   width: ${props => props.width + "rem"};
@@ -145,8 +159,6 @@ const MobileStates = {
 
 const Layout = ({
   setEmailId,
-  setEmailBody,
-  setEmailSubject,
   addEmailRecipient,
   removeEmailRecipient,
   setEmailBodyArgs,
@@ -210,7 +222,29 @@ const Layout = ({
     <StyledPreviewContainer>
       <StyledPreviewHeader>Preview</StyledPreviewHeader>
       <Spacer height={0.5} />
-      <StyledPreviewEmail>{emailBody}</StyledPreviewEmail>
+      <StyledPreviewEmail>
+        {[
+          { label: "From", content: emailBodyArgs.name },
+          {
+            label: "BCC",
+            content: emailRecipients.length
+              ? emailRecipients.join(" ,")
+              : "EMAIL RECIPIENTS HERE",
+          },
+          { label: "Subect", content: emailSubject },
+          { label: "Body", content: emailBody },
+        ].map((row, index, originalArray) => (
+          <StyledPreviewEmailRow>
+            <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
+            <StyledPreviewEmailRowContent>
+              {row.content}
+            </StyledPreviewEmailRowContent>
+            {index !== originalArray.length - 1 && (
+              <Spacer height={2} width={1} />
+            )}
+          </StyledPreviewEmailRow>
+        ))}
+      </StyledPreviewEmail>
     </StyledPreviewContainer>
   )
 
