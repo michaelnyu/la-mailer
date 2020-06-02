@@ -225,7 +225,7 @@ const Layout = ({
       <StyledControlHeader>
         <div style={{ width: "100%" }}>
           <Select
-            defaultInputValue={emailId}
+            placeholder="Choose an email template"
             onChange={({ value }) => setEmailId(value)}
             options={dropdownOptions}
           ></Select>

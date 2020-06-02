@@ -11,11 +11,6 @@ const IndexPage = () => {
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({})
 
-  // set defaults
-  useEffect(() => {
-    setEmailId("police-brutality-la")
-  }, [])
-
   useEffect(() => {
     const email = buildEmailPreview({
       emailId,
@@ -44,6 +39,7 @@ const IndexPage = () => {
     emailBodyArgs: { ...emailBodyArgs },
     setEmailBodyArgs,
   }
+
   return (
     <Layout {...layoutProps}>
       <SEO title="Home" />
