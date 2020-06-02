@@ -14,6 +14,9 @@ import "./layout.css"
 import styled, { css } from "styled-components"
 
 const colors = {
+  blackPrimary: "rgba(0,0,0,0.8)",
+  blackSecondary: "rgba(0,0,0,0.6)",
+  blackTertiary: "rgba(0,0,0,0.4)",
   whitePrimary: "#FFF",
   whiteSecondary: "#F3F3F3",
   whiteTertiary: "#EBEBEB",
@@ -23,11 +26,23 @@ const colors = {
 const paddingDefault = css`
   padding: 1rem;
 `
+const paddingLarge = css`
+  padding: 2rem;
+`
+
 const shadowAbove = css`
   box-shadow: 0px -4px 10px ${colors.shadow};
 `
 const shadowRight = css`
   box-shadow: 4px 0px 10px ${colors.shadow};
+`
+const shadowBelow = css`
+  box-shadow: 4px 0px 10px ${colors.shadow};
+`
+
+const textStyle = css`
+  margin: 0;
+  line-height: 1.33333em;
 `
 
 const StyledContainer = styled.div`
@@ -47,10 +62,6 @@ const StyledControlContainer = styled.div`
   ${shadowRight}
 `
 
-const StyledPreviewContainer = styled.div`
-  flex: 1;
-  background-color: ${colors.whiteTertiary};
-`
 const StyledControlHeader = styled.div`
   display: flex;
   flex: 0 0 4rem;
@@ -73,6 +84,45 @@ const StyledControlAction = styled.div`
   bottom: 0;
   ${shadowAbove}
 `
+const StyledButton = styled.button`
+  display: inline-block;
+  border-radius: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 2.5rem;
+  border: none;
+  background-color: ${colors.blackPrimary};
+  color: ${colors.whitePrimary};
+  &:hover {
+    cursor: pointer;
+  }
+  width: ${props => (props.stretch ? "100%" : "auto")};
+`
+
+const StyledPreviewContainer = styled.div`
+  flex: 1;
+  ${paddingLarge}
+  background-color: ${colors.whiteTertiary};
+`
+const StyledPreviewHeader = styled.h3`
+  font-size: 1.125rem;
+  ${textStyle}
+  text-transform: uppercase;
+  color: ${colors.blackTertiary};
+`
+
+const StyledPreviewEmail = styled.div`
+  ${paddingLarge}
+  ${shadowBelow}
+  background-color: ${colors.whitePrimary};
+  border-radius: 0.25rem;
+`
+
+const StyledPreviewEmailHeader = styled.h4``
+
+const Spacer = styled.div`
+  height: ${props => props.height + "rem"};
+  width: ${props => props.width + "rem"};
+`
 
 const Layout = ({ children }) => {
   // const data = useStaticQuery(graphql`
@@ -88,11 +138,17 @@ const Layout = ({ children }) => {
   return (
     <StyledContainer>
       <StyledControlContainer>
-        <StyledControlHeader>Header</StyledControlHeader>
-        <StyledControlForm>Contents</StyledControlForm>
-        <StyledControlAction>Actions</StyledControlAction>
+        <StyledControlHeader>Header for choosing form</StyledControlHeader>
+        <StyledControlForm>Form area</StyledControlForm>
+        <StyledControlAction>
+          <StyledButton stretch={true}>Open in Email App</StyledButton>
+        </StyledControlAction>
       </StyledControlContainer>
-      <StyledPreviewContainer>fill</StyledPreviewContainer>
+      <StyledPreviewContainer>
+        <StyledPreviewHeader>Preview</StyledPreviewHeader>
+        <Spacer height={0.5} />
+        <StyledPreviewEmail> Email contents</StyledPreviewEmail>
+      </StyledPreviewContainer>
     </StyledContainer>
   )
 }
