@@ -1,11 +1,11 @@
-import PoliceBrutatlityLa from "./police-brutality-la"
+import PoliceBrutalityLa from "./police-brutality-la"
 
 const emailIdMap = {
-  "police-brutality-la": PoliceBrutatlityLa,
+  "police-brutality-la": PoliceBrutalityLa,
 }
 
-export const emailTitleIdMap = {
-  [PoliceBrutatlityLa.title]: "police-brutality-la",
+export const emailIdTitleMap = {
+  "police-brutality-la": "Defund LAPD Template",
 }
 
 export function buildEmailPreview({ emailId, stringInputs }) {
