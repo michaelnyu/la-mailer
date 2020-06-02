@@ -41,7 +41,7 @@ const Receiver = ({ label, name, email, onClick }) => {
         setSelected(!selected)
       }}
     >
-      <div style={{ marginRight: 20, display: "inline-block" }}>
+      <div style={{ display: "inline-block" }}>
         <div style={{ marginBottom: 5 }}>
           <StyledLabel>{label}</StyledLabel>
           <StyledName>{name}</StyledName>

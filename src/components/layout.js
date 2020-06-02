@@ -54,7 +54,7 @@ const StyledControlContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  ${props => !props.isMobile && "flex: 0 0 18rem;"}
+  ${props => !props.isMobile && "flex: 0 0 20rem;"}
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
