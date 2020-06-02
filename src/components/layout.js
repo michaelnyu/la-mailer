@@ -7,8 +7,6 @@
 
 import React, { useMemo, useState } from "react"
 import PropTypes from "prop-types"
-// import { useStaticQuery, graphql } from "gatsby"
-// import Header from "./header"
 import "./layout.css"
 import Receiver from "../components/receiver"
 import EmailLink from "../components/email-link"
@@ -149,7 +147,8 @@ const Layout = ({
   setEmailId,
   setEmailBody,
   setEmailSubject,
-  setEmailRecipients,
+  addEmailRecipient,
+  removeEmailRecipient,
   setEmailBodyArgs,
   emailSubject,
   emailBody,
@@ -157,16 +156,6 @@ const Layout = ({
   emailRecipients,
   children,
 }) => {
-  // const data = useStaticQuery(graphql`
-  //   query SiteTitleQuery {
-  //     site {
-  //       siteMetadata {
-  //         title
-  //       }
-  //     }
-  //   }
-  // `)
-
   const receivers = [
     {
       label: "CD1",
@@ -184,11 +173,6 @@ const Layout = ({
       email: "councilmember.cedillo3@la.org",
     },
   ]
-
-  const addEmailRecipient = email =>
-    setEmailRecipients(emailRecipients.concat(email))
-  const removeEmailRecipient = email =>
-    setEmailRecipients(emailRecipients.filter(e => email != e))
 
   const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
   const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
@@ -256,12 +240,6 @@ const Layout = ({
                   } else {
                     removeEmailRecipient(receiver.email)
                   }
-                  // setEmailRecipients(
-                  //   [...emailRecipients, receiver.email].filter(
-                  //     email =>
-                  //       selected || (!selected && email != receiver.email)
-                  //   )
-                  // )
                 }}
               />
             )
@@ -274,6 +252,7 @@ const Layout = ({
 
   return (
     <>
+      {children}
       <BrowserView style={{ height: "100%" }}>
         <StyledContainer>
           {controlContainerComponent}

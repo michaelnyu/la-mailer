@@ -37,8 +37,8 @@ const Receiver = ({ label, name, email, onClick }) => {
   return (
     <StyledReceiver
       onClick={() => {
-        setSelected(!selected)
         onClick(!selected)
+        setSelected(!selected)
       }}
     >
       <div style={{ marginRight: 20, display: "inline-block" }}>
