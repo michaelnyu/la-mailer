@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
+import React, { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 // import { useStaticQuery, graphql } from "gatsby"
 // import Header from "./header"
@@ -15,7 +15,12 @@ import EmailLink from "../components/email-link"
 import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
 
-import { isMobile } from "react-device-detect"
+import {
+  isMobile,
+  isBrowser,
+  BrowserView,
+  MobileView,
+} from "react-device-detect"
 
 const paddingDefault = css`
   padding: 1rem;
@@ -67,7 +72,6 @@ const StyledControlHeader = styled.div`
 
 const StyledControlForm = styled.div`
   ${paddingDefault}
-
   // display: flex;
   height: auto;
 `
@@ -76,7 +80,7 @@ const StyledControlAction = styled.div`
   position: absolute;
   background-color: ${colors.whitePrimary};
   width: ${props => (props.isMobile ? "100%;" : "18rem;")}
-  ${props => props.isMobile && "display: flex;"}
+  ${props => props.isMobile && "display: flex; justify-content: space-between;"}
   ${paddingDefault}
   bottom: 0;
   ${shadowAbove}
@@ -136,6 +140,11 @@ const StyledButton = styled.button`
   width: ${props => (props.stretch ? "100%" : "auto")};
 `
 
+const MobileStates = {
+  CONTROL: 0,
+  PREVIEW: 1,
+}
+
 const Layout = ({
   setEmailId,
   setEmailBody,
@@ -181,63 +190,108 @@ const Layout = ({
   const removeEmailRecipient = email =>
     setEmailRecipients(emailRecipients.filter(e => email != e))
 
-  return (
-    <StyledContainer>
-      <StyledControlContainer isMobile={isMobile}>
-        <StyledControlHeader>Header for choosing form</StyledControlHeader>
-        <StyledControlForm>
-          <div style={{ width: "100%", marginBottom: 50 }}>
-            <StyledInputHeader>Your name</StyledInputHeader>
-            <StyledInput
-              type="text"
-              onChange={e =>
-                setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
-              }
-            ></StyledInput>
-          </div>
-          <div style={{ width: "100%" }}>
-            <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
-            {receivers.map(receiver => {
-              return (
-                <Receiver
-                  key={receiver.name}
-                  {...receiver}
-                  onClick={selected => {
-                    if (selected) {
-                      addEmailRecipient(receiver.email)
-                    } else {
-                      removeEmailRecipient(receiver.email)
-                    }
-                    // setEmailRecipients(
-                    //   [...emailRecipients, receiver.email].filter(
-                    //     email =>
-                    //       selected || (!selected && email != receiver.email)
-                    //   )
-                    // )
-                  }}
-                />
-              )
-            })}
-          </div>
-        </StyledControlForm>
-        <StyledControlAction isMobile={isMobile}>
-          {isMobile && <StyledButton>Preview email</StyledButton>}
-          <EmailLink
-            stretch={!isMobile}
-            recipients={emailRecipients}
-            subject={emailSubject}
-            body={emailBody}
-          />
-        </StyledControlAction>
-      </StyledControlContainer>
-      {!isMobile && (
-        <StyledPreviewContainer>
-          <StyledPreviewHeader>Preview</StyledPreviewHeader>
-          <Spacer height={0.5} />
-          <StyledPreviewEmail> Email contents</StyledPreviewEmail>
-        </StyledPreviewContainer>
+  const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
+  const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
+  const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
+
+  const controlActionComponent = (
+    <StyledControlAction isMobile={isMobile}>
+      {isMobile && (
+        <StyledButton
+          onClick={() =>
+            setMobileState(
+              mobileState === MobileStates.CONTROL
+                ? MobileStates.PREVIEW
+                : MobileStates.CONTROL
+            )
+          }
+          style={{ flexBasis: "50%", marginRight: 10 }}
+        >
+          {mobileState === MobileStates.CONTROL
+            ? "Preview email"
+            : "Back to edit"}
+        </StyledButton>
       )}
-    </StyledContainer>
+      <EmailLink
+        style={{ flexBasis: "50%" }}
+        stretch={true}
+        recipients={emailRecipients}
+        subject={emailSubject}
+        body={emailBody}
+      />
+    </StyledControlAction>
+  )
+
+  const previewComponent = (
+    <StyledPreviewContainer>
+      <StyledPreviewHeader>Preview</StyledPreviewHeader>
+      <Spacer height={0.5} />
+      <StyledPreviewEmail> Email contents</StyledPreviewEmail>
+    </StyledPreviewContainer>
+  )
+
+  const controlContainerComponent = (
+    <StyledControlContainer isMobile={isMobile}>
+      <StyledControlHeader>Header for choosing form</StyledControlHeader>
+      <StyledControlForm>
+        <div style={{ width: "100%", marginBottom: 50 }}>
+          <StyledInputHeader>Your name</StyledInputHeader>
+          <StyledInput
+            type="text"
+            onChange={e =>
+              setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
+            }
+          ></StyledInput>
+        </div>
+        <div style={{ width: "100%" }}>
+          <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
+          {receivers.map(receiver => {
+            return (
+              <Receiver
+                key={receiver.name}
+                {...receiver}
+                onClick={selected => {
+                  if (selected) {
+                    addEmailRecipient(receiver.email)
+                  } else {
+                    removeEmailRecipient(receiver.email)
+                  }
+                  // setEmailRecipients(
+                  //   [...emailRecipients, receiver.email].filter(
+                  //     email =>
+                  //       selected || (!selected && email != receiver.email)
+                  //   )
+                  // )
+                }}
+              />
+            )
+          })}
+        </div>
+      </StyledControlForm>
+      {controlActionComponent}
+    </StyledControlContainer>
+  )
+
+  return (
+    <>
+      <BrowserView style={{ height: "100%" }}>
+        <StyledContainer>
+          {controlContainerComponent}
+          {previewComponent}
+        </StyledContainer>
+      </BrowserView>
+      <MobileView style={{ height: "100%" }}>
+        <StyledContainer>
+          {mobileState === MobileStates.CONTROL && controlContainerComponent}
+          {mobileState === MobileStates.PREVIEW && (
+            <>
+              {previewComponent}
+              {controlActionComponent}
+            </>
+          )}
+        </StyledContainer>
+      </MobileView>
+    </>
   )
 }
 

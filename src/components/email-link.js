@@ -4,7 +4,7 @@ import { colors } from "../components/styles"
 import styled from "styled-components"
 import { StyledButton } from "./layout"
 
-const EmailLink = ({ recipients = [], body, subject, stretch }) => {
+const EmailLink = ({ recipients = [], body, subject, stretch, style }) => {
   let href = `mailto:${recipients[0]}?`
 
   if (recipients.length > 1) {
@@ -16,7 +16,7 @@ const EmailLink = ({ recipients = [], body, subject, stretch }) => {
   href += `&body=${body.replace(/\n/g, "%0A%0A")}`
 
   return (
-    <a href={href}>
+    <a href={href} style={style}>
       <StyledButton stretch={stretch}>Open in Mail App</StyledButton>
     </a>
   )
