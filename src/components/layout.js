@@ -8,6 +8,7 @@
 import React, { useMemo, useState } from "react"
 import PropTypes from "prop-types"
 import "./layout.css"
+import Select from "react-select"
 import Receiver from "../components/receiver"
 import EmailLink from "../components/email-link"
 import { colors } from "../components/styles"
@@ -216,7 +217,18 @@ const Layout = ({
 
   const controlContainerComponent = (
     <StyledControlContainer isMobile={isMobile}>
-      <StyledControlHeader>Header for choosing form</StyledControlHeader>
+      <StyledControlHeader>
+        <div style={{ width: "100%" }}>
+          <Select
+            onChange={({ value }) => setEmailId(value)}
+            options={[
+              { value: "chocolate", label: "Chocolate" },
+              { value: "strawberry", label: "Strawberry" },
+              { value: "vanilla", label: "Vanilla" },
+            ]}
+          ></Select>
+        </div>
+      </StyledControlHeader>
       <StyledControlForm>
         <div style={{ width: "100%", marginBottom: 50 }}>
           <StyledInputHeader>Your name</StyledInputHeader>
