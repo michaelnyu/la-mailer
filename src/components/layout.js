@@ -10,18 +10,10 @@ import PropTypes from "prop-types"
 // import { useStaticQuery, graphql } from "gatsby"
 // import Header from "./header"
 import "./layout.css"
-
+import Receiver from "../components/receiver"
+import EmailLink from "../components/email-link"
+import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
-
-const colors = {
-  blackPrimary: "rgba(0,0,0,0.8)",
-  blackSecondary: "rgba(0,0,0,0.6)",
-  blackTertiary: "rgba(0,0,0,0.4)",
-  whitePrimary: "#FFF",
-  whiteSecondary: "#F3F3F3",
-  whiteTertiary: "#EBEBEB",
-  shadow: "rgba(0,0,0,0.1)",
-}
 
 const paddingDefault = css`
   padding: 1rem;
@@ -84,19 +76,6 @@ const StyledControlAction = styled.div`
   bottom: 0;
   ${shadowAbove}
 `
-const StyledButton = styled.button`
-  display: inline-block;
-  border-radius: 0.25rem;
-  font-size: 1.125rem;
-  line-height: 2.5rem;
-  border: none;
-  background-color: ${colors.blackPrimary};
-  color: ${colors.whitePrimary};
-  &:hover {
-    cursor: pointer;
-  }
-  width: ${props => (props.stretch ? "100%" : "auto")};
-`
 
 const StyledPreviewContainer = styled.div`
   flex: 1;
@@ -127,7 +106,7 @@ const Spacer = styled.div`
 const StyledInput = styled.input`
   padding: 0.5em;
   background: ${colors.whitePrimary};
-  border: ${colors.blackTertiary} solid 1px;
+  border: ${colors.whiteTertiary} solid 1px;
   width: 100%;
   border-radius: 3px;
 `
@@ -138,7 +117,18 @@ const StyledInputHeader = styled.div`
   margin-bottom: 12px;
 `
 
-const Layout = ({ children }) => {
+const Layout = ({
+  setEmailId,
+  setEmailBody,
+  setEmailSubject,
+  setEmailRecipients,
+  setEmailBodyArgs,
+  emailSubject,
+  emailBody,
+  emailBodyArgs,
+  emailRecipients,
+  children,
+}) => {
   // const data = useStaticQuery(graphql`
   //   query SiteTitleQuery {
   //     site {
@@ -149,24 +139,74 @@ const Layout = ({ children }) => {
   //   }
   // `)
 
+  const receivers = [
+    {
+      label: "CD1",
+      name: "Gil Dedillo",
+      email: "councilmember.cedillo@la.org",
+    },
+    {
+      label: "CD2",
+      name: "Gil Dedillo 2",
+      email: "councilmember.cedillo2@la.org",
+    },
+    {
+      label: "CD3",
+      name: "Gil Dedillo 3",
+      email: "councilmember.cedillo3@la.org",
+    },
+  ]
+
+  const addEmailRecipient = email =>
+    setEmailRecipients(emailRecipients.concat(email))
+  const removeEmailRecipient = email =>
+    setEmailRecipients(emailRecipients.filter(e => email != e))
+
   return (
     <StyledContainer>
       <StyledControlContainer>
         <StyledControlHeader>Header for choosing form</StyledControlHeader>
         <StyledControlForm>
           <div style={{ width: "100%", marginBottom: 50 }}>
-            {" "}
             <StyledInputHeader>Your name</StyledInputHeader>
-            <StyledInput></StyledInput>
+            <StyledInput
+              type="text"
+              onChange={e =>
+                setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
+              }
+            ></StyledInput>
           </div>
           <div style={{ width: "100%" }}>
-            {" "}
             <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
-            <StyledInput></StyledInput>
+            {receivers.map(receiver => {
+              return (
+                <Receiver
+                  key={receiver.name}
+                  {...receiver}
+                  onClick={selected => {
+                    if (selected) {
+                      addEmailRecipient(receiver.email)
+                    } else {
+                      removeEmailRecipient(receiver.email)
+                    }
+                    // setEmailRecipients(
+                    //   [...emailRecipients, receiver.email].filter(
+                    //     email =>
+                    //       selected || (!selected && email != receiver.email)
+                    //   )
+                    // )
+                  }}
+                />
+              )
+            })}
           </div>
         </StyledControlForm>
         <StyledControlAction>
-          <StyledButton stretch={true}>Open in Email App</StyledButton>
+          <EmailLink
+            recipients={emailRecipients}
+            subject={emailSubject}
+            body={emailBody}
+          />
         </StyledControlAction>
       </StyledControlContainer>
       <StyledPreviewContainer>
@@ -183,3 +223,4 @@ Layout.propTypes = {
 }
 
 export default Layout
+export { colors }

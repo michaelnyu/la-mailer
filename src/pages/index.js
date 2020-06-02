@@ -12,6 +12,7 @@ const IndexPage = () => {
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState("")
+  const [emailBodyArgs, setEmailBodyArgs] = useState({})
 
   // FOR TESTING
   // what inputs & selects would probably do
@@ -31,8 +32,21 @@ const IndexPage = () => {
     setEmailBody(email.body)
   }, [emailId])
 
+  // Should probably move this to a store or context
+  const layoutProps = {
+    setEmailId,
+    setEmailBody,
+    setEmailSubject,
+    setEmailRecipients,
+    setEmailBodyArgs,
+    emailSubject,
+    emailBody,
+    emailBodyArgs,
+    emailRecipients,
+  }
+  console.log(emailRecipients)
   return (
-    <Layout>
+    <Layout {...layoutProps}>
       <SEO title="Home" />
       <Preview emailId={emailId} />
       <EmailLink
@@ -40,8 +54,6 @@ const IndexPage = () => {
         subject={emailSubject}
         body={emailBody}
       />
-      <Link to="/page-2/">Go to page 2</Link> <br />
-      <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
     </Layout>
   )
 }
