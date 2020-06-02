@@ -4,6 +4,10 @@ const emailIdMap = {
   "police-brutality-la": PoliceBrutatlityLa,
 }
 
+export const emailTitleIdMap = {
+  [PoliceBrutatlityLa.title]: "police-brutality-la",
+}
+
 export function buildEmailPreview({ emailId, stringInputs }) {
   if (emailId in emailIdMap) return emailIdMap[emailId](stringInputs)
 

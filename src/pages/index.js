@@ -11,24 +11,22 @@ const IndexPage = () => {
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({})
 
-  // FOR TESTING
-  // what inputs & selects would probably do
+  // set defaults
   useEffect(() => {
     setEmailId("police-brutality-la")
 
     const email = buildEmailPreview({
       emailId,
-      stringInputs: { name: "michael" },
+      stringInputs: emailBodyArgs,
     })
     setEmailSubject(email.subject)
     setEmailBody(email.body)
+    setEmailBodyArgs({ name: "michael" })
   }, [emailId])
 
   // Should probably move this to a store or context
   const layoutProps = {
     setEmailId,
-    setEmailBody,
-    setEmailSubject,
     emailRecipients: [...emailRecipients],
     addEmailRecipient: email => {
       setEmailRecipients(emailRecipients => [...emailRecipients, email])
@@ -38,10 +36,10 @@ const IndexPage = () => {
         emailRecipients.filter(e => email !== e)
       )
     },
-    setEmailBodyArgs,
     emailSubject,
     emailBody,
-    emailBodyArgs,
+    emailBodyArgs: { ...emailBodyArgs },
+    setEmailBodyArgs,
   }
 
   return (
