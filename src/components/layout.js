@@ -76,6 +76,7 @@ const StyledControlAction = styled.div`
   position: absolute;
   background-color: ${colors.whitePrimary};
   width: ${props => (props.isMobile ? "100%;" : "18rem;")}
+  ${props => props.isMobile && "display: flex;"}
   ${paddingDefault}
   bottom: 0;
   ${shadowAbove}
@@ -119,6 +120,20 @@ const StyledInputHeader = styled.div`
   font-size: 1rem;
   display: block;
   margin-bottom: 12px;
+`
+
+const StyledButton = styled.button`
+  display: inline-block;
+  border-radius: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 2.5rem;
+  border: none;
+  background-color: ${colors.blackPrimary};
+  color: ${colors.whitePrimary};
+  &:hover {
+    cursor: pointer;
+  }
+  width: ${props => (props.stretch ? "100%" : "auto")};
 `
 
 const Layout = ({
@@ -206,7 +221,9 @@ const Layout = ({
           </div>
         </StyledControlForm>
         <StyledControlAction isMobile={isMobile}>
+          {isMobile && <StyledButton>Preview email</StyledButton>}
           <EmailLink
+            stretch={!isMobile}
             recipients={emailRecipients}
             subject={emailSubject}
             body={emailBody}
@@ -229,4 +246,4 @@ Layout.propTypes = {
 }
 
 export default Layout
-export { colors }
+export { colors, StyledButton }
