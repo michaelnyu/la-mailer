@@ -8,7 +8,7 @@ import Preview from "../components/preview"
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
-    <Preview emailId={1} />
+    <Preview emailId={"police-brutality-la"} />
     <Link to="/page-2/">Go to page 2</Link> <br />
     <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
   </Layout>
