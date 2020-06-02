@@ -9,7 +9,7 @@ const Preview = ({ emailId }) => {
 
   const { body } = email
 
-  return <div>{body}</div>
+  return <p>{body}</p>
 }
 
 export default Preview
