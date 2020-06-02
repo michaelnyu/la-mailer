@@ -7,40 +7,93 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-
-import Header from "./header"
+// import { useStaticQuery, graphql } from "gatsby"
+// import Header from "./header"
 import "./layout.css"
 
+import styled, { css } from "styled-components"
+
+const colors = {
+  whitePrimary: "#FFF",
+  whiteSecondary: "#F3F3F3",
+  whiteTertiary: "#EBEBEB",
+  shadow: "rgba(0,0,0,0.1)",
+}
+
+const paddingDefault = css`
+  padding: 1rem;
+`
+const shadowAbove = css`
+  box-shadow: 0px -4px 10px ${colors.shadow};
+`
+const shadowRight = css`
+  box-shadow: 4px 0px 10px ${colors.shadow};
+`
+
+const StyledContainer = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+  flex-direction: ${props => (props.column ? "column" : "row")};
+`
+
+const StyledControlContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background-color: ${colors.whiteSecondary};
+  flex: 0 0 18rem;
+  z-index: 1; /* jank solution to box shadow rendering */
+  ${shadowRight}
+`
+
+const StyledPreviewContainer = styled.div`
+  flex: 1;
+  background-color: ${colors.whiteTertiary};
+`
+const StyledControlHeader = styled.div`
+  display: flex;
+  flex: 0 0 4rem;
+  ${paddingDefault}
+  background-color: ${colors.whitePrimary};
+`
+
+const StyledControlForm = styled.div`
+  ${paddingDefault}
+
+  display: flex;
+  height: auto;
+`
+
+const StyledControlAction = styled.div`
+  position: absolute;
+  background-color: ${colors.whitePrimary};
+  width: 18rem;
+  ${paddingDefault}
+  bottom: 0;
+  ${shadowAbove}
+`
+
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+  // const data = useStaticQuery(graphql`
+  //   query SiteTitleQuery {
+  //     site {
+  //       siteMetadata {
+  //         title
+  //       }
+  //     }
+  //   }
+  // `)
 
   return (
-    <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
+    <StyledContainer>
+      <StyledControlContainer>
+        <StyledControlHeader>Header</StyledControlHeader>
+        <StyledControlForm>Contents</StyledControlForm>
+        <StyledControlAction>Actions</StyledControlAction>
+      </StyledControlContainer>
+      <StyledPreviewContainer>fill</StyledPreviewContainer>
+    </StyledContainer>
   )
 }
 
