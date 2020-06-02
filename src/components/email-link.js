@@ -14,7 +14,7 @@ const StyledButton = styled.button`
   &:hover {
     cursor: pointer;
   }
-  width: ${props => (props.stretch ? "100%" : "auto")};
+  width: 100%;
 `
 
 const EmailLink = ({ recipients = [], body, subject }) => {

@@ -15,6 +15,8 @@ import EmailLink from "../components/email-link"
 import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
 
+import { isMobile } from "react-device-detect"
+
 const paddingDefault = css`
   padding: 1rem;
 `
@@ -49,9 +51,11 @@ const StyledControlContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  flex: 0 0 18rem;
+  ${props => !props.isMobile && "flex: 0 0 18rem;"}
+  width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
+  overflow: scroll;
 `
 
 const StyledControlHeader = styled.div`
@@ -71,7 +75,7 @@ const StyledControlForm = styled.div`
 const StyledControlAction = styled.div`
   position: absolute;
   background-color: ${colors.whitePrimary};
-  width: 18rem;
+  width: ${props => (props.isMobile ? "100%;" : "18rem;")}
   ${paddingDefault}
   bottom: 0;
   ${shadowAbove}
@@ -164,7 +168,7 @@ const Layout = ({
 
   return (
     <StyledContainer>
-      <StyledControlContainer>
+      <StyledControlContainer isMobile={isMobile}>
         <StyledControlHeader>Header for choosing form</StyledControlHeader>
         <StyledControlForm>
           <div style={{ width: "100%", marginBottom: 50 }}>
@@ -201,7 +205,7 @@ const Layout = ({
             })}
           </div>
         </StyledControlForm>
-        <StyledControlAction>
+        <StyledControlAction isMobile={isMobile}>
           <EmailLink
             recipients={emailRecipients}
             subject={emailSubject}
@@ -209,11 +213,13 @@ const Layout = ({
           />
         </StyledControlAction>
       </StyledControlContainer>
-      <StyledPreviewContainer>
-        <StyledPreviewHeader>Preview</StyledPreviewHeader>
-        <Spacer height={0.5} />
-        <StyledPreviewEmail> Email contents</StyledPreviewEmail>
-      </StyledPreviewContainer>
+      {!isMobile && (
+        <StyledPreviewContainer>
+          <StyledPreviewHeader>Preview</StyledPreviewHeader>
+          <Spacer height={0.5} />
+          <StyledPreviewEmail> Email contents</StyledPreviewEmail>
+        </StyledPreviewContainer>
+      )}
     </StyledContainer>
   )
 }
