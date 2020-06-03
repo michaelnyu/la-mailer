@@ -433,18 +433,19 @@ const Layout = ({
         </StyledControlDetails>
       </StyledControlHeader>
       <StyledControlForm>
-        {Object.entries(args).map(([key, { label, inputType }]) => (
-          <div key={key} style={{ marginBottom: 10 }}>
-            <StyledInputHeader>{label}</StyledInputHeader>
-            <StyledInput
-              value={emailBodyArgs[key] || ""}
-              type={inputType}
-              onChange={e => {
-                updateEmailInputs(key, e.target.value)
-              }}
-            ></StyledInput>
-          </div>
-        ))}
+        {args &&
+          Object.entries(args).map(([key, { label, inputType }]) => (
+            <div key={key} style={{ marginBottom: 10 }}>
+              <StyledInputHeader>{label}</StyledInputHeader>
+              <StyledInput
+                value={emailBodyArgs[key] || ""}
+                type={inputType}
+                onChange={e => {
+                  updateEmailInputs(key, e.target.value)
+                }}
+              ></StyledInput>
+            </div>
+          ))}
         <Spacer height={1.5} />
         <div style={{ width: "100%" }}>
           <StyledInputHeader>
@@ -459,23 +460,24 @@ const Layout = ({
               </StyledButtonSmall>
             </StyledInputHeaderButtons>
           </StyledInputHeader>
-          {receivers.map(receiver => {
-            let selected = emailRecipients.indexOf(receiver.email) > -1
-            return (
-              <Receiver
-                selected={selected}
-                key={receiver.name}
-                {...receiver}
-                onClick={() => {
-                  if (!selected) {
-                    addEmailRecipient(receiver.email)
-                  } else {
-                    removeEmailRecipient(receiver.email)
-                  }
-                }}
-              />
-            )
-          })}
+          {receivers &&
+            receivers.map(receiver => {
+              let selected = emailRecipients.indexOf(receiver.email) > -1
+              return (
+                <Receiver
+                  selected={selected}
+                  key={receiver.name}
+                  {...receiver}
+                  onClick={() => {
+                    if (!selected) {
+                      addEmailRecipient(receiver.email)
+                    } else {
+                      removeEmailRecipient(receiver.email)
+                    }
+                  }}
+                />
+              )
+            })}
         </div>
         <Spacer height={5} />
       </StyledControlForm>
