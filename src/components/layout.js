@@ -147,6 +147,7 @@ const StyledPreviewEmailRowLabel = styled.p`
 `
 
 const StyledPreviewEmailRowContent = styled.p`
+  color: ${props => props.color};
   margin: 0;
   line-height: 1.333em;
   white-space: pre-wrap;
@@ -312,12 +313,21 @@ const Layout = ({
       <Spacer height={0.5} />
       <StyledPreviewEmail isMobile={isMobile}>
         {[
-          { label: "From", content: emailBodyArgs.name },
+          {
+            label: "From",
+            content:
+              emailBodyArgs.name === ""
+                ? "[YOUR NAME HERE]"
+                : emailBodyArgs.name,
+            hasUserInput:
+              emailBodyArgs.name !== "" && emailBodyArgs.name != null,
+          },
           {
             label: "To",
             content: emailRecipients.length
               ? emailRecipients[0]
               : "[EMAIL RECIPIENT HERE]",
+            hasUserInput: emailRecipients.length > 0,
           },
           {
             label: "BCC",
@@ -325,13 +335,24 @@ const Layout = ({
               emailRecipients.length > 1
                 ? [...emailRecipients].splice(1).join(", ")
                 : "[BCC RECIPIENTS HERE]",
+            hasUserInput: emailRecipients.length > 0,
           },
-          { label: "Subject", content: emailSubject },
-          { label: "Body", content: emailBody },
+          {
+            label: "Subject",
+            content: emailSubject,
+            hasUserInput: emailSubject !== "" && emailSubject != null,
+          },
+          {
+            label: "Body",
+            content: emailBody,
+            hasUserInput: emailBody !== "" && emailBody != null,
+          },
         ].map((row, index, originalArray) => (
           <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
             <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
-            <StyledPreviewEmailRowContent>
+            <StyledPreviewEmailRowContent
+              color={!row.hasUserInput ? colors.red : colors.blackPrimary}
+            >
               {row.content}
             </StyledPreviewEmailRowContent>
             {index !== originalArray.length - 1 && (

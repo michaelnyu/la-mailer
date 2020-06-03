@@ -10,7 +10,7 @@ const IndexPage = () => {
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({
-    name: "[YOUR NAME HERE]",
+    name: "",
   })
 
   // DELETE later.
