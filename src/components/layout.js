@@ -435,6 +435,7 @@ const Layout = ({
       <EmailLink
         style={{ flexBasis: "50%" }}
         stretch={true}
+        directRecipient={emailDirectRecipient}
         recipients={emailRecipients}
         subject={emailSubject}
         body={emailBody}
