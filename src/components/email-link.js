@@ -1,13 +1,13 @@
 import React from "react"
 
-import { colors } from "../components/styles"
-import styled from "styled-components"
+// import { colors } from "../components/styles"
+// import styled from "styled-components"
 import { StyledButton } from "./layout"
 
 const EmailLink = ({
   recipients = [],
   directRecipient,
-  body,
+  body = "",
   subject,
   stretch,
   style,
