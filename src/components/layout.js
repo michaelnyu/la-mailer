@@ -320,8 +320,6 @@ const Layout = ({
     })
   }
 
-  console.log(args)
-
   const removeAllRecipients = () => {
     receivers.forEach(receiver => {
       if (emailRecipients.indexOf(receiver.email) > -1) {
