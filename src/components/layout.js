@@ -240,6 +240,7 @@ const StyledModalContent = styled.div`
 `
 
 const StyledModalText = styled.p`
+  line-height: 1.5em;
   color: ${props =>
     props.type === "heading" ? colors.blackTertiary : colors.blackPrimary};
 `
