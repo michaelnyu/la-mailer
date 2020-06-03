@@ -169,18 +169,17 @@ const StyledInput = styled.input`
 `
 
 const StyledInputHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-size: 1rem;
-  display: block;
   margin-bottom: 12px;
 `
 
-const StyledButton = styled.button`
+const StyledInputHeaderButtons = styled.div`
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.25rem;
-  font-size: 1.125rem;
-  padding: 0.75rem;
+`
+
+const buttonStyle = css`
   border: ${props =>
     props.type === "secondary" ? colors.blackTertiary + "1px solid" : "none"};
   background-color: ${props =>
@@ -189,9 +188,34 @@ const StyledButton = styled.button`
     props.type === "secondary" ? colors.blackPrimary : colors.whitePrimary};
   &:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.9;
   }
+  border-radius: 0.25rem;
   width: ${props => (props.stretch ? "100%" : "auto")};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    border: ${props =>
+      props.type === "secondary" ? colors.blackPrimary + "1px solid" : "none"};
+    opacity: 1;
+  }
+`
+
+const StyledButton = styled.button`
+  ${buttonStyle}
+  font-size: 1.125rem;
+  padding: 0.75rem;
+`
+
+const StyledButtonSmall = styled.button`
+  ${buttonStyle}
+  font-size: 0.75em;
+  line-height: 0.75em;
+  padding: 0.25rem;
 `
 
 const StyledModalBackground = styled.div`
@@ -270,13 +294,38 @@ const Layout = ({
     },
     {
       label: "CD2",
-      name: "Gil Dedillo 2",
-      email: "councilmember.cedillo2@la.org",
+      name: "Paul Krekorian",
+      email: "councilmember.Krekorian@lacity.org",
     },
     {
       label: "CD3",
-      name: "Gil Dedillo 3",
-      email: "councilmember.cedillo3@la.org",
+      name: "Bob Blumenfield",
+      email: "councilmember.blumenfield@lacity.org",
+    },
+    {
+      label: "CD4",
+      name: "David Ryu",
+      email: "david.ryu@lacity.org",
+    },
+    {
+      label: "CD5",
+      name: "Nuny Martinez",
+      email: "councilmember.martinez@lacity.org",
+    },
+    {
+      label: "CD6",
+      name: "Monica Rodriguez",
+      email: "councilmember.rodriguez@lacity.org",
+    },
+    {
+      label: "CD7",
+      name: "Marcqueece Harris-Dawson",
+      email: "councilmember.harris-dawson@lacity.org",
+    },
+    {
+      label: "CD8",
+      name: "Curren Price",
+      email: "councilmember.price@lacity.org",
     },
   ]
   const dropdownOptions = Object.entries(
@@ -287,6 +336,22 @@ const Layout = ({
   const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
   const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
   const [showModal, setShowModal] = useState(false)
+
+  const addAllRecipients = () => {
+    receivers.map(receiver => {
+      if (emailRecipients.indexOf(receiver.email) <= -1) {
+        addEmailRecipient(receiver.email)
+      }
+    })
+  }
+
+  const removeAllRecipients = () => {
+    receivers.map(receiver => {
+      if (emailRecipients.indexOf(receiver.email) > -1) {
+        removeEmailRecipient(receiver.email)
+      }
+    })
+  }
 
   const controlActionComponent = (
     <StyledControlAction isMobile={isMobile}>
@@ -402,15 +467,27 @@ const Layout = ({
         </div>
         <Spacer height={1.5} />
         <div style={{ width: "100%" }}>
-          <StyledInputHeader>Send to...</StyledInputHeader>
+          <StyledInputHeader>
+            Send to...
+            <StyledInputHeaderButtons>
+              <StyledButtonSmall onClick={removeAllRecipients} type="secondary">
+                Deselect all
+              </StyledButtonSmall>
+              <Spacer width={0.25} />
+              <StyledButtonSmall onClick={addAllRecipients} type="secondary">
+                Select all
+              </StyledButtonSmall>
+            </StyledInputHeaderButtons>
+          </StyledInputHeader>
           {receivers.map(receiver => {
+            let selected = emailRecipients.indexOf(receiver.email) > -1
             return (
               <Receiver
-                defaultSelected={emailRecipients.indexOf(receiver.email) > -1}
+                selected={selected}
                 key={receiver.name}
                 {...receiver}
-                onClick={selected => {
-                  if (selected) {
+                onClick={() => {
+                  if (!selected) {
                     addEmailRecipient(receiver.email)
                   } else {
                     removeEmailRecipient(receiver.email)
@@ -420,7 +497,7 @@ const Layout = ({
             )
           })}
         </div>
-        {isMobile && <Spacer height={5} />}
+        <Spacer height={5} />
       </StyledControlForm>
       {controlActionComponent}
     </StyledControlContainer>

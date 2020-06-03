@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { colors } from "./styles"
 import styled from "styled-components"
 import { ReactComponent as CheckSVG } from "../assets/check.svg"
@@ -21,6 +21,7 @@ const StyledReceiver = styled.div`
         props.active ? colors.blackPrimary : colors.blackTertiary}
       1px solid;
   }
+  user-select: none;
 `
 
 const StyledLabel = styled.b`
@@ -36,17 +37,9 @@ const StyledEmail = styled.div`
 `
 
 // label is the bolded text on left
-const Receiver = ({ label, name, email, onClick, defaultSelected }) => {
-  const [selected, setSelected] = useState(defaultSelected)
-
+const Receiver = ({ label, name, email, onClick, selected }) => {
   return (
-    <StyledReceiver
-      active={selected}
-      onClick={() => {
-        onClick(!selected)
-        setSelected(!selected)
-      }}
-    >
+    <StyledReceiver active={selected} onClick={onClick}>
       <div style={{ display: "inline-block" }}>
         <div style={{ marginBottom: 5 }}>
           <StyledLabel>{label}</StyledLabel>
@@ -54,7 +47,7 @@ const Receiver = ({ label, name, email, onClick, defaultSelected }) => {
         </div>
         <StyledEmail>{email}</StyledEmail>
       </div>
-      {selected && <CheckSVG />}
+      <CheckSVG style={{ opacity: selected ? 1 : 0 }} />
     </StyledReceiver>
   )
 }
