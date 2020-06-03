@@ -56,7 +56,7 @@ const StyledControlContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  ${props => !props.isMobile && "flex: 0 0 20rem;"}
+  ${props => !props.isMobile && "flex: 0 0 22rem;"}
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
@@ -68,6 +68,26 @@ const StyledControlHeader = styled.div`
   flex: 0 0 4rem;
   ${paddingDefault}
   background-color: ${colors.whitePrimary};
+`
+
+const StyledSelect = styled(Select)`
+  flex: 1;
+`
+
+const StyledControlDetails = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 5.5rem;
+  font-size: 0.75rem;
+  color: ${colors.blackSecondary};
+  text-decoration: underline;
+  border-radius: 0.25rem;
+  transition: 0.2s;
+  &:hover {
+    cursor: pointer;
+    background-color: ${colors.whiteTertiary};
+  }
 `
 
 const StyledControlForm = styled.div`
@@ -163,10 +183,6 @@ const StyledButton = styled.button`
     opacity: 0.8;
   }
   width: ${props => (props.stretch ? "100%" : "auto")};
-`
-
-const StyledSelect = styled(Select)`
-  flex: 1;
 `
 
 const MobileStates = {
@@ -280,6 +296,10 @@ const Layout = ({
           options={dropdownOptions}
           value={dropdownOptions[0]}
         ></StyledSelect>
+        <Spacer width={0.5} />
+        <StyledControlDetails onClick={console.log("clicked details")}>
+          What is this?
+        </StyledControlDetails>
       </StyledControlHeader>
       <StyledControlForm>
         <div>
