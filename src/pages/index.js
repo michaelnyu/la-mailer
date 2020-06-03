@@ -13,16 +13,6 @@ const IndexPage = () => {
     name: "[YOUR NAME HERE]",
   })
 
-  const updateEmail = () => {
-    const email = buildEmailPreview({
-      emailId,
-      stringInputs: emailBodyArgs,
-    })
-
-    setEmailSubject(email.subject)
-    setEmailBody(email.body)
-  }
-
   // DELETE later.
   // set defaults
   useEffect(() => {
@@ -30,10 +20,16 @@ const IndexPage = () => {
   }, [])
 
   useEffect(() => {
-    updateEmail()
+    // update email states when deps change
+    const email = buildEmailPreview({
+      emailId,
+      stringInputs: emailBodyArgs,
+    })
+
+    setEmailSubject(email.subject)
+    setEmailBody(email.body)
   }, [emailId, emailBodyArgs])
 
-  // Should probably move this to a store or context
   const layoutProps = {
     setEmailId,
     emailRecipients: [...emailRecipients],
