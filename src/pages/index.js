@@ -41,9 +41,15 @@ const IndexPage = () => {
       body: email.modalBody,
       url: email.modalUrl,
     })
+    setEmailRecipients(
+      email.receivers.reduce((recipients, receiver) => {
+        if (receiver.autoSelect) {
+          return [...recipients, receiver.email]
+        }
+        return recipients
+      }, [])
+    )
   }, [emailId, emailBodyArgs])
-
-  console.log(emailRecipients)
 
   const layoutProps = useMemo(
     () => ({

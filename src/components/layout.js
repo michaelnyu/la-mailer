@@ -64,7 +64,6 @@ const StyledContainer = styled.div`
 const StyledControlContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
   ${props => (props.isMobile ? "flex: 1" : "flex: 0 0 " + controlWidth + ";")}
