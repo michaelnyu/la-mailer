@@ -67,7 +67,7 @@ const StyledControlContainer = styled.div`
   flex: 1;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  ${props => !props.isMobile && "flex: 0 0 " + controlWidth + ";"}
+  ${props => (props.isMobile ? "flex: 1" : "flex: 0 0 " + controlWidth + ";")}
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
