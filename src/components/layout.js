@@ -14,6 +14,8 @@ import EmailLink from "../components/email-link"
 import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
+import { ReactComponent as CloseSVG } from "../assets/close.svg"
+import { ReactComponent as CheckSVG } from "../assets/check.svg"
 
 import {
   isMobile,
@@ -28,6 +30,8 @@ const paddingDefault = css`
 const paddingLarge = css`
   padding: 2rem;
 `
+
+const controlWidth = "22rem"
 
 const shadowAbove = css`
   box-shadow: 0px -4px 10px ${colors.shadow};
@@ -56,7 +60,7 @@ const StyledControlContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  ${props => !props.isMobile && "flex: 0 0 22rem;"}
+  ${props => !props.isMobile && "flex: 0 0 " + controlWidth + ";"}
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
@@ -100,7 +104,7 @@ const StyledControlForm = styled.div`
 const StyledControlAction = styled.div`
   position: absolute;
   background-color: ${colors.whitePrimary};
-  width: ${props => (props.isMobile ? "100%;" : "20rem;")}
+  width: ${props => (props.isMobile ? "100%" : controlWidth)};
   ${props => props.isMobile && "display: flex; justify-content: space-between;"}
   ${paddingDefault}
   bottom: 0;
@@ -185,6 +189,51 @@ const StyledButton = styled.button`
   width: ${props => (props.stretch ? "100%" : "auto")};
 `
 
+const StyledModalBackground = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: ${colors.blackTertiary};
+  z-index: 2;
+`
+
+const StyledModalContainer = styled.div`
+  display: flex;
+  flex: ${props => (props.isMobile ? 1 : 0.7)};
+  align-self: ${props => (props.isMobile ? "flex-end" : "center")};
+  max-height: 80vh;
+  flex-direction: column;
+  background-color: ${colors.whitePrimary};
+  border-radius: 0.25rem;
+
+  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
+`
+
+const StyledModalClose = styled.div`
+  display: flex;
+  flex: 0 0 2rem;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 1rem;
+  border: ${colors.blackTertiary} 1px solid;
+  transition: 0.2s;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+    border: ${colors.blackPrimary} 1px solid;
+  }
+`
+
+const StyledModalContent = styled.div`
+  flex: 1;
+  overflow-y: scroll;
+`
+
 const MobileStates = {
   CONTROL: 0,
   PREVIEW: 1,
@@ -225,6 +274,7 @@ const Layout = ({
   const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
   const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
   const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
+  const [showModal, setShowModal] = useState(false)
 
   const controlActionComponent = (
     <StyledControlAction isMobile={isMobile}>
@@ -297,7 +347,7 @@ const Layout = ({
           value={dropdownOptions[0]}
         ></StyledSelect>
         <Spacer width={0.5} />
-        <StyledControlDetails onClick={console.log("clicked details")}>
+        <StyledControlDetails onClick={() => setShowModal(true)}>
           What is this?
         </StyledControlDetails>
       </StyledControlHeader>
@@ -335,6 +385,32 @@ const Layout = ({
     </StyledControlContainer>
   )
 
+  const modalComponent = (
+    <StyledModalBackground
+      onClick={e => {
+        setShowModal(false)
+      }}
+    >
+      <StyledModalContainer
+        isMobile={isMobile}
+        onClick={e => e.stopPropagation()}
+      >
+        <StyledModalClose
+          onClick={e => {
+            setShowModal(false)
+          }}
+        >
+          <CloseSVG />
+        </StyledModalClose>
+        <Spacer height={1} />
+        <StyledModalContent>
+          <h1>About Email Los Angeles</h1>
+          <p>Filler text</p>
+        </StyledModalContent>
+      </StyledModalContainer>
+    </StyledModalBackground>
+  )
+
   return (
     <>
       {children}
@@ -342,6 +418,7 @@ const Layout = ({
         <StyledContainer>
           {controlContainerComponent}
           {previewComponent}
+          {showModal && modalComponent}
         </StyledContainer>
       </BrowserView>
       <MobileView style={{ height: "100%" }}>
@@ -353,6 +430,7 @@ const Layout = ({
               {controlActionComponent}
             </>
           )}
+          {showModal && modalComponent}
         </StyledContainer>
       </MobileView>
     </>
