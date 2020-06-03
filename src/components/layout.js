@@ -15,7 +15,6 @@ import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
 import { ReactComponent as CloseSVG } from "../assets/close.svg"
-import { ReactComponent as CheckSVG } from "../assets/check.svg"
 
 import {
   isMobile,

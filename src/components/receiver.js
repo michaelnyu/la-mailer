@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { colors } from "./styles"
 import styled from "styled-components"
+import { ReactComponent as CheckSVG } from "../assets/check.svg"
 
 const StyledReceiver = styled.div`
   padding: 0.5rem;
@@ -15,13 +16,13 @@ const StyledReceiver = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &:hover {
+    border: ${props =>
+        props.active ? colors.blackPrimary : colors.blackTertiary}
+      1px solid;
+  }
 `
-const StyledCheckbox = styled.input`
-  display: inline-block;
-  margin: 0;
-  height: 1.25rem;
-  width: 1.25rem;
-`
+
 const StyledLabel = styled.b`
   display: inline-block;
   margin-right: 5px;
@@ -53,14 +54,7 @@ const Receiver = ({ label, name, email, onClick }) => {
         </div>
         <StyledEmail>{email}</StyledEmail>
       </div>
-      {/* <CheckSVG /> */}
-      <StyledCheckbox
-        readOnly
-        checked
-        type="checkbox"
-        id={name}
-        style={{ opacity: selected ? 1 : 0 }}
-      ></StyledCheckbox>
+      {selected && <CheckSVG />}
     </StyledReceiver>
   )
 }
