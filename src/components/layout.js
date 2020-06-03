@@ -72,7 +72,8 @@ const StyledControlHeader = styled.div`
 
 const StyledControlForm = styled.div`
   ${paddingDefault}
-  // display: flex;
+  display: flex;
+  flex-direction: column;
   height: auto;
 `
 
@@ -88,8 +89,10 @@ const StyledControlAction = styled.div`
 
 const StyledPreviewContainer = styled.div`
   flex: 1;
-  ${paddingLarge}
+  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
   background-color: ${colors.whiteTertiary};
+  max-height: 100vh;
+  overflow-y: scroll;
 `
 const StyledPreviewHeader = styled.h3`
   font-size: 1.125rem;
@@ -99,7 +102,8 @@ const StyledPreviewHeader = styled.h3`
 `
 
 const StyledPreviewEmail = styled.div`
-  ${paddingLarge}
+  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
+
   ${shadowBelow}
   background-color: ${colors.whitePrimary};
   border-radius: 0.25rem;
@@ -108,7 +112,8 @@ const StyledPreviewEmail = styled.div`
 const StyledPreviewEmailHeader = styled.h4``
 
 const StyledPreviewEmailRow = styled.div`
-  display: grid;
+  display: ${props => (props.isMobile ? "block" : "grid")};
+  line-height: 1.333em;
   grid-template-columns: 8em auto;
 `
 
@@ -119,6 +124,8 @@ const StyledPreviewEmailRowLabel = styled.p`
 
 const StyledPreviewEmailRowContent = styled.p`
   margin: 0;
+  line-height: 1.333em;
+  white-space: pre-wrap;
 `
 
 const Spacer = styled.div`
@@ -145,13 +152,21 @@ const StyledButton = styled.button`
   border-radius: 0.25rem;
   font-size: 1.125rem;
   line-height: 2.5rem;
-  border: none;
-  background-color: ${colors.blackPrimary};
-  color: ${colors.whitePrimary};
+  border: ${props =>
+    props.type === "secondary" ? colors.blackTertiary + "1px solid" : "none"};
+  background-color: ${props =>
+    props.type === "secondary" ? colors.whitePrimary : colors.blackPrimary};
+  color: ${props =>
+    props.type === "secondary" ? colors.blackPrimary : colors.whitePrimary};
   &:hover {
     cursor: pointer;
+    opacity: 0.8;
   }
   width: ${props => (props.stretch ? "100%" : "auto")};
+`
+
+const StyledSelect = styled(Select)`
+  flex: 1;
 `
 
 const MobileStates = {
@@ -199,6 +214,7 @@ const Layout = ({
     <StyledControlAction isMobile={isMobile}>
       {isMobile && (
         <StyledButton
+          type="secondary"
           onClick={() =>
             setMobileState(
               mobileState === MobileStates.CONTROL
@@ -224,48 +240,49 @@ const Layout = ({
   )
 
   const previewComponent = (
-    <StyledPreviewContainer>
+    <StyledPreviewContainer isMobile={isMobile}>
+      {isMobile && <Spacer height={2} />}
       <StyledPreviewHeader>Preview</StyledPreviewHeader>
       <Spacer height={0.5} />
-      <StyledPreviewEmail>
+      <StyledPreviewEmail isMobile={isMobile}>
         {[
           { label: "From", content: emailBodyArgs.name },
           {
             label: "BCC",
             content: emailRecipients.length
               ? emailRecipients.join(", ")
-              : "EMAIL RECIPIENTS HERE",
+              : "[EMAIL RECIPIENTS HERE]",
           },
-          { label: "Subect", content: emailSubject },
+          { label: "Subject", content: emailSubject },
           { label: "Body", content: emailBody },
         ].map((row, index, originalArray) => (
-          <StyledPreviewEmailRow key={row.label}>
+          <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
             <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
             <StyledPreviewEmailRowContent>
               {row.content}
             </StyledPreviewEmailRowContent>
             {index !== originalArray.length - 1 && (
-              <Spacer height={2} width={1} />
+              <Spacer height={1} width={1} />
             )}
           </StyledPreviewEmailRow>
         ))}
       </StyledPreviewEmail>
+      {isMobile && <Spacer height={5} />}
     </StyledPreviewContainer>
   )
 
   const controlContainerComponent = (
     <StyledControlContainer isMobile={isMobile}>
       <StyledControlHeader>
-        <div style={{ width: "100%" }}>
-          <Select
-            placeholder="Choose an email template"
-            onChange={({ value }) => setEmailId(value)}
-            options={dropdownOptions}
-          ></Select>
-        </div>
+        <StyledSelect
+          placeholder="Choose an email template"
+          onChange={({ value }) => setEmailId(value)}
+          options={dropdownOptions}
+          value={dropdownOptions[0]}
+        ></StyledSelect>
       </StyledControlHeader>
       <StyledControlForm>
-        <div style={{ width: "100%", marginBottom: 50 }}>
+        <div>
           <StyledInputHeader>Your name</StyledInputHeader>
           <StyledInput
             type="text"
@@ -274,8 +291,9 @@ const Layout = ({
             }}
           ></StyledInput>
         </div>
+        <Spacer height={1.5} />
         <div style={{ width: "100%" }}>
-          <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
+          <StyledInputHeader>Send to...</StyledInputHeader>
           {receivers.map(receiver => {
             return (
               <Receiver

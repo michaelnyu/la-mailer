@@ -3,11 +3,13 @@ import { colors } from "./styles"
 import styled from "styled-components"
 
 const StyledReceiver = styled.div`
-  padding: 0.5em;
+  padding: 0.5rem;
   background: ${colors.whitePrimary};
-  border: ${colors.whiteTertiary} solid 1px;
+  border: ${props =>
+      props.active ? colors.blackPrimary : colors.whiteTertiary}
+    solid 1px;
   width: 100%;
-  border-radius: 3px;
+  border-radius: 0.25rem;
   cursor: pointer;
   margin-bottom: 10px;
   display: flex;
@@ -28,7 +30,9 @@ const StyledName = styled.p`
   display: inline-block;
   margin-bottom: 0;
 `
-const StyledEmail = styled.div``
+const StyledEmail = styled.div`
+  color: ${colors.blackSecondary};
+`
 
 // label is the bolded text on left
 const Receiver = ({ label, name, email, onClick }) => {
@@ -36,6 +40,7 @@ const Receiver = ({ label, name, email, onClick }) => {
 
   return (
     <StyledReceiver
+      active={selected}
       onClick={() => {
         onClick(!selected)
         setSelected(!selected)
@@ -48,6 +53,7 @@ const Receiver = ({ label, name, email, onClick }) => {
         </div>
         <StyledEmail>{email}</StyledEmail>
       </div>
+      {/* <CheckSVG /> */}
       <StyledCheckbox
         readOnly
         checked

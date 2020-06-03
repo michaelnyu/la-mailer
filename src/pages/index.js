@@ -9,7 +9,9 @@ const IndexPage = () => {
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState([])
-  const [emailBodyArgs, setEmailBodyArgs] = useState({ name: "YOUR NAME HERE" })
+  const [emailBodyArgs, setEmailBodyArgs] = useState({
+    name: "[YOUR NAME HERE]",
+  })
 
   const updateEmail = () => {
     const email = buildEmailPreview({
