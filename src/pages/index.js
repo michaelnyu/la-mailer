@@ -8,11 +8,12 @@ const IndexPage = () => {
   const [emailId, setEmailId] = useState("")
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
+  const [emailDirectRecipient, setEmailDirectRecipient] = useState([])
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({
     name: "",
   })
-  const [modalInfo, setModalInfo] = useState({ title: "", body: "" })
+  const [modalInfo, setModalInfo] = useState({ title: "", body: "", url: "" })
 
   // DELETE later.
   // set defaults
@@ -26,16 +27,21 @@ const IndexPage = () => {
       emailId,
       stringInputs: emailBodyArgs,
     })
-
+    setEmailDirectRecipient(email.directRecipient)
     setEmailSubject(email.subject)
     setEmailBody(email.body)
-    setModalInfo({ title: email.modalTitle, body: email.modalBody })
+    setModalInfo({
+      title: email.modalTitle,
+      body: email.modalBody,
+      url: email.modalUrl,
+    })
   }, [emailId, emailBodyArgs])
 
   const layoutProps = {
     modalInfo,
     emailId,
     setEmailId,
+    emailDirectRecipient,
     emailRecipients: [...emailRecipients],
     addEmailRecipient: email => {
       setEmailRecipients(emailRecipients => [...emailRecipients, email])

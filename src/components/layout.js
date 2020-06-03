@@ -23,11 +23,25 @@ import {
   MobileView,
 } from "react-device-detect"
 
+const paddingDefaultSides = css`
+  padding-left: 1rem;
+  padding-right: 1rem;
+`
+
+const paddingLargeSides = css`
+  padding-left: 2rem;
+  padding-right: 2rem;
+`
+
 const paddingDefault = css`
-  padding: 1rem;
+  ${paddingDefaultSides}
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 `
 const paddingLarge = css`
-  padding: 2rem;
+  ${paddingLargeSides}
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 `
 
 const controlWidth = "22rem"
@@ -108,6 +122,9 @@ const StyledControlAction = styled.div`
   ${paddingDefault}
   bottom: 0;
   ${shadowAbove}
+  & > a {
+    text-decoration: none;
+  }
 `
 
 const StyledPreviewContainer = styled.div`
@@ -166,16 +183,17 @@ const StyledInput = styled.input`
 `
 
 const StyledInputHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-size: 1rem;
-  display: block;
   margin-bottom: 12px;
 `
 
-const StyledButton = styled.button`
-  display: inline-block;
-  border-radius: 0.25rem;
-  font-size: 1.125rem;
-  line-height: 2.5rem;
+const StyledInputHeaderButtons = styled.div`
+  display: inline-flex;
+`
+
+const buttonStyle = css`
   border: ${props =>
     props.type === "secondary" ? colors.blackTertiary + "1px solid" : "none"};
   background-color: ${props =>
@@ -184,9 +202,34 @@ const StyledButton = styled.button`
     props.type === "secondary" ? colors.blackPrimary : colors.whitePrimary};
   &:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.9;
   }
+  border-radius: 0.25rem;
   width: ${props => (props.stretch ? "100%" : "auto")};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    border: ${props =>
+      props.type === "secondary" ? colors.blackPrimary + "1px solid" : "none"};
+    opacity: 1;
+  }
+`
+
+const StyledButton = styled.button`
+  ${buttonStyle}
+  font-size: 1.125rem;
+  padding: 0.75rem;
+`
+
+const StyledButtonSmall = styled.button`
+  ${buttonStyle}
+  font-size: 0.75em;
+  line-height: 0.75em;
+  padding: 0.25rem;
 `
 
 const StyledModalBackground = styled.div`
@@ -205,11 +248,17 @@ const StyledModalContainer = styled.div`
   flex: ${props => (props.isMobile ? 1 : 0.7)};
   align-self: ${props => (props.isMobile ? "flex-end" : "center")};
   max-height: 80vh;
+  max-width: 100vw;
   flex-direction: column;
   background-color: ${colors.whitePrimary};
-  border-radius: 0.25rem;
+  border-radius: ${props => (props.isMobile ? "1rem 1rem 0 0" : "0.5rem")};
+`
 
-  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
+const StyledModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ${props => (props.isMobile ? paddingDefaultSides : paddingLargeSides)}
 `
 
 const StyledModalClose = styled.div`
@@ -232,6 +281,15 @@ const StyledModalClose = styled.div`
 const StyledModalContent = styled.div`
   flex: 1;
   overflow-y: scroll;
+  ${props => (props.isMobile ? paddingDefaultSides : paddingLargeSides)}
+`
+
+const StyledModalText = styled.p`
+  line-height: 1.5em;
+  white-space: pre-wrap;
+  margin: 0;
+  color: ${props =>
+    props.type === "heading" ? colors.blackTertiary : colors.blackPrimary};
 `
 
 const MobileStates = {
@@ -244,6 +302,7 @@ const Layout = ({
   addEmailRecipient,
   removeEmailRecipient,
   updateEmailInputs,
+  emailDirectRecipient,
   emailSubject,
   emailBody,
   emailBodyArgs,
@@ -259,13 +318,74 @@ const Layout = ({
     },
     {
       label: "CD2",
-      name: "Gil Dedillo 2",
-      email: "councilmember.cedillo2@la.org",
+      name: "Paul Krekorian",
+      email: "councilmember.Krekorian@lacity.org",
     },
     {
       label: "CD3",
-      name: "Gil Dedillo 3",
-      email: "councilmember.cedillo3@la.org",
+      name: "Bob Blumenfield",
+      email: "councilmember.blumenfield@lacity.org",
+    },
+    {
+      label: "CD4",
+      name: "David Ryu",
+      email: "david.ryu@lacity.org",
+    },
+    {
+      label: "CD5",
+      name: "Paul Koretz",
+      email: "paul.koretz@lacity.org",
+    },
+    {
+      label: "CD6",
+      name: "Nuny Martinez",
+      email: "councilmember.martinez@lacity.org",
+    },
+    {
+      label: "CD7",
+      name: "Monica Rodriguez",
+      email: "councilmember.rodriguez@lacity.org",
+    },
+    {
+      label: "CD8",
+      name: "Marcqueece Harris-Dawson",
+      email: "councilmember.harris-dawson@lacity.org",
+    },
+    {
+      label: "CD9",
+      name: "Curren Price",
+      email: "councilmember.price@lacity.org",
+    },
+
+    {
+      label: "CD10",
+      name: "Herb Wesson",
+      email: "councilmember.wesson@lacity.org",
+    },
+    {
+      label: "CD11",
+      name: "Mike Bonin ",
+      email: "councilmember.bonin@lacity.org",
+    },
+    {
+      label: "CD12",
+      name: "John Lee",
+      email: "councilmember.Lee@lacity.org",
+    },
+    {
+      label: "CD13",
+      name: "Mitch O’Farrell",
+      email: "councilmember.ofarrell@lacity.org",
+    },
+    {
+      label: "CD14",
+      name: "Jose Huizar (suspended)",
+      email: "councilmember.huizar@lacity.org",
+    },
+    {
+      label: "CD15",
+      name: "Joe Buscaino ",
+      email: "councilmember.buscaino@lacity.org",
     },
   ]
   const dropdownOptions = Object.entries(
@@ -276,6 +396,22 @@ const Layout = ({
   const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
   const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
   const [showModal, setShowModal] = useState(false)
+
+  const addAllRecipients = () => {
+    receivers.map(receiver => {
+      if (emailRecipients.indexOf(receiver.email) <= -1) {
+        addEmailRecipient(receiver.email)
+      }
+    })
+  }
+
+  const removeAllRecipients = () => {
+    receivers.map(receiver => {
+      if (emailRecipients.indexOf(receiver.email) > -1) {
+        removeEmailRecipient(receiver.email)
+      }
+    })
+  }
 
   const controlActionComponent = (
     <StyledControlAction isMobile={isMobile}>
@@ -324,16 +460,15 @@ const Layout = ({
           },
           {
             label: "To",
-            content: emailRecipients.length
-              ? emailRecipients[0]
-              : "[EMAIL RECIPIENT HERE]",
-            hasUserInput: emailRecipients.length > 0,
+            content: emailDirectRecipient,
+            hasUserInput:
+              emailDirectRecipient !== "" && emailDirectRecipient != null,
           },
           {
             label: "BCC",
             content:
-              emailRecipients.length > 1
-                ? [...emailRecipients].splice(1).join(", ")
+              emailRecipients.length > 0
+                ? [...emailRecipients].join(", ")
                 : "[BCC RECIPIENTS HERE]",
             hasUserInput: emailRecipients.length > 0,
           },
@@ -391,15 +526,27 @@ const Layout = ({
         </div>
         <Spacer height={1.5} />
         <div style={{ width: "100%" }}>
-          <StyledInputHeader>Send to...</StyledInputHeader>
+          <StyledInputHeader>
+            Send to...
+            <StyledInputHeaderButtons>
+              <StyledButtonSmall onClick={removeAllRecipients} type="secondary">
+                Deselect all
+              </StyledButtonSmall>
+              <Spacer width={0.25} />
+              <StyledButtonSmall onClick={addAllRecipients} type="secondary">
+                Select all
+              </StyledButtonSmall>
+            </StyledInputHeaderButtons>
+          </StyledInputHeader>
           {receivers.map(receiver => {
+            let selected = emailRecipients.indexOf(receiver.email) > -1
             return (
               <Receiver
-                defaultSelected={emailRecipients.indexOf(receiver.email) > -1}
+                selected={selected}
                 key={receiver.name}
                 {...receiver}
-                onClick={selected => {
-                  if (selected) {
+                onClick={() => {
+                  if (!selected) {
                     addEmailRecipient(receiver.email)
                   } else {
                     removeEmailRecipient(receiver.email)
@@ -409,6 +556,7 @@ const Layout = ({
             )
           })}
         </div>
+        <Spacer height={5} />
       </StyledControlForm>
       {controlActionComponent}
     </StyledControlContainer>
@@ -420,21 +568,33 @@ const Layout = ({
         setShowModal(false)
       }}
     >
+      <Spacer height={1} />
+
       <StyledModalContainer
         isMobile={isMobile}
         onClick={e => e.stopPropagation()}
       >
-        <StyledModalClose
-          onClick={e => {
-            setShowModal(false)
-          }}
-        >
-          <CloseSVG />
-        </StyledModalClose>
+        <Spacer height={2} />
+        <StyledModalHeader isMobile={isMobile}>
+          <StyledModalText type="heading">{modalInfo.title}</StyledModalText>
+          <StyledModalClose
+            onClick={e => {
+              setShowModal(false)
+            }}
+          >
+            <CloseSVG />
+          </StyledModalClose>
+        </StyledModalHeader>
         <Spacer height={1} />
-        <StyledModalContent>
-          <h1>{modalInfo.title}</h1>
-          <p>{modalInfo.body}</p>
+        <StyledModalContent isMobile={isMobile}>
+          <StyledModalText>{modalInfo.body}</StyledModalText>
+          <Spacer height={1} />
+          <StyledModalText>
+            More resources can be found at:{" "}
+            <a href={modalInfo.url}>{modalInfo.url}</a>
+          </StyledModalText>
+
+          <Spacer height={2} />
         </StyledModalContent>
       </StyledModalContainer>
     </StyledModalBackground>
