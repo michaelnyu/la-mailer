@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import "./layout.css"
 import Select from "react-select"
 import Receiver from "../components/receiver"
@@ -415,73 +415,81 @@ const Layout = ({
     </StyledPreviewContainer>
   )
 
-  const ControlContainerComponent = () => (
-    <StyledControlContainer isMobile={isMobile}>
-      <StyledControlHeader>
-        <StyledSelect
-          placeholder="Choose an email template"
-          onChange={({ value }) => setEmailId(value)}
-          options={dropdownOptions}
-          value={
-            dropdownOptions[dropdownOptions.findIndex(d => d.value === emailId)]
-          }
-        ></StyledSelect>
-        <Spacer width={0.5} />
-        <StyledControlDetails onClick={() => setShowModal(true)}>
-          What is this?
-        </StyledControlDetails>
-      </StyledControlHeader>
-      <StyledControlForm>
-        {args &&
-          Object.entries(args).map(([key, { label, inputType }]) => (
-            <div key={key} style={{ marginBottom: 10 }}>
-              <StyledInputHeader>{label}</StyledInputHeader>
-              <StyledInput
-                value={emailBodyArgs[key] || ""}
-                type={inputType}
-                onChange={e => {
-                  updateEmailInputs(key, e.target.value)
-                }}
-              ></StyledInput>
-            </div>
-          ))}
-        <Spacer height={1.5} />
-        <div style={{ width: "100%" }}>
-          <StyledInputHeader>
-            Send to...
-            <StyledInputHeaderButtons>
-              <StyledButtonSmall onClick={removeAllRecipients} type="secondary">
-                Deselect all
-              </StyledButtonSmall>
-              <Spacer width={0.25} />
-              <StyledButtonSmall onClick={addAllRecipients} type="secondary">
-                Select all
-              </StyledButtonSmall>
-            </StyledInputHeaderButtons>
-          </StyledInputHeader>
-          {receivers &&
-            receivers.map(receiver => {
-              let selected = emailRecipients.indexOf(receiver.email) > -1
-              return (
-                <Receiver
-                  selected={selected}
-                  key={receiver.name}
-                  {...receiver}
-                  onClick={() => {
-                    if (!selected) {
-                      addEmailRecipient(receiver.email)
-                    } else {
-                      removeEmailRecipient(receiver.email)
-                    }
+  const controlContainerComponent = useMemo(
+    () => (
+      <StyledControlContainer isMobile={isMobile}>
+        <StyledControlHeader>
+          <StyledSelect
+            placeholder="Choose an email template"
+            onChange={({ value }) => setEmailId(value)}
+            options={dropdownOptions}
+            value={
+              dropdownOptions[
+                dropdownOptions.findIndex(d => d.value === emailId)
+              ]
+            }
+          ></StyledSelect>
+          <Spacer width={0.5} />
+          <StyledControlDetails onClick={() => setShowModal(true)}>
+            What is this?
+          </StyledControlDetails>
+        </StyledControlHeader>
+        <StyledControlForm>
+          {args &&
+            Object.entries(args).map(([key, { label, inputType }]) => (
+              <div key={key} style={{ marginBottom: 10 }}>
+                <StyledInputHeader>{label}</StyledInputHeader>
+                <StyledInput
+                  value={emailBodyArgs[key] || ""}
+                  type={inputType}
+                  onChange={e => {
+                    updateEmailInputs(key, e.target.value)
                   }}
-                />
-              )
-            })}
-        </div>
-        <Spacer height={5} />
-      </StyledControlForm>
-      {controlActionComponent}
-    </StyledControlContainer>
+                ></StyledInput>
+              </div>
+            ))}
+          <Spacer height={1.5} />
+          <div style={{ width: "100%" }}>
+            <StyledInputHeader>
+              Send to...
+              <StyledInputHeaderButtons>
+                <StyledButtonSmall
+                  onClick={removeAllRecipients}
+                  type="secondary"
+                >
+                  Deselect all
+                </StyledButtonSmall>
+                <Spacer width={0.25} />
+                <StyledButtonSmall onClick={addAllRecipients} type="secondary">
+                  Select all
+                </StyledButtonSmall>
+              </StyledInputHeaderButtons>
+            </StyledInputHeader>
+            {receivers &&
+              receivers.map(receiver => {
+                let selected = emailRecipients.indexOf(receiver.email) > -1
+                return (
+                  <Receiver
+                    selected={selected}
+                    key={receiver.name}
+                    {...receiver}
+                    onClick={() => {
+                      if (!selected) {
+                        addEmailRecipient(receiver.email)
+                      } else {
+                        removeEmailRecipient(receiver.email)
+                      }
+                    }}
+                  />
+                )
+              })}
+          </div>
+          <Spacer height={5} />
+        </StyledControlForm>
+        {controlActionComponent}
+      </StyledControlContainer>
+    ),
+    [isMobile, dropdownOptions, args, emailRecipients, emailBodyArgs, receivers]
   )
 
   const modalComponent = (
@@ -538,7 +546,7 @@ const Layout = ({
   if (isMobile) {
     return (
       <StyledContainer>
-        {mobileState === MobileStates.CONTROL && <ControlContainerComponent />}
+        {mobileState === MobileStates.CONTROL && controlContainerComponent}
         {mobileState === MobileStates.PREVIEW && (
           <>
             {previewComponent}
@@ -551,7 +559,7 @@ const Layout = ({
   }
   return (
     <StyledContainer>
-      <ControlContainerComponent />
+      {controlContainerComponent}
       {previewComponent}
       {showModal && modalComponent}
     </StyledContainer>

@@ -43,6 +43,8 @@ const IndexPage = () => {
     })
   }, [emailId, emailBodyArgs])
 
+  console.log(emailRecipients)
+
   const layoutProps = useMemo(
     () => ({
       modalInfo,
@@ -67,7 +69,17 @@ const IndexPage = () => {
       receivers,
       args,
     }),
-    [emailId, args, receivers]
+    [
+      emailId,
+      args,
+      receivers,
+      emailRecipients,
+      emailBody,
+      emailSubject,
+      emailDirectRecipient,
+      emailBodyArgs,
+      modalInfo,
+    ]
   )
 
   return (
