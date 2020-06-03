@@ -289,6 +289,7 @@ const MobileStates = {
 }
 
 const Layout = ({
+  emailId,
   setEmailId,
   addEmailRecipient,
   removeEmailRecipient,
@@ -422,7 +423,9 @@ const Layout = ({
           placeholder="Choose an email template"
           onChange={({ value }) => setEmailId(value)}
           options={dropdownOptions}
-          value={dropdownOptions[0]}
+          value={
+            dropdownOptions[dropdownOptions.findIndex(d => d.value === emailId)]
+          }
         ></StyledSelect>
         <Spacer width={0.5} />
         <StyledControlDetails onClick={() => setShowModal(true)}>
@@ -434,6 +437,7 @@ const Layout = ({
           <div key={key} style={{ marginBottom: 10 }}>
             <StyledInputHeader>{label}</StyledInputHeader>
             <StyledInput
+              value={emailBodyArgs[key] || ""}
               type={inputType}
               onChange={e => {
                 updateEmailInputs(key, e.target.value)
