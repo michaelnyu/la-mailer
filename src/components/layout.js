@@ -179,7 +179,7 @@ const StyledInputHeader = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-  margin-bottom: 12px;
+  margin-bottom: 0.5rem;
 `
 
 const StyledInputHeaderButtons = styled.div`
@@ -447,7 +447,7 @@ const Layout = ({
             label: "From",
             content:
               emailBodyArgs.name === ""
-                ? "[YOUR NAME HERE]"
+                ? "[No name inputted]"
                 : emailBodyArgs.name,
             hasUserInput:
               emailBodyArgs.name !== "" && emailBodyArgs.name != null,
@@ -463,7 +463,7 @@ const Layout = ({
             content:
               emailRecipients.length > 0
                 ? [...emailRecipients].join(", ")
-                : "[BCC RECIPIENTS HERE]",
+                : "[No representatives selected]",
             hasUserInput: emailRecipients.length > 0,
           },
           {
@@ -587,7 +587,20 @@ const Layout = ({
             More resources can be found at:{" "}
             <a href={modalInfo.url}>{modalInfo.url}</a>
           </StyledModalText>
-
+          <Spacer height={2} />
+          <hr />
+          <StyledModalText type="heading">
+            About Email Los Angeles
+          </StyledModalText>
+          <Spacer height={1} />
+          <StyledModalText>
+            Email Los Angeles is a project started some students from UCLA. If
+            you're an organizer, let us know how we can support you at{" "}
+            <a href="mailto:temporaryemail@gmail.com">
+              temporaryemail@gmail.com
+            </a>
+            .
+          </StyledModalText>
           <Spacer height={2} />
         </StyledModalContent>
       </StyledModalContainer>

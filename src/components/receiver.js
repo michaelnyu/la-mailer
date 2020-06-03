@@ -12,7 +12,7 @@ const StyledReceiver = styled.div`
   width: 100%;
   border-radius: 0.25rem;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,15 +22,18 @@ const StyledReceiver = styled.div`
       1px solid;
   }
   user-select: none;
+  font-size: 0.875em;
 `
 
-const StyledLabel = styled.b`
-  display: inline-block;
-  margin-right: 5px;
-`
-const StyledName = styled.p`
+const StyledLabel = styled.p`
   display: inline-block;
   margin-bottom: 0;
+  margin-right: 5px;
+`
+const StyledName = styled.b`
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 5px;
 `
 const StyledEmail = styled.div`
   color: ${colors.blackSecondary};
@@ -40,10 +43,10 @@ const StyledEmail = styled.div`
 const Receiver = ({ label, name, email, onClick, selected }) => {
   return (
     <StyledReceiver active={selected} onClick={onClick}>
-      <div style={{ display: "inline-block" }}>
+      <div style={{ display: "inline-block", maxWidth: "90%" }}>
         <div style={{ marginBottom: 5 }}>
-          <StyledLabel>{label}</StyledLabel>
           <StyledName>{name}</StyledName>
+          <StyledLabel>{label}</StyledLabel>
         </div>
         <StyledEmail>{email}</StyledEmail>
       </div>
