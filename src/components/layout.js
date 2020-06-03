@@ -56,7 +56,7 @@ const StyledControlContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  ${props => !props.isMobile && "flex: 0 0 20rem;"}
+  ${props => !props.isMobile && "flex: 0 0 22rem;"}
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   ${shadowRight}
@@ -70,9 +70,30 @@ const StyledControlHeader = styled.div`
   background-color: ${colors.whitePrimary};
 `
 
+const StyledSelect = styled(Select)`
+  flex: 1;
+`
+
+const StyledControlDetails = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 5.5rem;
+  font-size: 0.75rem;
+  color: ${colors.blackSecondary};
+  text-decoration: underline;
+  border-radius: 0.25rem;
+  transition: 0.2s;
+  &:hover {
+    cursor: pointer;
+    background-color: ${colors.whiteTertiary};
+  }
+`
+
 const StyledControlForm = styled.div`
   ${paddingDefault}
-  // display: flex;
+  display: flex;
+  flex-direction: column;
   height: auto;
 `
 
@@ -88,8 +109,10 @@ const StyledControlAction = styled.div`
 
 const StyledPreviewContainer = styled.div`
   flex: 1;
-  ${paddingLarge}
+  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
   background-color: ${colors.whiteTertiary};
+  max-height: 100vh;
+  overflow-y: scroll;
 `
 const StyledPreviewHeader = styled.h3`
   font-size: 1.125rem;
@@ -99,13 +122,31 @@ const StyledPreviewHeader = styled.h3`
 `
 
 const StyledPreviewEmail = styled.div`
-  ${paddingLarge}
+  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
+
   ${shadowBelow}
   background-color: ${colors.whitePrimary};
   border-radius: 0.25rem;
 `
 
 const StyledPreviewEmailHeader = styled.h4``
+
+const StyledPreviewEmailRow = styled.div`
+  display: ${props => (props.isMobile ? "block" : "grid")};
+  line-height: 1.333em;
+  grid-template-columns: 8em auto;
+`
+
+const StyledPreviewEmailRowLabel = styled.p`
+  color: ${colors.blackTertiary};
+  margin: 0;
+`
+
+const StyledPreviewEmailRowContent = styled.p`
+  margin: 0;
+  line-height: 1.333em;
+  white-space: pre-wrap;
+`
 
 const Spacer = styled.div`
   height: ${props => props.height + "rem"};
@@ -131,11 +172,15 @@ const StyledButton = styled.button`
   border-radius: 0.25rem;
   font-size: 1.125rem;
   line-height: 2.5rem;
-  border: none;
-  background-color: ${colors.blackPrimary};
-  color: ${colors.whitePrimary};
+  border: ${props =>
+    props.type === "secondary" ? colors.blackTertiary + "1px solid" : "none"};
+  background-color: ${props =>
+    props.type === "secondary" ? colors.whitePrimary : colors.blackPrimary};
+  color: ${props =>
+    props.type === "secondary" ? colors.blackPrimary : colors.whitePrimary};
   &:hover {
     cursor: pointer;
+    opacity: 0.8;
   }
   width: ${props => (props.stretch ? "100%" : "auto")};
 `
@@ -147,14 +192,11 @@ const MobileStates = {
 
 const Layout = ({
   setEmailId,
-  setEmailBody,
-  setEmailSubject,
   addEmailRecipient,
   removeEmailRecipient,
-  setEmailBodyArgs,
+  updateEmailInputs,
   emailSubject,
   emailBody,
-  emailId,
   emailBodyArgs,
   emailRecipients,
   children,
@@ -188,6 +230,7 @@ const Layout = ({
     <StyledControlAction isMobile={isMobile}>
       {isMobile && (
         <StyledButton
+          type="secondary"
           onClick={() =>
             setMobileState(
               mobileState === MobileStates.CONTROL
@@ -213,36 +256,71 @@ const Layout = ({
   )
 
   const previewComponent = (
-    <StyledPreviewContainer>
+    <StyledPreviewContainer isMobile={isMobile}>
+      {isMobile && <Spacer height={2} />}
       <StyledPreviewHeader>Preview</StyledPreviewHeader>
       <Spacer height={0.5} />
-      <StyledPreviewEmail> Email contents</StyledPreviewEmail>
+      <StyledPreviewEmail isMobile={isMobile}>
+        {[
+          { label: "From", content: emailBodyArgs.name },
+          {
+            label: "To",
+            content: emailRecipients.length
+              ? emailRecipients[0]
+              : "[EMAIL RECIPIENT HERE]",
+          },
+          {
+            label: "BCC",
+            content:
+              emailRecipients.length > 1
+                ? [...emailRecipients].splice(1).join(", ")
+                : "[BCC RECIPIENTS HERE]",
+          },
+          { label: "Subject", content: emailSubject },
+          { label: "Body", content: emailBody },
+        ].map((row, index, originalArray) => (
+          <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
+            <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
+            <StyledPreviewEmailRowContent>
+              {row.content}
+            </StyledPreviewEmailRowContent>
+            {index !== originalArray.length - 1 && (
+              <Spacer height={1} width={1} />
+            )}
+          </StyledPreviewEmailRow>
+        ))}
+      </StyledPreviewEmail>
+      {isMobile && <Spacer height={5} />}
     </StyledPreviewContainer>
   )
 
   const controlContainerComponent = (
     <StyledControlContainer isMobile={isMobile}>
       <StyledControlHeader>
-        <div style={{ width: "100%" }}>
-          <Select
-            placeholder="Choose an email template"
-            onChange={({ value }) => setEmailId(value)}
-            options={dropdownOptions}
-          ></Select>
-        </div>
+        <StyledSelect
+          placeholder="Choose an email template"
+          onChange={({ value }) => setEmailId(value)}
+          options={dropdownOptions}
+          value={dropdownOptions[0]}
+        ></StyledSelect>
+        <Spacer width={0.5} />
+        <StyledControlDetails onClick={console.log("clicked details")}>
+          What is this?
+        </StyledControlDetails>
       </StyledControlHeader>
       <StyledControlForm>
-        <div style={{ width: "100%", marginBottom: 50 }}>
+        <div>
           <StyledInputHeader>Your name</StyledInputHeader>
           <StyledInput
             type="text"
-            onChange={e =>
-              setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
-            }
+            onChange={e => {
+              updateEmailInputs({ name: e.target.value })
+            }}
           ></StyledInput>
         </div>
+        <Spacer height={1.5} />
         <div style={{ width: "100%" }}>
-          <StyledInputHeader>Councilmembers to send to</StyledInputHeader>
+          <StyledInputHeader>Send to...</StyledInputHeader>
           {receivers.map(receiver => {
             return (
               <Receiver

@@ -9,19 +9,27 @@ const IndexPage = () => {
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState([])
-  const [emailBodyArgs, setEmailBodyArgs] = useState({})
+  const [emailBodyArgs, setEmailBodyArgs] = useState({
+    name: "[YOUR NAME HERE]",
+  })
+
+  // DELETE later.
+  // set defaults
+  useEffect(() => {
+    setEmailId("police-brutality-la")
+  }, [])
 
   useEffect(() => {
+    // update email states when deps change
     const email = buildEmailPreview({
       emailId,
       stringInputs: emailBodyArgs,
     })
+
     setEmailSubject(email.subject)
     setEmailBody(email.body)
-    setEmailBodyArgs({ name: "michael" })
-  }, [emailId])
+  }, [emailId, emailBodyArgs])
 
-  // Should probably move this to a store or context
   const layoutProps = {
     setEmailId,
     emailRecipients: [...emailRecipients],
@@ -33,11 +41,12 @@ const IndexPage = () => {
         emailRecipients.filter(e => email !== e)
       )
     },
-    emailId,
     emailSubject,
     emailBody,
     emailBodyArgs: { ...emailBodyArgs },
-    setEmailBodyArgs,
+    updateEmailInputs: ({ name }) => {
+      setEmailBodyArgs({ ...emailBodyArgs, name })
+    },
   }
 
   return (
