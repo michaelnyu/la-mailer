@@ -179,7 +179,7 @@ const StyledInputHeader = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-  margin-bottom: 12px;
+  margin-bottom: 0.5rem;
 `
 
 const StyledInputHeaderButtons = styled.div`
@@ -289,6 +289,84 @@ const MobileStates = {
   CONTROL: 0,
   PREVIEW: 1,
 }
+const receivers = [
+  {
+    label: "CD1",
+    name: "Gil Dedillo",
+    email: "councilmember.cedillo@la.org",
+  },
+  {
+    label: "CD2",
+    name: "Paul Krekorian",
+    email: "councilmember.Krekorian@lacity.org",
+  },
+  {
+    label: "CD3",
+    name: "Bob Blumenfield",
+    email: "councilmember.blumenfield@lacity.org",
+  },
+  {
+    label: "CD4",
+    name: "David Ryu",
+    email: "david.ryu@lacity.org",
+  },
+  {
+    label: "CD5",
+    name: "Paul Koretz",
+    email: "paul.koretz@lacity.org",
+  },
+  {
+    label: "CD6",
+    name: "Nuny Martinez",
+    email: "councilmember.martinez@lacity.org",
+  },
+  {
+    label: "CD7",
+    name: "Monica Rodriguez",
+    email: "councilmember.rodriguez@lacity.org",
+  },
+  {
+    label: "CD8",
+    name: "Marcqueece Harris-Dawson",
+    email: "councilmember.harris-dawson@lacity.org",
+  },
+  {
+    label: "CD9",
+    name: "Curren Price",
+    email: "councilmember.price@lacity.org",
+  },
+
+  {
+    label: "CD10",
+    name: "Herb Wesson",
+    email: "councilmember.wesson@lacity.org",
+  },
+  {
+    label: "CD11",
+    name: "Mike Bonin ",
+    email: "councilmember.bonin@lacity.org",
+  },
+  {
+    label: "CD12",
+    name: "John Lee",
+    email: "councilmember.Lee@lacity.org",
+  },
+  {
+    label: "CD13",
+    name: "Mitch O’Farrell",
+    email: "councilmember.ofarrell@lacity.org",
+  },
+  {
+    label: "CD14",
+    name: "Jose Huizar (suspended)",
+    email: "councilmember.huizar@lacity.org",
+  },
+  {
+    label: "CD15",
+    name: "Joe Buscaino ",
+    email: "councilmember.buscaino@lacity.org",
+  },
+]
 
 const Layout = ({
   setEmailId,
@@ -303,84 +381,6 @@ const Layout = ({
   modalInfo = { title: "", body: "", url: "" },
   children,
 }) => {
-  const receivers = [
-    {
-      label: "CD1",
-      name: "Gil Dedillo",
-      email: "councilmember.cedillo@la.org",
-    },
-    {
-      label: "CD2",
-      name: "Paul Krekorian",
-      email: "councilmember.Krekorian@lacity.org",
-    },
-    {
-      label: "CD3",
-      name: "Bob Blumenfield",
-      email: "councilmember.blumenfield@lacity.org",
-    },
-    {
-      label: "CD4",
-      name: "David Ryu",
-      email: "david.ryu@lacity.org",
-    },
-    {
-      label: "CD5",
-      name: "Paul Koretz",
-      email: "paul.koretz@lacity.org",
-    },
-    {
-      label: "CD6",
-      name: "Nuny Martinez",
-      email: "councilmember.martinez@lacity.org",
-    },
-    {
-      label: "CD7",
-      name: "Monica Rodriguez",
-      email: "councilmember.rodriguez@lacity.org",
-    },
-    {
-      label: "CD8",
-      name: "Marcqueece Harris-Dawson",
-      email: "councilmember.harris-dawson@lacity.org",
-    },
-    {
-      label: "CD9",
-      name: "Curren Price",
-      email: "councilmember.price@lacity.org",
-    },
-
-    {
-      label: "CD10",
-      name: "Herb Wesson",
-      email: "councilmember.wesson@lacity.org",
-    },
-    {
-      label: "CD11",
-      name: "Mike Bonin ",
-      email: "councilmember.bonin@lacity.org",
-    },
-    {
-      label: "CD12",
-      name: "John Lee",
-      email: "councilmember.Lee@lacity.org",
-    },
-    {
-      label: "CD13",
-      name: "Mitch O’Farrell",
-      email: "councilmember.ofarrell@lacity.org",
-    },
-    {
-      label: "CD14",
-      name: "Jose Huizar (suspended)",
-      email: "councilmember.huizar@lacity.org",
-    },
-    {
-      label: "CD15",
-      name: "Joe Buscaino ",
-      email: "councilmember.buscaino@lacity.org",
-    },
-  ]
   const dropdownOptions = Object.entries(
     emailIdTitleMap
   ).map(([id, title]) => ({ value: id, label: title }))
@@ -427,7 +427,7 @@ const Layout = ({
       )}
       <EmailLink
         style={{ flexBasis: "50%" }}
-        stretch={true}
+        stretch={!isMobile}
         directRecipient={emailDirectRecipient}
         recipients={emailRecipients}
         subject={emailSubject}
@@ -447,7 +447,7 @@ const Layout = ({
             label: "From",
             content:
               emailBodyArgs.name === ""
-                ? "[YOUR NAME HERE]"
+                ? "[No name inputted]"
                 : emailBodyArgs.name,
             hasUserInput:
               emailBodyArgs.name !== "" && emailBodyArgs.name != null,
@@ -463,7 +463,7 @@ const Layout = ({
             content:
               emailRecipients.length > 0
                 ? [...emailRecipients].join(", ")
-                : "[BCC RECIPIENTS HERE]",
+                : "[No representatives selected]",
             hasUserInput: emailRecipients.length > 0,
           },
           {
@@ -587,7 +587,20 @@ const Layout = ({
             More resources can be found at:{" "}
             <a href={modalInfo.url}>{modalInfo.url}</a>
           </StyledModalText>
-
+          <Spacer height={2} />
+          <hr />
+          <StyledModalText type="heading">
+            About Email Los Angeles
+          </StyledModalText>
+          <Spacer height={1} />
+          <StyledModalText>
+            Email Los Angeles is a project started some students from UCLA. If
+            you're an organizer, let us know how we can support you at{" "}
+            <a href="mailto:temporaryemail@gmail.com">
+              temporaryemail@gmail.com
+            </a>
+            .
+          </StyledModalText>
           <Spacer height={2} />
         </StyledModalContent>
       </StyledModalContainer>
