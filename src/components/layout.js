@@ -314,10 +314,17 @@ const Layout = ({
         {[
           { label: "From", content: emailBodyArgs.name },
           {
-            label: "BCC",
+            label: "To",
             content: emailRecipients.length
-              ? emailRecipients.join(", ")
-              : "[EMAIL RECIPIENTS HERE]",
+              ? emailRecipients[0]
+              : "[EMAIL RECIPIENT HERE]",
+          },
+          {
+            label: "BCC",
+            content:
+              emailRecipients.length > 1
+                ? [...emailRecipients].splice(1).join(", ")
+                : "[BCC RECIPIENTS HERE]",
           },
           { label: "Subject", content: emailSubject },
           { label: "Body", content: emailBody },
