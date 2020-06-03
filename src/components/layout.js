@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { useMemo, useState } from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
 import "./layout.css"
 import Select from "react-select"
@@ -16,12 +16,7 @@ import styled, { css } from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
 import { ReactComponent as CloseSVG } from "../assets/close.svg"
 
-import {
-  isMobile,
-  isBrowser,
-  BrowserView,
-  MobileView,
-} from "react-device-detect"
+import { isMobile, BrowserView, MobileView } from "react-device-detect"
 
 const paddingDefaultSides = css`
   padding-left: 1rem;
@@ -148,8 +143,6 @@ const StyledPreviewEmail = styled.div`
   background-color: ${colors.whitePrimary};
   border-radius: 0.25rem;
 `
-
-const StyledPreviewEmailHeader = styled.h4``
 
 const StyledPreviewEmailRow = styled.div`
   display: ${props => (props.isMobile ? "block" : "grid")};
@@ -305,9 +298,9 @@ const Layout = ({
   emailDirectRecipient,
   emailSubject,
   emailBody,
-  emailBodyArgs,
-  emailRecipients,
-  modalInfo,
+  emailBodyArgs = { name: "" },
+  emailRecipients = [],
+  modalInfo = { title: "", body: "", url: "" },
   children,
 }) => {
   const receivers = [
@@ -393,12 +386,12 @@ const Layout = ({
   ).map(([id, title]) => ({ value: id, label: title }))
 
   const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
-  const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
-  const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
+  // const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
+  // const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
   const [showModal, setShowModal] = useState(false)
 
   const addAllRecipients = () => {
-    receivers.map(receiver => {
+    receivers.forEach(receiver => {
       if (emailRecipients.indexOf(receiver.email) <= -1) {
         addEmailRecipient(receiver.email)
       }
@@ -406,7 +399,7 @@ const Layout = ({
   }
 
   const removeAllRecipients = () => {
-    receivers.map(receiver => {
+    receivers.forEach(receiver => {
       if (emailRecipients.indexOf(receiver.email) > -1) {
         removeEmailRecipient(receiver.email)
       }
@@ -435,6 +428,7 @@ const Layout = ({
       <EmailLink
         style={{ flexBasis: "50%" }}
         stretch={true}
+        directRecipient={emailDirectRecipient}
         recipients={emailRecipients}
         subject={emailSubject}
         body={emailBody}

@@ -1,14 +1,21 @@
 import React from "react"
 
-import { colors } from "../components/styles"
-import styled from "styled-components"
+// import { colors } from "../components/styles"
+// import styled from "styled-components"
 import { StyledButton } from "./layout"
 
-const EmailLink = ({ recipients = [], body, subject, stretch, style }) => {
-  let href = `mailto:${recipients[0]}?`
+const EmailLink = ({
+  recipients = [],
+  directRecipient,
+  body = "",
+  subject,
+  stretch,
+  style,
+}) => {
+  let href = `mailto:${directRecipient}?`
 
   if (recipients.length > 1) {
-    const bccRecipients = [...recipients].splice(1).join(",")
+    const bccRecipients = [...recipients].join(",")
     href += `&bcc=${bccRecipients}`
   }
 
