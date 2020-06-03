@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import "./layout.css"
 import Select from "react-select"
 import Receiver from "../components/receiver"
@@ -64,6 +64,7 @@ const StyledContainer = styled.div`
 const StyledControlContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
   ${props => !props.isMobile && "flex: 0 0 " + controlWidth + ";"}
@@ -287,86 +288,9 @@ const MobileStates = {
   CONTROL: 0,
   PREVIEW: 1,
 }
-const receivers = [
-  {
-    label: "CD1",
-    name: "Gil Dedillo",
-    email: "councilmember.cedillo@la.org",
-  },
-  {
-    label: "CD2",
-    name: "Paul Krekorian",
-    email: "councilmember.Krekorian@lacity.org",
-  },
-  {
-    label: "CD3",
-    name: "Bob Blumenfield",
-    email: "councilmember.blumenfield@lacity.org",
-  },
-  {
-    label: "CD4",
-    name: "David Ryu",
-    email: "david.ryu@lacity.org",
-  },
-  {
-    label: "CD5",
-    name: "Paul Koretz",
-    email: "paul.koretz@lacity.org",
-  },
-  {
-    label: "CD6",
-    name: "Nuny Martinez",
-    email: "councilmember.martinez@lacity.org",
-  },
-  {
-    label: "CD7",
-    name: "Monica Rodriguez",
-    email: "councilmember.rodriguez@lacity.org",
-  },
-  {
-    label: "CD8",
-    name: "Marcqueece Harris-Dawson",
-    email: "councilmember.harris-dawson@lacity.org",
-  },
-  {
-    label: "CD9",
-    name: "Curren Price",
-    email: "councilmember.price@lacity.org",
-  },
-
-  {
-    label: "CD10",
-    name: "Herb Wesson",
-    email: "councilmember.wesson@lacity.org",
-  },
-  {
-    label: "CD11",
-    name: "Mike Bonin ",
-    email: "councilmember.bonin@lacity.org",
-  },
-  {
-    label: "CD12",
-    name: "John Lee",
-    email: "councilmember.Lee@lacity.org",
-  },
-  {
-    label: "CD13",
-    name: "Mitch O’Farrell",
-    email: "councilmember.ofarrell@lacity.org",
-  },
-  {
-    label: "CD14",
-    name: "Jose Huizar (suspended)",
-    email: "councilmember.huizar@lacity.org",
-  },
-  {
-    label: "CD15",
-    name: "Joe Buscaino ",
-    email: "councilmember.buscaino@lacity.org",
-  },
-]
 
 const Layout = ({
+  emailId,
   setEmailId,
   addEmailRecipient,
   removeEmailRecipient,
@@ -377,7 +301,8 @@ const Layout = ({
   emailBodyArgs = { name: "" },
   emailRecipients = [],
   modalInfo = { title: "", body: "", url: "" },
-  children,
+  receivers,
+  args,
 }) => {
   const dropdownOptions = Object.entries(
     emailIdTitleMap
@@ -387,7 +312,6 @@ const Layout = ({
   const [showModal, setShowModal] = useState(false)
 
   const { isMobile } = useDeviceQueries()
-
   const addAllRecipients = () => {
     receivers.forEach(receiver => {
       if (emailRecipients.indexOf(receiver.email) <= -1) {
@@ -491,66 +415,81 @@ const Layout = ({
     </StyledPreviewContainer>
   )
 
-  const controlContainerComponent = (
-    <StyledControlContainer isMobile={isMobile}>
-      <StyledControlHeader>
-        <StyledSelect
-          placeholder="Choose an email template"
-          onChange={({ value }) => setEmailId(value)}
-          options={dropdownOptions}
-          value={dropdownOptions[0]}
-        ></StyledSelect>
-        <Spacer width={0.5} />
-        <StyledControlDetails onClick={() => setShowModal(true)}>
-          What is this?
-        </StyledControlDetails>
-      </StyledControlHeader>
-      <StyledControlForm>
-        <div>
-          <StyledInputHeader>Your name</StyledInputHeader>
-          <StyledInput
-            type="text"
-            onChange={e => {
-              updateEmailInputs({ name: e.target.value })
-            }}
-          ></StyledInput>
-        </div>
-        <Spacer height={1.5} />
-        <div style={{ width: "100%" }}>
-          <StyledInputHeader>
-            Send to...
-            <StyledInputHeaderButtons>
-              <StyledButtonSmall onClick={removeAllRecipients} type="secondary">
-                Deselect all
-              </StyledButtonSmall>
-              <Spacer width={0.25} />
-              <StyledButtonSmall onClick={addAllRecipients} type="secondary">
-                Select all
-              </StyledButtonSmall>
-            </StyledInputHeaderButtons>
-          </StyledInputHeader>
-          {receivers.map(receiver => {
-            let selected = emailRecipients.indexOf(receiver.email) > -1
-            return (
-              <Receiver
-                selected={selected}
-                key={receiver.name}
-                {...receiver}
-                onClick={() => {
-                  if (!selected) {
-                    addEmailRecipient(receiver.email)
-                  } else {
-                    removeEmailRecipient(receiver.email)
-                  }
-                }}
-              />
-            )
-          })}
-        </div>
-        <Spacer height={5} />
-      </StyledControlForm>
-      {controlActionComponent}
-    </StyledControlContainer>
+  const controlContainerComponent = useMemo(
+    () => (
+      <StyledControlContainer isMobile={isMobile}>
+        <StyledControlHeader>
+          <StyledSelect
+            placeholder="Choose an email template"
+            onChange={({ value }) => setEmailId(value)}
+            options={dropdownOptions}
+            value={
+              dropdownOptions[
+                dropdownOptions.findIndex(d => d.value === emailId)
+              ]
+            }
+          ></StyledSelect>
+          <Spacer width={0.5} />
+          <StyledControlDetails onClick={() => setShowModal(true)}>
+            What is this?
+          </StyledControlDetails>
+        </StyledControlHeader>
+        <StyledControlForm>
+          {args &&
+            Object.entries(args).map(([key, { label, inputType }]) => (
+              <div key={key} style={{ marginBottom: 10 }}>
+                <StyledInputHeader>{label}</StyledInputHeader>
+                <StyledInput
+                  value={emailBodyArgs[key] || ""}
+                  type={inputType}
+                  onChange={e => {
+                    updateEmailInputs(key, e.target.value)
+                  }}
+                ></StyledInput>
+              </div>
+            ))}
+          <Spacer height={1.5} />
+          <div style={{ width: "100%" }}>
+            <StyledInputHeader>
+              Send to...
+              <StyledInputHeaderButtons>
+                <StyledButtonSmall
+                  onClick={removeAllRecipients}
+                  type="secondary"
+                >
+                  Deselect all
+                </StyledButtonSmall>
+                <Spacer width={0.25} />
+                <StyledButtonSmall onClick={addAllRecipients} type="secondary">
+                  Select all
+                </StyledButtonSmall>
+              </StyledInputHeaderButtons>
+            </StyledInputHeader>
+            {receivers &&
+              receivers.map(receiver => {
+                let selected = emailRecipients.indexOf(receiver.email) > -1
+                return (
+                  <Receiver
+                    selected={selected}
+                    key={receiver.name}
+                    {...receiver}
+                    onClick={() => {
+                      if (!selected) {
+                        addEmailRecipient(receiver.email)
+                      } else {
+                        removeEmailRecipient(receiver.email)
+                      }
+                    }}
+                  />
+                )
+              })}
+          </div>
+          <Spacer height={5} />
+        </StyledControlForm>
+        {controlActionComponent}
+      </StyledControlContainer>
+    ),
+    [isMobile, dropdownOptions, args, emailRecipients, emailBodyArgs, receivers]
   )
 
   const modalComponent = (
