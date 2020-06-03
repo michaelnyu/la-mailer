@@ -426,7 +426,6 @@ const Layout = ({
         </StyledButton>
       )}
       <EmailLink
-        style={{ flexBasis: "50%" }}
         stretch={!isMobile}
         directRecipient={emailDirectRecipient}
         recipients={emailRecipients}
