@@ -12,6 +12,7 @@ const IndexPage = () => {
   const [emailBodyArgs, setEmailBodyArgs] = useState({
     name: "",
   })
+  const [modalInfo, setModalInfo] = useState({ title: "", body: "" })
 
   // DELETE later.
   // set defaults
@@ -28,9 +29,12 @@ const IndexPage = () => {
 
     setEmailSubject(email.subject)
     setEmailBody(email.body)
+    setModalInfo({ title: email.modalTitle, body: email.modalBody })
   }, [emailId, emailBodyArgs])
 
   const layoutProps = {
+    modalInfo,
+    emailId,
     setEmailId,
     emailRecipients: [...emailRecipients],
     addEmailRecipient: email => {
