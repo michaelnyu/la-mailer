@@ -302,6 +302,7 @@ const Layout = ({
   addEmailRecipient,
   removeEmailRecipient,
   updateEmailInputs,
+  emailDirectRecipient,
   emailSubject,
   emailBody,
   emailBodyArgs,
@@ -459,16 +460,15 @@ const Layout = ({
           },
           {
             label: "To",
-            content: emailRecipients.length
-              ? emailRecipients[0]
-              : "[EMAIL RECIPIENT HERE]",
-            hasUserInput: emailRecipients.length > 0,
+            content: emailDirectRecipient,
+            hasUserInput:
+              emailDirectRecipient !== "" && emailDirectRecipient != null,
           },
           {
             label: "BCC",
             content:
-              emailRecipients.length > 1
-                ? [...emailRecipients].splice(1).join(", ")
+              emailRecipients.length > 0
+                ? [...emailRecipients].join(", ")
                 : "[BCC RECIPIENTS HERE]",
             hasUserInput: emailRecipients.length > 0,
           },
