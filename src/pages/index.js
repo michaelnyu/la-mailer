@@ -5,28 +5,35 @@ import SEO from "../components/seo"
 import { buildEmailPreview } from "../emails/email-builder"
 
 const IndexPage = () => {
+  const [emailId, setEmailId] = useState("")
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({ name: "YOUR NAME HERE" })
 
-  function setEmailIdHandler(emailId) {
+  const updateEmail = () => {
     const email = buildEmailPreview({
       emailId,
       stringInputs: emailBodyArgs,
     })
+
     setEmailSubject(email.subject)
     setEmailBody(email.body)
   }
 
+  // DELETE later.
   // set defaults
   useEffect(() => {
-    setEmailIdHandler("police-brutality-la")
+    setEmailId("police-brutality-la")
   }, [])
+
+  useEffect(() => {
+    updateEmail()
+  }, [emailId, emailBodyArgs])
 
   // Should probably move this to a store or context
   const layoutProps = {
-    setEmailId: setEmailIdHandler,
+    setEmailId,
     emailRecipients: [...emailRecipients],
     addEmailRecipient: email => {
       setEmailRecipients(emailRecipients => [...emailRecipients, email])
@@ -36,11 +43,12 @@ const IndexPage = () => {
         emailRecipients.filter(e => email !== e)
       )
     },
-    emailId,
     emailSubject,
     emailBody,
     emailBodyArgs: { ...emailBodyArgs },
-    setEmailBodyArgs,
+    updateEmailInputs: ({ name }) => {
+      setEmailBodyArgs({ ...emailBodyArgs, name })
+    },
   }
 
   return (
