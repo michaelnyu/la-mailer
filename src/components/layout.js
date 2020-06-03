@@ -163,10 +163,9 @@ const Layout = ({
   setEmailId,
   addEmailRecipient,
   removeEmailRecipient,
-  setEmailBodyArgs,
+  updateEmailInputs,
   emailSubject,
   emailBody,
-  emailId,
   emailBodyArgs,
   emailRecipients,
   children,
@@ -234,13 +233,13 @@ const Layout = ({
           {
             label: "BCC",
             content: emailRecipients.length
-              ? emailRecipients.join(" ,")
+              ? emailRecipients.join(", ")
               : "EMAIL RECIPIENTS HERE",
           },
           { label: "Subect", content: emailSubject },
           { label: "Body", content: emailBody },
         ].map((row, index, originalArray) => (
-          <StyledPreviewEmailRow>
+          <StyledPreviewEmailRow key={row.label}>
             <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
             <StyledPreviewEmailRowContent>
               {row.content}
@@ -270,9 +269,9 @@ const Layout = ({
           <StyledInputHeader>Your name</StyledInputHeader>
           <StyledInput
             type="text"
-            onChange={e =>
-              setEmailBodyArgs({ ...emailBodyArgs, name: e.target.value })
-            }
+            onChange={e => {
+              updateEmailInputs({ name: e.target.value })
+            }}
           ></StyledInput>
         </div>
         <div style={{ width: "100%" }}>
