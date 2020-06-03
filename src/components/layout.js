@@ -108,6 +108,9 @@ const StyledControlAction = styled.div`
   ${paddingDefault}
   bottom: 0;
   ${shadowAbove}
+  & > a {
+    text-decoration: none;
+  }
 `
 
 const StyledPreviewContainer = styled.div`
@@ -172,10 +175,12 @@ const StyledInputHeader = styled.div`
 `
 
 const StyledButton = styled.button`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 0.25rem;
   font-size: 1.125rem;
-  line-height: 2.5rem;
+  padding: 0.75rem;
   border: ${props =>
     props.type === "secondary" ? colors.blackTertiary + "1px solid" : "none"};
   background-color: ${props =>
@@ -207,7 +212,7 @@ const StyledModalContainer = styled.div`
   max-height: 80vh;
   flex-direction: column;
   background-color: ${colors.whitePrimary};
-  border-radius: 0.25rem;
+  border-radius: ${props => (props.isMobile ? "1rem 1rem 0 0" : "0.5rem")};
 
   ${props => (props.isMobile ? paddingDefault : paddingLarge)}
 `
@@ -232,6 +237,11 @@ const StyledModalClose = styled.div`
 const StyledModalContent = styled.div`
   flex: 1;
   overflow-y: scroll;
+`
+
+const StyledModalText = styled.p`
+  color: ${props =>
+    props.type === "heading" ? colors.blackTertiary : colors.blackPrimary};
 `
 
 const MobileStates = {
@@ -408,6 +418,7 @@ const Layout = ({
             )
           })}
         </div>
+        {isMobile && <Spacer height={5} />}
       </StyledControlForm>
       {controlActionComponent}
     </StyledControlContainer>
@@ -432,8 +443,10 @@ const Layout = ({
         </StyledModalClose>
         <Spacer height={1} />
         <StyledModalContent>
-          <h1>About Email Los Angeles</h1>
-          <p>Filler text</p>
+          <StyledModalText type="heading">
+            About Email Los Angeles
+          </StyledModalText>
+          <StyledModalText>Filler text</StyledModalText>
         </StyledModalContent>
       </StyledModalContainer>
     </StyledModalBackground>
