@@ -374,6 +374,7 @@ const Layout = ({
           {receivers.map(receiver => {
             return (
               <Receiver
+                defaultSelected={emailRecipients.indexOf(receiver.email) > -1}
                 key={receiver.name}
                 {...receiver}
                 onClick={selected => {
