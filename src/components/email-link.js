@@ -1,8 +1,14 @@
 import React from "react"
 
 // import { colors } from "../components/styles"
-// import styled from "styled-components"
+import styled from "styled-components"
 import { StyledButton } from "./layout"
+
+const StyledEmailLink = styled.a`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
 
 const EmailLink = ({
   recipients = [],
@@ -23,9 +29,9 @@ const EmailLink = ({
   href += `&body=${body.replace(/\n\n/g, "%0A%0A")}`
 
   return (
-    <a href={href} style={style}>
+    <StyledEmailLink href={href} style={style}>
       <StyledButton stretch={stretch}>Open in Mail App</StyledButton>
-    </a>
+    </StyledEmailLink>
   )
 }
 
