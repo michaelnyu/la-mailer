@@ -287,84 +287,6 @@ const MobileStates = {
   CONTROL: 0,
   PREVIEW: 1,
 }
-const receivers = [
-  {
-    label: "CD1",
-    name: "Gil Dedillo",
-    email: "councilmember.cedillo@la.org",
-  },
-  {
-    label: "CD2",
-    name: "Paul Krekorian",
-    email: "councilmember.Krekorian@lacity.org",
-  },
-  {
-    label: "CD3",
-    name: "Bob Blumenfield",
-    email: "councilmember.blumenfield@lacity.org",
-  },
-  {
-    label: "CD4",
-    name: "David Ryu",
-    email: "david.ryu@lacity.org",
-  },
-  {
-    label: "CD5",
-    name: "Paul Koretz",
-    email: "paul.koretz@lacity.org",
-  },
-  {
-    label: "CD6",
-    name: "Nuny Martinez",
-    email: "councilmember.martinez@lacity.org",
-  },
-  {
-    label: "CD7",
-    name: "Monica Rodriguez",
-    email: "councilmember.rodriguez@lacity.org",
-  },
-  {
-    label: "CD8",
-    name: "Marcqueece Harris-Dawson",
-    email: "councilmember.harris-dawson@lacity.org",
-  },
-  {
-    label: "CD9",
-    name: "Curren Price",
-    email: "councilmember.price@lacity.org",
-  },
-
-  {
-    label: "CD10",
-    name: "Herb Wesson",
-    email: "councilmember.wesson@lacity.org",
-  },
-  {
-    label: "CD11",
-    name: "Mike Bonin ",
-    email: "councilmember.bonin@lacity.org",
-  },
-  {
-    label: "CD12",
-    name: "John Lee",
-    email: "councilmember.Lee@lacity.org",
-  },
-  {
-    label: "CD13",
-    name: "Mitch O’Farrell",
-    email: "councilmember.ofarrell@lacity.org",
-  },
-  {
-    label: "CD14",
-    name: "Jose Huizar (suspended)",
-    email: "councilmember.huizar@lacity.org",
-  },
-  {
-    label: "CD15",
-    name: "Joe Buscaino ",
-    email: "councilmember.buscaino@lacity.org",
-  },
-]
 
 const Layout = ({
   setEmailId,
@@ -377,6 +299,8 @@ const Layout = ({
   emailBodyArgs = { name: "" },
   emailRecipients = [],
   modalInfo = { title: "", body: "", url: "" },
+  receivers,
+  args,
   children,
 }) => {
   const dropdownOptions = Object.entries(
@@ -395,6 +319,8 @@ const Layout = ({
       }
     })
   }
+
+  console.log(args)
 
   const removeAllRecipients = () => {
     receivers.forEach(receiver => {
@@ -506,15 +432,17 @@ const Layout = ({
         </StyledControlDetails>
       </StyledControlHeader>
       <StyledControlForm>
-        <div>
-          <StyledInputHeader>Your name</StyledInputHeader>
-          <StyledInput
-            type="text"
-            onChange={e => {
-              updateEmailInputs({ name: e.target.value })
-            }}
-          ></StyledInput>
-        </div>
+        {Object.entries(args).map(([key, { label, inputType }]) => (
+          <div key={key} style={{ marginBottom: 10 }}>
+            <StyledInputHeader>{label}</StyledInputHeader>
+            <StyledInput
+              type={inputType}
+              onChange={e => {
+                updateEmailInputs(key, e.target.value)
+              }}
+            ></StyledInput>
+          </div>
+        ))}
         <Spacer height={1.5} />
         <div style={{ width: "100%" }}>
           <StyledInputHeader>

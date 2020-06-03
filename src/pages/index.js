@@ -10,10 +10,11 @@ const IndexPage = () => {
   const [emailSubject, setEmailSubject] = useState("")
   const [emailDirectRecipient, setEmailDirectRecipient] = useState([])
   const [emailRecipients, setEmailRecipients] = useState([])
-  const [emailBodyArgs, setEmailBodyArgs] = useState({
-    name: "",
-  })
+  const [emailBodyArgs, setEmailBodyArgs] = useState({})
   const [modalInfo, setModalInfo] = useState({ title: "", body: "", url: "" })
+  // receivers is the complete list of selectable emails
+  const [receivers, setReceivers] = useState([])
+  const [args, setArgs] = useState({})
 
   // DELETE later.
   // set defaults
@@ -23,10 +24,15 @@ const IndexPage = () => {
 
   useEffect(() => {
     // update email states when deps change
+    if (emailId === "") {
+      return
+    }
     const email = buildEmailPreview({
       emailId,
       stringInputs: emailBodyArgs,
     })
+    setReceivers(email.receivers)
+    setArgs(email.args)
     setEmailDirectRecipient(email.directRecipient)
     setEmailSubject(email.subject)
     setEmailBody(email.body)
@@ -54,9 +60,11 @@ const IndexPage = () => {
     emailSubject,
     emailBody,
     emailBodyArgs: { ...emailBodyArgs },
-    updateEmailInputs: ({ name }) => {
-      setEmailBodyArgs({ ...emailBodyArgs, name })
+    updateEmailInputs: (argName, value) => {
+      setEmailBodyArgs({ ...emailBodyArgs, [argName]: value })
     },
+    receivers,
+    args,
   }
 
   return (
