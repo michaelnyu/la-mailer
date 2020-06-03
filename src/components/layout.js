@@ -64,6 +64,7 @@ const StyledContainer = styled.div`
 const StyledControlContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
   ${props => !props.isMobile && "flex: 0 0 " + controlWidth + ";"}
@@ -302,7 +303,6 @@ const Layout = ({
   modalInfo = { title: "", body: "", url: "" },
   receivers,
   args,
-  children,
 }) => {
   const dropdownOptions = Object.entries(
     emailIdTitleMap
@@ -312,7 +312,6 @@ const Layout = ({
   const [showModal, setShowModal] = useState(false)
 
   const { isMobile } = useDeviceQueries()
-
   const addAllRecipients = () => {
     receivers.forEach(receiver => {
       if (emailRecipients.indexOf(receiver.email) <= -1) {
@@ -416,7 +415,7 @@ const Layout = ({
     </StyledPreviewContainer>
   )
 
-  const controlContainerComponent = (
+  const ControlContainerComponent = () => (
     <StyledControlContainer isMobile={isMobile}>
       <StyledControlHeader>
         <StyledSelect
@@ -539,7 +538,7 @@ const Layout = ({
   if (isMobile) {
     return (
       <StyledContainer>
-        {mobileState === MobileStates.CONTROL && controlContainerComponent}
+        {mobileState === MobileStates.CONTROL && <ControlContainerComponent />}
         {mobileState === MobileStates.PREVIEW && (
           <>
             {previewComponent}
@@ -552,7 +551,7 @@ const Layout = ({
   }
   return (
     <StyledContainer>
-      {controlContainerComponent}
+      <ControlContainerComponent />
       {previewComponent}
       {showModal && modalComponent}
     </StyledContainer>
