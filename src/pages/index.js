@@ -60,9 +60,10 @@ const IndexPage = () => {
   }
 
   return (
-    <Layout {...layoutProps}>
+    <>
       <SEO title="Home" />
-    </Layout>
+      <Layout {...layoutProps} />
+    </>
   )
 }
 

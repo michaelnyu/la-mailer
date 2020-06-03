@@ -6,7 +6,6 @@
  */
 
 import React, { useState } from "react"
-import PropTypes from "prop-types"
 import "./layout.css"
 import Select from "react-select"
 import Receiver from "../components/receiver"
@@ -15,8 +14,7 @@ import { colors } from "../components/styles"
 import styled, { css } from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
 import { ReactComponent as CloseSVG } from "../assets/close.svg"
-
-import { isMobile, BrowserView, MobileView } from "react-device-detect"
+import { useDeviceQueries } from "../utils"
 
 const paddingDefaultSides = css`
   padding-left: 1rem;
@@ -386,9 +384,9 @@ const Layout = ({
   ).map(([id, title]) => ({ value: id, label: title }))
 
   const [mobileState, setMobileState] = useState(MobileStates.CONTROL)
-  // const showPreview = !isMobile || mobileState == MobileStates.PREVIEW
-  // const showControlPanel = !isMobile || mobileState == MobileStates.CONTROL
   const [showModal, setShowModal] = useState(false)
+
+  const { isMobile } = useDeviceQueries()
 
   const addAllRecipients = () => {
     receivers.forEach(receiver => {
@@ -606,35 +604,27 @@ const Layout = ({
     </StyledModalBackground>
   )
 
+  if (isMobile) {
+    return (
+      <StyledContainer>
+        {mobileState === MobileStates.CONTROL && controlContainerComponent}
+        {mobileState === MobileStates.PREVIEW && (
+          <>
+            {previewComponent}
+            {controlActionComponent}
+          </>
+        )}
+        {showModal && modalComponent}
+      </StyledContainer>
+    )
+  }
   return (
-    <>
-      {children}
-      <BrowserView style={{ height: "100%" }}>
-        <StyledContainer>
-          {controlContainerComponent}
-          {previewComponent}
-          {showModal && modalComponent}
-        </StyledContainer>
-      </BrowserView>
-      <MobileView style={{ height: "100%" }}>
-        <StyledContainer>
-          {mobileState === MobileStates.CONTROL && controlContainerComponent}
-          {mobileState === MobileStates.PREVIEW && (
-            <>
-              {previewComponent}
-              {controlActionComponent}
-            </>
-          )}
-          {showModal && modalComponent}
-        </StyledContainer>
-      </MobileView>
-    </>
+    <StyledContainer>
+      {controlContainerComponent}
+      {previewComponent}
+      {showModal && modalComponent}
+    </StyledContainer>
   )
 }
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
-
 export default Layout
 export { colors, StyledButton }
