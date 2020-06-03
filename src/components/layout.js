@@ -23,11 +23,25 @@ import {
   MobileView,
 } from "react-device-detect"
 
+const paddingDefaultSides = css`
+  padding-left: 1rem;
+  padding-right: 1rem;
+`
+
+const paddingLargeSides = css`
+  padding-left: 2rem;
+  padding-right: 2rem;
+`
+
 const paddingDefault = css`
-  padding: 1rem;
+  ${paddingDefaultSides}
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 `
 const paddingLarge = css`
-  padding: 2rem;
+  ${paddingLargeSides}
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 `
 
 const controlWidth = "22rem"
@@ -234,11 +248,17 @@ const StyledModalContainer = styled.div`
   flex: ${props => (props.isMobile ? 1 : 0.7)};
   align-self: ${props => (props.isMobile ? "flex-end" : "center")};
   max-height: 80vh;
+  max-width: 100vw;
   flex-direction: column;
   background-color: ${colors.whitePrimary};
   border-radius: ${props => (props.isMobile ? "1rem 1rem 0 0" : "0.5rem")};
+`
 
-  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
+const StyledModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ${props => (props.isMobile ? paddingDefaultSides : paddingLargeSides)}
 `
 
 const StyledModalClose = styled.div`
@@ -261,10 +281,13 @@ const StyledModalClose = styled.div`
 const StyledModalContent = styled.div`
   flex: 1;
   overflow-y: scroll;
+  ${props => (props.isMobile ? paddingDefaultSides : paddingLargeSides)}
 `
 
 const StyledModalText = styled.p`
   line-height: 1.5em;
+  white-space: pre-wrap;
+  margin: 0;
   color: ${props =>
     props.type === "heading" ? colors.blackTertiary : colors.blackPrimary};
 `
@@ -309,23 +332,59 @@ const Layout = ({
     },
     {
       label: "CD5",
+      name: "Paul Koretz",
+      email: "paul.koretz@lacity.org",
+    },
+    {
+      label: "CD6",
       name: "Nuny Martinez",
       email: "councilmember.martinez@lacity.org",
     },
     {
-      label: "CD6",
+      label: "CD7",
       name: "Monica Rodriguez",
       email: "councilmember.rodriguez@lacity.org",
     },
     {
-      label: "CD7",
+      label: "CD8",
       name: "Marcqueece Harris-Dawson",
       email: "councilmember.harris-dawson@lacity.org",
     },
     {
-      label: "CD8",
+      label: "CD9",
       name: "Curren Price",
       email: "councilmember.price@lacity.org",
+    },
+
+    {
+      label: "CD10",
+      name: "Herb Wesson",
+      email: "councilmember.wesson@lacity.org",
+    },
+    {
+      label: "CD11",
+      name: "Mike Bonin ",
+      email: "councilmember.bonin@lacity.org",
+    },
+    {
+      label: "CD12",
+      name: "John Lee",
+      email: "councilmember.Lee@lacity.org",
+    },
+    {
+      label: "CD13",
+      name: "Mitch O’Farrell",
+      email: "councilmember.ofarrell@lacity.org",
+    },
+    {
+      label: "CD14",
+      name: "Jose Huizar (suspended)",
+      email: "councilmember.huizar@lacity.org",
+    },
+    {
+      label: "CD15",
+      name: "Joe Buscaino ",
+      email: "councilmember.buscaino@lacity.org",
     },
   ]
   const dropdownOptions = Object.entries(
@@ -509,21 +568,33 @@ const Layout = ({
         setShowModal(false)
       }}
     >
+      <Spacer height={1} />
+
       <StyledModalContainer
         isMobile={isMobile}
         onClick={e => e.stopPropagation()}
       >
-        <StyledModalClose
-          onClick={e => {
-            setShowModal(false)
-          }}
-        >
-          <CloseSVG />
-        </StyledModalClose>
-        <Spacer height={1} />
-        <StyledModalContent>
+        <Spacer height={2} />
+        <StyledModalHeader isMobile={isMobile}>
           <StyledModalText type="heading">{modalInfo.title}</StyledModalText>
+          <StyledModalClose
+            onClick={e => {
+              setShowModal(false)
+            }}
+          >
+            <CloseSVG />
+          </StyledModalClose>
+        </StyledModalHeader>
+        <Spacer height={1} />
+        <StyledModalContent isMobile={isMobile}>
           <StyledModalText>{modalInfo.body}</StyledModalText>
+          <Spacer height={1} />
+          <StyledModalText>
+            More resources can be found at:{" "}
+            <a href={modalInfo.url}>{modalInfo.url}</a>
+          </StyledModalText>
+
+          <Spacer height={2} />
         </StyledModalContent>
       </StyledModalContainer>
     </StyledModalBackground>
