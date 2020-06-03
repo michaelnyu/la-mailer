@@ -6,6 +6,7 @@ const colors = {
   whiteSecondary: "#F3F3F3",
   whiteTertiary: "#EBEBEB",
   shadow: "rgba(0,0,0,0.1)",
+  red: "#ff0000",
 }
 
 export { colors }

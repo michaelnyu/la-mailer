@@ -36,8 +36,8 @@ const StyledEmail = styled.div`
 `
 
 // label is the bolded text on left
-const Receiver = ({ label, name, email, onClick }) => {
-  const [selected, setSelected] = useState(false)
+const Receiver = ({ label, name, email, onClick, defaultSelected }) => {
+  const [selected, setSelected] = useState(defaultSelected)
 
   return (
     <StyledReceiver
