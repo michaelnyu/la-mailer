@@ -258,6 +258,7 @@ const Layout = ({
   emailBody,
   emailBodyArgs,
   emailRecipients,
+  modalInfo,
   children,
 }) => {
   const receivers = [
@@ -443,10 +444,8 @@ const Layout = ({
         </StyledModalClose>
         <Spacer height={1} />
         <StyledModalContent>
-          <StyledModalText type="heading">
-            About Email Los Angeles
-          </StyledModalText>
-          <StyledModalText>Filler text</StyledModalText>
+          <StyledModalText type="heading">{modalInfo.title}</StyledModalText>
+          <StyledModalText>{modalInfo.body}</StyledModalText>
         </StyledModalContent>
       </StyledModalContainer>
     </StyledModalBackground>
