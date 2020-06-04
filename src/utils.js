@@ -3,10 +3,10 @@ import { useState } from "react"
 const documentElementWithDefault =
   typeof document !== "undefined"
     ? document.documentElement
-    : { clientWidth: 0, clientHeight: 0 }
+    : { clientWidth: 700, clientHeight: 800 }
 
 const windowWithDefault =
-  typeof window !== "undefined" ? window : { innerWidth: 0, innerHeight: 0 }
+  typeof window !== "undefined" ? window : { innerWidth: 700, innerHeight: 800 }
 
 const MOBILE_BREAKPOINTS = { PORTRAIT: 568, LANDSCAPE: 820 }
 

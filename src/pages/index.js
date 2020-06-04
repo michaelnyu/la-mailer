@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -11,7 +11,7 @@ const IndexPage = () => {
   const [emailDirectRecipient, setEmailDirectRecipient] = useState([])
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({})
-  const [modalInfo, setModalInfo] = useState({ title: "", body: "", url: "" })
+  const [modalInfo, setModalInfo] = useState({ title: "", body: "", url: [] })
   // receivers is the complete list of selectable emails
   const [receivers, setReceivers] = useState([])
   const [args, setArgs] = useState({})
@@ -41,31 +41,52 @@ const IndexPage = () => {
       body: email.modalBody,
       url: email.modalUrl,
     })
+    setEmailRecipients(
+      email.receivers.reduce((recipients, receiver) => {
+        if (receiver.autoSelect) {
+          return [...recipients, receiver.email]
+        }
+        return recipients
+      }, [])
+    )
   }, [emailId, emailBodyArgs])
 
-  const layoutProps = {
-    modalInfo,
-    emailId,
-    setEmailId,
-    emailDirectRecipient,
-    emailRecipients: [...emailRecipients],
-    addEmailRecipient: email => {
-      setEmailRecipients(emailRecipients => [...emailRecipients, email])
-    },
-    removeEmailRecipient: email => {
-      setEmailRecipients(emailRecipients =>
-        emailRecipients.filter(e => email !== e)
-      )
-    },
-    emailSubject,
-    emailBody,
-    emailBodyArgs: { ...emailBodyArgs },
-    updateEmailInputs: (argName, value) => {
-      setEmailBodyArgs({ ...emailBodyArgs, [argName]: value })
-    },
-    receivers,
-    args,
-  }
+  const layoutProps = useMemo(
+    () => ({
+      modalInfo,
+      emailId,
+      setEmailId,
+      emailDirectRecipient,
+      emailRecipients: [...emailRecipients],
+      addEmailRecipient: email => {
+        setEmailRecipients(emailRecipients => [...emailRecipients, email])
+      },
+      removeEmailRecipient: email => {
+        setEmailRecipients(emailRecipients =>
+          emailRecipients.filter(e => email !== e)
+        )
+      },
+      emailSubject,
+      emailBody,
+      emailBodyArgs: { ...emailBodyArgs },
+      updateEmailInputs: (argName, value) => {
+        setEmailBodyArgs({ ...emailBodyArgs, [argName]: value })
+      },
+      receivers,
+      args,
+    }),
+    [
+      emailId,
+      args,
+      receivers,
+      emailRecipients,
+      emailBody,
+      emailSubject,
+      emailDirectRecipient,
+      emailBodyArgs,
+      modalInfo,
+    ]
+  )
 
   return (
     <>
