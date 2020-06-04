@@ -11,7 +11,7 @@ import styled from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
 import { useDeviceQueries, MobileStates } from "../utils"
 import Modal from "./Modal"
-import Preview from "./Preview"
+import Preview from "./preview"
 import ControlAction from "./ControlAction"
 import ControlContainer from "./ControlContainer"
 
