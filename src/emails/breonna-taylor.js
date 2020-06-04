@@ -2,7 +2,7 @@ function buildEmail({ name, state }) {
   return {
     title: "Justice for Breonna Taylor Template",
     subject: "Justice for the murder of Breonna Taylor ",
-    body: `Hello,\n\n My name is ${
+    body: `Hello,\n\nMy name is ${
       name || "[YOUR NAME HERE]"
     }. I am a resident of ${
       state || "[STATE]"
