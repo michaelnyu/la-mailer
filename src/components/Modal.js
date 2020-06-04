@@ -108,10 +108,10 @@ export default function Modal({ setShowModal, modalInfo, isMobile }) {
           </StyledModalText>
           <Spacer height={1} />
           <StyledModalText>
-            Email Los Angeles is a project started some students from UCLA. If
-            you're an organizer, let us know how we can support you at{" "}
-            <a href="mailto:temporaryemail@gmail.com">
-              temporaryemail@gmail.com
+            Email Los Angeles is a project started by some students from UCLA.
+            If you're an organizer, let us know how we can support you at{" "}
+            <a href="mailto:activismemailer@gmail.com">
+              activismemailer@gmail.com
             </a>
             .
           </StyledModalText>
