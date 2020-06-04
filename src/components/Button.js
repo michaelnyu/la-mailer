@@ -17,6 +17,7 @@ const buttonStyle = css`
     cursor: pointer;
     opacity: 0.9;
   }
+  flex: 1;
   ${borderRadiusStyle}
   width: ${props => (props.stretch ? "100%" : "auto")};
   display: inline-flex;
@@ -41,6 +42,7 @@ const buttonStyleSmall = css`
   font-size: 0.75em;
   line-height: 0.75em;
   padding: 0.25rem;
+  white-space: nowrap;
 `
 
 const StyledButton = styled.button`

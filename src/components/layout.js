@@ -152,21 +152,23 @@ const Layout = ({
   const controlActionComponent = (
     <StyledControlAction isMobile={isMobile}>
       {isMobile && (
-        <Button
-          type="secondary"
-          onClick={() =>
-            setMobileState(
-              mobileState === MobileStates.CONTROL
-                ? MobileStates.PREVIEW
-                : MobileStates.CONTROL
-            )
-          }
-          style={{ flexBasis: "50%", marginRight: 10 }}
-        >
-          {mobileState === MobileStates.CONTROL
-            ? "Preview email"
-            : "Back to edit"}
-        </Button>
+        <>
+          <Button
+            type="secondary"
+            onClick={() =>
+              setMobileState(
+                mobileState === MobileStates.CONTROL
+                  ? MobileStates.PREVIEW
+                  : MobileStates.CONTROL
+              )
+            }
+          >
+            {mobileState === MobileStates.CONTROL
+              ? "Preview email"
+              : "Back to edit"}
+          </Button>
+          <Spacer width={0.5} />
+        </>
       )}
       <EmailLink
         stretch={!isMobile}
