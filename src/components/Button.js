@@ -34,7 +34,7 @@ const buttonStyle = css`
 `
 
 const buttonStyleDefault = css`
-  font-size: 1.125rem;
+  font-size: 1rem;
   padding: 0.75rem;
 `
 

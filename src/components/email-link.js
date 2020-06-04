@@ -7,7 +7,7 @@ import Button from "./Button"
 const StyledEmailLink = styled.a`
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1.5;
 `
 
 const EmailLink = ({

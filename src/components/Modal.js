@@ -30,6 +30,7 @@ const StyledModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
   ${props =>
     props.isMobile ? styles.paddingDefaultSides : styles.paddingLargeSides}
 `
@@ -71,8 +72,6 @@ export default function Modal({ setShowModal, modalInfo, isMobile }) {
         setShowModal(false)
       }}
     >
-      <Spacer height={1} />
-
       <StyledModalContainer
         isMobile={isMobile}
         onClick={e => e.stopPropagation()}
