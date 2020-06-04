@@ -177,7 +177,7 @@ const ControlContainer = ({
             </>
           ) : null}
         </div>
-        <Spacer height={5} />
+        <Spacer height={7} />
       </StyledControlForm>
       {controlActionComponent}
     </StyledControlContainer>
