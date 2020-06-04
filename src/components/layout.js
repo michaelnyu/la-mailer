@@ -371,12 +371,14 @@ const Layout = ({
                 : emailBodyArgs.name,
             hasUserInput:
               emailBodyArgs.name !== "" && emailBodyArgs.name != null,
+            isVisible: true,
           },
           {
             label: "To",
             content: emailDirectRecipient,
             hasUserInput:
               emailDirectRecipient !== "" && emailDirectRecipient != null,
+            isVisible: true,
           },
           {
             label: "BCC",
@@ -385,30 +387,37 @@ const Layout = ({
                 ? [...emailRecipients].join(", ")
                 : "[No representatives selected]",
             hasUserInput: emailRecipients.length > 0,
+            isVisible: receivers && receivers.length !== 0,
           },
           {
             label: "Subject",
             content: emailSubject,
             hasUserInput: emailSubject !== "" && emailSubject != null,
+            isVisible: true,
           },
           {
             label: "Body",
             content: emailBody,
             hasUserInput: emailBody !== "" && emailBody != null,
+            isVisible: true,
           },
-        ].map((row, index, originalArray) => (
-          <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
-            <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
-            <StyledPreviewEmailRowContent
-              color={!row.hasUserInput ? colors.red : colors.blackPrimary}
-            >
-              {row.content}
-            </StyledPreviewEmailRowContent>
-            {index !== originalArray.length - 1 && (
-              <Spacer height={1} width={1} />
-            )}
-          </StyledPreviewEmailRow>
-        ))}
+        ]
+          .filter(row => row.isVisible)
+          .map((row, index, originalArray) => (
+            <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
+              <StyledPreviewEmailRowLabel>
+                {row.label}
+              </StyledPreviewEmailRowLabel>
+              <StyledPreviewEmailRowContent
+                color={!row.hasUserInput ? colors.red : colors.blackPrimary}
+              >
+                {row.content}
+              </StyledPreviewEmailRowContent>
+              {index !== originalArray.length - 1 && (
+                <Spacer height={1} width={1} />
+              )}
+            </StyledPreviewEmailRow>
+          ))}
       </StyledPreviewEmail>
       {isMobile && <Spacer height={5} />}
     </StyledPreviewContainer>
@@ -449,7 +458,7 @@ const Layout = ({
             ))}
           <Spacer height={1.5} />
           <div style={{ width: "100%" }}>
-            {receivers.length !== 0 && (
+            {receivers && receivers.length !== 0 ? (
               <>
                 <StyledInputHeader>
                   Send to...
@@ -487,7 +496,7 @@ const Layout = ({
                   )
                 })}
               </>
-            )}
+            ) : null}
           </div>
           <Spacer height={5} />
         </StyledControlForm>
@@ -527,10 +536,10 @@ const Layout = ({
           <StyledModalText>
             More resources can be found at:{" "}
             {modalInfo.url.map(url => (
-              <>
+              <span key={url}>
                 <a href={url}>{url}</a>
                 <br />
-              </>
+              </span>
             ))}
           </StyledModalText>
           <Spacer height={2} />
