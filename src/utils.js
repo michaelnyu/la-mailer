@@ -10,6 +10,11 @@ const windowWithDefault =
 
 const MOBILE_BREAKPOINTS = { PORTRAIT: 568, LANDSCAPE: 820 }
 
+export const MobileStates = {
+  CONTROL: 0,
+  PREVIEW: 1,
+}
+
 export function useDeviceQueries() {
   function calculateViewWidth() {
     return Math.max(
