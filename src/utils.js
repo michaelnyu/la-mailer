@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const documentElementWithDefault =
   typeof document !== "undefined"
     ? document.documentElement
-    : { clientWidth: 700, clientHeight: 800 }
+    : { clientWidth: 0, clientHeight: 0 }
 
 const windowWithDefault =
-  typeof window !== "undefined" ? window : { innerWidth: 700, innerHeight: 800 }
+  typeof window !== "undefined" ? window : { innerWidth: 200, innerHeight: 300 }
 
 const MOBILE_BREAKPOINTS = { PORTRAIT: 568, LANDSCAPE: 820 }
 
@@ -30,21 +30,26 @@ export function useDeviceQueries() {
     )
   }
 
-  const [viewWidth, setViewWidth] = useState(calculateViewWidth())
-  const [viewHeight, setViewHeight] = useState(calculateViewHeight())
+  let viewWidth = calculateViewWidth()
+  let viewHeight = calculateViewHeight()
 
-  function calculateIsPortrait() {
+  function calculateIsPortrait(viewWidth, viewHeight) {
     return viewWidth < viewHeight
   }
 
-  function calculateIsMobile() {
-    return isPortrait
+  const [isPortrait, setIsPortrait] = useState(
+    calculateIsPortrait(viewWidth, viewHeight)
+  )
+
+  function calculateIsMobile(viewWidth, viewHeight) {
+    return viewWidth < viewHeight
       ? viewWidth < MOBILE_BREAKPOINTS.PORTRAIT
       : viewWidth < MOBILE_BREAKPOINTS.LANDSCAPE
   }
 
-  const [isPortrait, setIsPortrait] = useState(calculateIsPortrait)
-  const [isMobile, setIsMobile] = useState(calculateIsMobile)
+  const [isMobile, setIsMobile] = useState(
+    calculateIsMobile(viewWidth, viewHeight)
+  )
 
   function debouncedFunc(func) {
     return (function debounced() {
@@ -66,14 +71,25 @@ export function useDeviceQueries() {
       windowWithDefault.addEventListener(
         "resize",
         debouncedFunc(() => {
-          setViewWidth(calculateViewWidth())
-          setViewHeight(calculateViewHeight())
-          setIsPortrait(calculateIsPortrait())
-          setIsMobile(calculateIsMobile())
+          viewWidth = calculateViewWidth()
+          viewHeight = calculateViewHeight()
+          setIsPortrait(calculateIsPortrait(viewWidth, viewHeight))
+          setIsMobile(calculateIsMobile(viewWidth, viewHeight))
         })
       )
     }
   })()
 
   return { viewWidth, viewHeight, isPortrait, isMobile }
+}
+
+export const useIsClient = () => {
+  const [isClient, setClient] = useState(false)
+  const key = isClient ? "client" : "server"
+
+  useEffect(() => {
+    setClient(true)
+  }, [])
+
+  return { isClient, key }
 }
