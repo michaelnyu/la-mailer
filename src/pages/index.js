@@ -11,7 +11,7 @@ const IndexPage = () => {
   const [emailDirectRecipient, setEmailDirectRecipient] = useState([])
   const [emailRecipients, setEmailRecipients] = useState([])
   const [emailBodyArgs, setEmailBodyArgs] = useState({})
-  const [modalInfo, setModalInfo] = useState({ title: "", body: "", url: "" })
+  const [modalInfo, setModalInfo] = useState({ title: "", body: "", url: [] })
   // receivers is the complete list of selectable emails
   const [receivers, setReceivers] = useState([])
   const [args, setArgs] = useState({})

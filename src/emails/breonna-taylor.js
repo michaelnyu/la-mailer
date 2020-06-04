@@ -33,7 +33,7 @@ function buildEmail({ name, state }) {
     ],
     modalBody: `On March 13th, Breonna Taylor was killed by Louisville police as they illegally executed a drug raid at the wrong address for a person they had already arrested earlier that day. The LMPD officers responsible for Breonna’s murder are John Mattingly, Brett Hankison, and Myles Cosgrove. To date, they have been placed on administrative leave while the investigation continues. No charges have been brought and no arrests have been made.`,
     modalTitle: `Email officials to bring Louisville police to justice `,
-    modalUrl: `https://www.standwithbre.com/`,
+    modalUrl: [`https://www.standwithbre.com/`],
   }
 }
 
