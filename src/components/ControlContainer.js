@@ -82,18 +82,28 @@ const ControlContainer = ({
   args,
   receivers,
   emailBodyArgs,
-  removeAllRecipients,
-  addAllRecipients,
   updateEmailInputs,
   addEmailRecipient,
   removeEmailRecipient,
   emailRecipients,
-  emailDirectRecipient,
-  emailSubject,
-  emailBody,
   setShowModal,
   controlActionComponent,
 }) => {
+  const addAllRecipients = () => {
+    receivers.forEach(receiver => {
+      if (emailRecipients.indexOf(receiver.email) <= -1) {
+        addEmailRecipient(receiver.email)
+      }
+    })
+  }
+
+  const removeAllRecipients = () => {
+    receivers.forEach(receiver => {
+      if (emailRecipients.indexOf(receiver.email) > -1) {
+        removeEmailRecipient(receiver.email)
+      }
+    })
+  }
   return (
     <StyledControlContainer isMobile={isMobile}>
       <StyledControlHeader>

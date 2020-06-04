@@ -44,21 +44,6 @@ const Layout = ({
   const [showModal, setShowModal] = useState(false)
 
   const { isMobile } = useDeviceQueries()
-  const addAllRecipients = () => {
-    receivers.forEach(receiver => {
-      if (emailRecipients.indexOf(receiver.email) <= -1) {
-        addEmailRecipient(receiver.email)
-      }
-    })
-  }
-
-  const removeAllRecipients = () => {
-    receivers.forEach(receiver => {
-      if (emailRecipients.indexOf(receiver.email) > -1) {
-        removeEmailRecipient(receiver.email)
-      }
-    })
-  }
 
   const controlActionComponent = (
     <ControlAction
@@ -101,15 +86,10 @@ const Layout = ({
       args={args}
       receivers={receivers}
       emailBodyArgs={emailBodyArgs}
-      removeAllRecipients={removeAllRecipients}
-      addAllRecipients={addAllRecipients}
       updateEmailInputs={updateEmailInputs}
       addEmailRecipient={addEmailRecipient}
       removeEmailRecipient={removeEmailRecipient}
-      emailDirectRecipient={emailDirectRecipient}
       emailRecipients={emailRecipients}
-      emailSubject={emailSubject}
-      emailBody={emailBody}
       setShowModal={setShowModal}
       controlActionComponent={controlActionComponent}
     />
