@@ -1,7 +1,6 @@
 import React from "react"
 import Select from "react-select"
 import Receiver from "./receiver"
-import ControlAction from "./ControlAction"
 import { Spacer } from "./Spacer"
 import Button from "./Button"
 
