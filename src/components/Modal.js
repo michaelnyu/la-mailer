@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Spacer } from "./layout"
+import { Spacer } from "./Spacer"
 import { colors, styles } from "./styles"
 import { ReactComponent as CloseSVG } from "../assets/close.svg"
 

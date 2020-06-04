@@ -53,14 +53,6 @@ const StyledButton = styled.button`
     }
   }}
 `
-
-const StyledButtonSmall = styled.button`
-  ${buttonStyle}
-  font-size: 0.75em;
-  line-height: 0.75em;
-  padding: 0.25rem;
-`
-
 function Button(props) {
   return <StyledButton {...props}>{props.children}</StyledButton>
 }

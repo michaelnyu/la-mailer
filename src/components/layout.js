@@ -13,10 +13,11 @@ import EmailLink from "../components/email-link"
 import { colors, styles, values } from "../components/styles"
 import styled from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
-import { ReactComponent as CloseSVG } from "../assets/close.svg"
 import { useDeviceQueries } from "../utils"
 import Button from "./Button"
 import Modal from "./Modal"
+import Preview from "./Preview"
+import { Spacer } from "./Spacer"
 
 const StyledContainer = styled.div`
   display: flex;
@@ -29,7 +30,7 @@ const StyledControlContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: ${colors.whiteSecondary};
+  background-colbmor: ${colors.whiteSecondary};
   ${props =>
     props.isMobile ? "flex: 1" : "flex: 0 0 ".concat(values.controlWidth)};
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
@@ -44,7 +45,7 @@ const StyledControlHeader = styled.div`
   background-color: ${colors.whitePrimary};
 `
 
-const StyledSelect = styled(Select)`
+const StyledReactSelect = styled(Select)`
   flex: 1;
 `
 
@@ -83,48 +84,6 @@ const StyledControlAction = styled.div`
   & > a {
     text-decoration: none;
   }
-`
-
-const StyledPreviewContainer = styled.div`
-  ${props => (props.isMobile ? styles.paddingDefault : styles.paddingLarge)}
-  flex: 1;
-  background-color: ${colors.whiteTertiary};
-  max-height: 100vh;
-  overflow-y: scroll;
-`
-const StyledPreviewHeader = styled.h3`
-  ${styles.textStyle}
-  font-size: 1.125rem;
-  color: ${colors.blackTertiary};
-  text-transform: uppercase;
-`
-
-const StyledPreviewEmail = styled.div`
-  ${styles.borderRadiusStyle}
-  ${styles.shadowBelow}
-  ${props => (props.isMobile ? styles.paddingDefault : styles.paddingLarge)}
-  background-color: ${colors.whitePrimary};
-`
-
-const StyledPreviewEmailRow = styled.div`
-  display: ${props => (props.isMobile ? "block" : "grid")};
-  grid-template-columns: 8em auto;
-`
-
-const StyledPreviewEmailRowLabel = styled.p`
-  ${styles.textStyle}
-  color: ${colors.blackTertiary};
-`
-
-const StyledPreviewEmailRowContent = styled.p`
-  ${styles.textStyle}
-  color: ${props => props.color};
-  white-space: pre-wrap;
-`
-
-export const Spacer = styled.div`
-  height: ${props => props.height + "rem"};
-  width: ${props => props.width + "rem"};
 `
 
 const StyledInput = styled.input`
@@ -220,77 +179,30 @@ const Layout = ({
   )
 
   const previewComponent = (
-    <StyledPreviewContainer isMobile={isMobile}>
-      {isMobile && <Spacer height={2} />}
-      <StyledPreviewHeader>Preview</StyledPreviewHeader>
-      <Spacer height={0.5} />
-      <StyledPreviewEmail isMobile={isMobile}>
-        {[
-          {
-            label: "From",
-            content:
-              emailBodyArgs.name === ""
-                ? "[No name inputted]"
-                : emailBodyArgs.name,
-            hasUserInput:
-              emailBodyArgs.name !== "" && emailBodyArgs.name != null,
-            isVisible: true,
-          },
-          {
-            label: "To",
-            content: emailDirectRecipient,
-            hasUserInput:
-              emailDirectRecipient !== "" && emailDirectRecipient != null,
-            isVisible: true,
-          },
-          {
-            label: "BCC",
-            content:
-              emailRecipients.length > 0
-                ? [...emailRecipients].join(", ")
-                : "[No representatives selected]",
-            hasUserInput: emailRecipients.length > 0,
-            isVisible: receivers && receivers.length !== 0,
-          },
-          {
-            label: "Subject",
-            content: emailSubject,
-            hasUserInput: emailSubject !== "" && emailSubject != null,
-            isVisible: true,
-          },
-          {
-            label: "Body",
-            content: emailBody,
-            hasUserInput: emailBody !== "" && emailBody != null,
-            isVisible: true,
-          },
-        ]
-          .filter(row => row.isVisible)
-          .map((row, index, originalArray) => (
-            <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
-              <StyledPreviewEmailRowLabel>
-                {row.label}
-              </StyledPreviewEmailRowLabel>
-              <StyledPreviewEmailRowContent
-                color={!row.hasUserInput ? colors.red : colors.blackPrimary}
-              >
-                {row.content}
-              </StyledPreviewEmailRowContent>
-              {index !== originalArray.length - 1 && (
-                <Spacer height={1} width={1} />
-              )}
-            </StyledPreviewEmailRow>
-          ))}
-      </StyledPreviewEmail>
-      {isMobile && <Spacer height={5} />}
-    </StyledPreviewContainer>
+    <Preview
+      isMobile={isMobile}
+      emailBodyArgs={emailBodyArgs}
+      emailDirectRecipient={emailDirectRecipient}
+      emailBody={emailBody}
+      emailSubject={emailSubject}
+      receivers={receivers}
+      emailRecipients={emailRecipients}
+    />
+  )
+
+  const modalComponent = (
+    <Modal
+      setShowModal={setShowModal}
+      isMobile={isMobile}
+      modalInfo={modalInfo}
+    />
   )
 
   const controlContainerComponent = useMemo(
     () => (
       <StyledControlContainer isMobile={isMobile}>
         <StyledControlHeader>
-          <StyledSelect
+          <StyledReactSelect
             placeholder="Choose an email template"
             onChange={({ value }) => setEmailId(value)}
             options={dropdownOptions}
@@ -299,7 +211,7 @@ const Layout = ({
                 dropdownOptions.findIndex(d => d.value === emailId)
               ]
             }
-          ></StyledSelect>
+          ></StyledReactSelect>
           <Spacer width={0.5} />
           <StyledControlDetails onClick={() => setShowModal(true)}>
             What is this?
@@ -381,13 +293,7 @@ const Layout = ({
             {controlActionComponent}
           </>
         )}
-        {showModal && (
-          <Modal
-            setShowModal={setShowModal}
-            isMobile={isMobile}
-            modalInfo={modalInfo}
-          />
-        )}
+        {showModal && modalComponent}
       </StyledContainer>
     )
   }
@@ -395,13 +301,7 @@ const Layout = ({
     <StyledContainer>
       {controlContainerComponent}
       {previewComponent}
-      {showModal && (
-        <Modal
-          setShowModal={setShowModal}
-          isMobile={isMobile}
-          modalInfo={modalInfo}
-        />
-      )}
+      {showModal && modalComponent}
     </StyledContainer>
   )
 }
