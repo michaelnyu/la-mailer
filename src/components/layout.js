@@ -10,73 +10,36 @@ import "./layout.css"
 import Select from "react-select"
 import Receiver from "../components/receiver"
 import EmailLink from "../components/email-link"
-import { colors } from "../components/styles"
-import styled, { css } from "styled-components"
+import { colors, styles, values } from "../components/styles"
+import styled from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
 import { ReactComponent as CloseSVG } from "../assets/close.svg"
 import { useDeviceQueries } from "../utils"
-
-const paddingDefaultSides = css`
-  padding-left: 1rem;
-  padding-right: 1rem;
-`
-
-const paddingLargeSides = css`
-  padding-left: 2rem;
-  padding-right: 2rem;
-`
-
-const paddingDefault = css`
-  ${paddingDefaultSides}
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-`
-const paddingLarge = css`
-  ${paddingLargeSides}
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-`
-
-const controlWidth = "22rem"
-
-const shadowAbove = css`
-  box-shadow: 0px -4px 10px ${colors.shadow};
-`
-const shadowRight = css`
-  box-shadow: 4px 0px 10px ${colors.shadow};
-`
-const shadowBelow = css`
-  box-shadow: 4px 0px 10px ${colors.shadow};
-`
-
-const textStyle = css`
-  margin: 0;
-  line-height: 1.33333em;
-`
+import Button from "./Button"
 
 const StyledContainer = styled.div`
   display: flex;
   box-sizing: border-box;
   height: 100%;
-  flex-direction: ${props => (props.column ? "column" : "row")};
 `
 
 const StyledControlContainer = styled.div`
+  ${styles.shadowRight}
   display: flex;
   flex-direction: column;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
-  ${props => (props.isMobile ? "flex: 1" : "flex: 0 0 " + controlWidth + ";")}
+  ${props =>
+    props.isMobile ? "flex: 1" : "flex: 0 0 ".concat(values.controlWidth)};
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
-  ${shadowRight}
-  overflow: scroll;
+  overflow-y: scroll;
 `
 
 const StyledControlHeader = styled.div`
+  ${styles.paddingDefault}
   display: flex;
   flex: 0 0 4rem;
-  ${paddingDefault}
   background-color: ${colors.whitePrimary};
 `
 
@@ -85,6 +48,7 @@ const StyledSelect = styled(Select)`
 `
 
 const StyledControlDetails = styled.div`
+  ${styles.borderRadiusStyle}
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,7 +56,6 @@ const StyledControlDetails = styled.div`
   font-size: 0.75rem;
   color: ${colors.blackSecondary};
   text-decoration: underline;
-  border-radius: 0.25rem;
   transition: 0.2s;
   &:hover {
     cursor: pointer;
@@ -101,62 +64,60 @@ const StyledControlDetails = styled.div`
 `
 
 const StyledControlForm = styled.div`
-  ${paddingDefault}
+  ${styles.paddingDefault}
   display: flex;
   flex-direction: column;
   height: auto;
 `
 
 const StyledControlAction = styled.div`
+  ${styles.paddingDefault}
+  ${styles.shadowAbove}
   position: absolute;
-  background-color: ${colors.whitePrimary};
-  width: ${props => (props.isMobile ? "100%" : controlWidth)};
-  ${props => props.isMobile && "display: flex; justify-content: space-between;"}
-  ${paddingDefault}
   bottom: 0;
-  ${shadowAbove}
+  display: flex;
+  justify-content: space-between;
+  width: ${props => (props.isMobile ? "100%" : values.controlWidth)};
+  background-color: ${colors.whitePrimary};
   & > a {
     text-decoration: none;
   }
 `
 
 const StyledPreviewContainer = styled.div`
+  ${props => (props.isMobile ? styles.paddingDefault : styles.paddingLarge)}
   flex: 1;
-  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
   background-color: ${colors.whiteTertiary};
   max-height: 100vh;
   overflow-y: scroll;
 `
 const StyledPreviewHeader = styled.h3`
+  ${styles.textStyle}
   font-size: 1.125rem;
-  ${textStyle}
-  text-transform: uppercase;
   color: ${colors.blackTertiary};
+  text-transform: uppercase;
 `
 
 const StyledPreviewEmail = styled.div`
-  ${props => (props.isMobile ? paddingDefault : paddingLarge)}
-
-  ${shadowBelow}
+  ${styles.borderRadiusStyle}
+  ${styles.shadowBelow}
+  ${props => (props.isMobile ? styles.paddingDefault : styles.paddingLarge)}
   background-color: ${colors.whitePrimary};
-  border-radius: 0.25rem;
 `
 
 const StyledPreviewEmailRow = styled.div`
   display: ${props => (props.isMobile ? "block" : "grid")};
-  line-height: 1.333em;
   grid-template-columns: 8em auto;
 `
 
 const StyledPreviewEmailRowLabel = styled.p`
+  ${styles.textStyle}
   color: ${colors.blackTertiary};
-  margin: 0;
 `
 
 const StyledPreviewEmailRowContent = styled.p`
+  ${styles.textStyle}
   color: ${props => props.color};
-  margin: 0;
-  line-height: 1.333em;
   white-space: pre-wrap;
 `
 
@@ -166,11 +127,11 @@ const Spacer = styled.div`
 `
 
 const StyledInput = styled.input`
-  padding: 0.5em;
+  ${styles.borderRadiusStyle}
+  padding: 0.5rem;
   background: ${colors.whitePrimary};
   border: ${colors.whiteTertiary} solid 1px;
   width: 100%;
-  border-radius: 3px;
 `
 
 const StyledInputHeader = styled.div`
@@ -182,45 +143,6 @@ const StyledInputHeader = styled.div`
 
 const StyledInputHeaderButtons = styled.div`
   display: inline-flex;
-`
-
-const buttonStyle = css`
-  border: ${props =>
-    props.type === "secondary" ? colors.blackTertiary + "1px solid" : "none"};
-  background-color: ${props =>
-    props.type === "secondary" ? colors.whitePrimary : colors.blackPrimary};
-  color: ${props =>
-    props.type === "secondary" ? colors.blackPrimary : colors.whitePrimary};
-  &:hover {
-    cursor: pointer;
-    opacity: 0.9;
-  }
-  border-radius: 0.25rem;
-  width: ${props => (props.stretch ? "100%" : "auto")};
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    border: ${props =>
-      props.type === "secondary" ? colors.blackPrimary + "1px solid" : "none"};
-    opacity: 1;
-  }
-`
-
-const StyledButton = styled.button`
-  ${buttonStyle}
-  font-size: 1.125rem;
-  padding: 0.75rem;
-`
-
-const StyledButtonSmall = styled.button`
-  ${buttonStyle}
-  font-size: 0.75em;
-  line-height: 0.75em;
-  padding: 0.25rem;
 `
 
 const StyledModalBackground = styled.div`
@@ -249,7 +171,8 @@ const StyledModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${props => (props.isMobile ? paddingDefaultSides : paddingLargeSides)}
+  ${props =>
+    props.isMobile ? styles.paddingDefaultSides : styles.paddingLargeSides}
 `
 
 const StyledModalClose = styled.div`
@@ -272,7 +195,8 @@ const StyledModalClose = styled.div`
 const StyledModalContent = styled.div`
   flex: 1;
   overflow-y: scroll;
-  ${props => (props.isMobile ? paddingDefaultSides : paddingLargeSides)}
+  ${props =>
+    props.isMobile ? styles.paddingDefaultSides : styles.paddingLargeSides}
 `
 
 const StyledModalText = styled.p`
@@ -330,7 +254,7 @@ const Layout = ({
   const controlActionComponent = (
     <StyledControlAction isMobile={isMobile}>
       {isMobile && (
-        <StyledButton
+        <Button
           type="secondary"
           onClick={() =>
             setMobileState(
@@ -344,7 +268,7 @@ const Layout = ({
           {mobileState === MobileStates.CONTROL
             ? "Preview email"
             : "Back to edit"}
-        </StyledButton>
+        </Button>
       )}
       <EmailLink
         stretch={!isMobile}
@@ -371,12 +295,14 @@ const Layout = ({
                 : emailBodyArgs.name,
             hasUserInput:
               emailBodyArgs.name !== "" && emailBodyArgs.name != null,
+            isVisible: true,
           },
           {
             label: "To",
             content: emailDirectRecipient,
             hasUserInput:
               emailDirectRecipient !== "" && emailDirectRecipient != null,
+            isVisible: true,
           },
           {
             label: "BCC",
@@ -385,30 +311,37 @@ const Layout = ({
                 ? [...emailRecipients].join(", ")
                 : "[No representatives selected]",
             hasUserInput: emailRecipients.length > 0,
+            isVisible: receivers && receivers.length !== 0,
           },
           {
             label: "Subject",
             content: emailSubject,
             hasUserInput: emailSubject !== "" && emailSubject != null,
+            isVisible: true,
           },
           {
             label: "Body",
             content: emailBody,
             hasUserInput: emailBody !== "" && emailBody != null,
+            isVisible: true,
           },
-        ].map((row, index, originalArray) => (
-          <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
-            <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
-            <StyledPreviewEmailRowContent
-              color={!row.hasUserInput ? colors.red : colors.blackPrimary}
-            >
-              {row.content}
-            </StyledPreviewEmailRowContent>
-            {index !== originalArray.length - 1 && (
-              <Spacer height={1} width={1} />
-            )}
-          </StyledPreviewEmailRow>
-        ))}
+        ]
+          .filter(row => row.isVisible)
+          .map((row, index, originalArray) => (
+            <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
+              <StyledPreviewEmailRowLabel>
+                {row.label}
+              </StyledPreviewEmailRowLabel>
+              <StyledPreviewEmailRowContent
+                color={!row.hasUserInput ? colors.red : colors.blackPrimary}
+              >
+                {row.content}
+              </StyledPreviewEmailRowContent>
+              {index !== originalArray.length - 1 && (
+                <Spacer height={1} width={1} />
+              )}
+            </StyledPreviewEmailRow>
+          ))}
       </StyledPreviewEmail>
       {isMobile && <Spacer height={5} />}
     </StyledPreviewContainer>
@@ -449,24 +382,26 @@ const Layout = ({
             ))}
           <Spacer height={1.5} />
           <div style={{ width: "100%" }}>
-            {receivers.length !== 0 && (
+            {receivers && receivers.length !== 0 ? (
               <>
                 <StyledInputHeader>
                   Send to...
                   <StyledInputHeaderButtons>
-                    <StyledButtonSmall
+                    <Button
                       onClick={removeAllRecipients}
                       type="secondary"
+                      size="small"
                     >
                       Deselect all
-                    </StyledButtonSmall>
+                    </Button>
                     <Spacer width={0.25} />
-                    <StyledButtonSmall
+                    <Button
                       onClick={addAllRecipients}
                       type="secondary"
+                      size="small"
                     >
                       Select all
-                    </StyledButtonSmall>
+                    </Button>
                   </StyledInputHeaderButtons>
                 </StyledInputHeader>
                 {receivers.map(receiver => {
@@ -487,7 +422,7 @@ const Layout = ({
                   )
                 })}
               </>
-            )}
+            ) : null}
           </div>
           <Spacer height={5} />
         </StyledControlForm>
@@ -527,10 +462,10 @@ const Layout = ({
           <StyledModalText>
             More resources can be found at:{" "}
             {modalInfo.url.map(url => (
-              <>
+              <span key={url}>
                 <a href={url}>{url}</a>
                 <br />
-              </>
+              </span>
             ))}
           </StyledModalText>
           <Spacer height={2} />
@@ -576,4 +511,3 @@ const Layout = ({
   )
 }
 export default Layout
-export { colors, StyledButton }

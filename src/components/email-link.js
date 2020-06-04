@@ -2,7 +2,7 @@ import React from "react"
 
 // import { colors } from "../components/styles"
 import styled from "styled-components"
-import { StyledButton } from "./layout"
+import Button from "./Button"
 
 const StyledEmailLink = styled.a`
   display: flex;
@@ -30,7 +30,7 @@ const EmailLink = ({
 
   return (
     <StyledEmailLink href={href} style={style}>
-      <StyledButton stretch={stretch}>Open in Mail App</StyledButton>
+      <Button stretch={stretch}>Open in Mail App</Button>
     </StyledEmailLink>
   )
 }
