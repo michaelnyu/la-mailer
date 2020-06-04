@@ -64,7 +64,6 @@ const StyledContainer = styled.div`
 const StyledControlContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
   ${props => (props.isMobile ? "flex: 1" : "flex: 0 0 " + controlWidth + ";")}
@@ -300,7 +299,7 @@ const Layout = ({
   emailBody,
   emailBodyArgs = { name: "" },
   emailRecipients = [],
-  modalInfo = { title: "", body: "", url: "" },
+  modalInfo = { title: "", body: "", url: [] },
   receivers,
   args,
 }) => {
@@ -450,39 +449,45 @@ const Layout = ({
             ))}
           <Spacer height={1.5} />
           <div style={{ width: "100%" }}>
-            <StyledInputHeader>
-              Send to...
-              <StyledInputHeaderButtons>
-                <StyledButtonSmall
-                  onClick={removeAllRecipients}
-                  type="secondary"
-                >
-                  Deselect all
-                </StyledButtonSmall>
-                <Spacer width={0.25} />
-                <StyledButtonSmall onClick={addAllRecipients} type="secondary">
-                  Select all
-                </StyledButtonSmall>
-              </StyledInputHeaderButtons>
-            </StyledInputHeader>
-            {receivers &&
-              receivers.map(receiver => {
-                let selected = emailRecipients.indexOf(receiver.email) > -1
-                return (
-                  <Receiver
-                    selected={selected}
-                    key={receiver.name}
-                    {...receiver}
-                    onClick={() => {
-                      if (!selected) {
-                        addEmailRecipient(receiver.email)
-                      } else {
-                        removeEmailRecipient(receiver.email)
-                      }
-                    }}
-                  />
-                )
-              })}
+            {receivers.length !== 0 && (
+              <>
+                <StyledInputHeader>
+                  Send to...
+                  <StyledInputHeaderButtons>
+                    <StyledButtonSmall
+                      onClick={removeAllRecipients}
+                      type="secondary"
+                    >
+                      Deselect all
+                    </StyledButtonSmall>
+                    <Spacer width={0.25} />
+                    <StyledButtonSmall
+                      onClick={addAllRecipients}
+                      type="secondary"
+                    >
+                      Select all
+                    </StyledButtonSmall>
+                  </StyledInputHeaderButtons>
+                </StyledInputHeader>
+                {receivers.map(receiver => {
+                  let selected = emailRecipients.indexOf(receiver.email) > -1
+                  return (
+                    <Receiver
+                      selected={selected}
+                      key={receiver.name}
+                      {...receiver}
+                      onClick={() => {
+                        if (!selected) {
+                          addEmailRecipient(receiver.email)
+                        } else {
+                          removeEmailRecipient(receiver.email)
+                        }
+                      }}
+                    />
+                  )
+                })}
+              </>
+            )}
           </div>
           <Spacer height={5} />
         </StyledControlForm>
@@ -521,7 +526,12 @@ const Layout = ({
           <Spacer height={1} />
           <StyledModalText>
             More resources can be found at:{" "}
-            <a href={modalInfo.url}>{modalInfo.url}</a>
+            {modalInfo.url.map(url => (
+              <>
+                <a href={url}>{url}</a>
+                <br />
+              </>
+            ))}
           </StyledModalText>
           <Spacer height={2} />
           <hr />
