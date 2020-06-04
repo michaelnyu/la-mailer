@@ -27,11 +27,10 @@ const StyledControlContainer = styled.div`
   ${styles.shadowRight}
   display: flex;
   flex-direction: column;
-  flex: 1;
   align-items: stretch;
   background-color: ${colors.whiteSecondary};
   ${props =>
-    props.isMobile ? "flex: 1" : "flex: 0 0 " + values.controlWidth + ";"}
+    props.isMobile ? "flex: 1" : "flex: 0 0 ".concat(values.controlWidth)};
   width: ${props => (props.isMobile ? "100%;" : "auto;")}
   z-index: 1; /* jank solution to box shadow rendering */
   overflow-y: scroll;
@@ -224,7 +223,7 @@ const Layout = ({
   emailBody,
   emailBodyArgs = { name: "" },
   emailRecipients = [],
-  modalInfo = { title: "", body: "", url: "" },
+  modalInfo = { title: "", body: "", url: [] },
   receivers,
   args,
 }) => {
@@ -296,12 +295,14 @@ const Layout = ({
                 : emailBodyArgs.name,
             hasUserInput:
               emailBodyArgs.name !== "" && emailBodyArgs.name != null,
+            isVisible: true,
           },
           {
             label: "To",
             content: emailDirectRecipient,
             hasUserInput:
               emailDirectRecipient !== "" && emailDirectRecipient != null,
+            isVisible: true,
           },
           {
             label: "BCC",
@@ -310,30 +311,37 @@ const Layout = ({
                 ? [...emailRecipients].join(", ")
                 : "[No representatives selected]",
             hasUserInput: emailRecipients.length > 0,
+            isVisible: receivers && receivers.length !== 0,
           },
           {
             label: "Subject",
             content: emailSubject,
             hasUserInput: emailSubject !== "" && emailSubject != null,
+            isVisible: true,
           },
           {
             label: "Body",
             content: emailBody,
             hasUserInput: emailBody !== "" && emailBody != null,
+            isVisible: true,
           },
-        ].map((row, index, originalArray) => (
-          <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
-            <StyledPreviewEmailRowLabel>{row.label}</StyledPreviewEmailRowLabel>
-            <StyledPreviewEmailRowContent
-              color={!row.hasUserInput ? colors.red : colors.blackPrimary}
-            >
-              {row.content}
-            </StyledPreviewEmailRowContent>
-            {index !== originalArray.length - 1 && (
-              <Spacer height={1} width={1} />
-            )}
-          </StyledPreviewEmailRow>
-        ))}
+        ]
+          .filter(row => row.isVisible)
+          .map((row, index, originalArray) => (
+            <StyledPreviewEmailRow key={row.label} isMobile={isMobile}>
+              <StyledPreviewEmailRowLabel>
+                {row.label}
+              </StyledPreviewEmailRowLabel>
+              <StyledPreviewEmailRowContent
+                color={!row.hasUserInput ? colors.red : colors.blackPrimary}
+              >
+                {row.content}
+              </StyledPreviewEmailRowContent>
+              {index !== originalArray.length - 1 && (
+                <Spacer height={1} width={1} />
+              )}
+            </StyledPreviewEmailRow>
+          ))}
       </StyledPreviewEmail>
       {isMobile && <Spacer height={5} />}
     </StyledPreviewContainer>
@@ -374,44 +382,47 @@ const Layout = ({
             ))}
           <Spacer height={1.5} />
           <div style={{ width: "100%" }}>
-            <StyledInputHeader>
-              Send to...
-              <StyledInputHeaderButtons>
-                <Button
-                  onClick={removeAllRecipients}
-                  type="secondary"
-                  size="small"
-                >
-                  Deselect all
-                </Button>
-                <Spacer width={0.25} />
-                <Button
-                  onClick={addAllRecipients}
-                  type="secondary"
-                  size="small"
-                >
-                  Select all
-                </Button>
-              </StyledInputHeaderButtons>
-            </StyledInputHeader>
-            {receivers &&
-              receivers.map(receiver => {
-                let selected = emailRecipients.indexOf(receiver.email) > -1
-                return (
-                  <Receiver
-                    selected={selected}
-                    key={receiver.name}
-                    {...receiver}
-                    onClick={() => {
-                      if (!selected) {
-                        addEmailRecipient(receiver.email)
-                      } else {
-                        removeEmailRecipient(receiver.email)
-                      }
-                    }}
-                  />
-                )
-              })}
+            {receivers && receivers.length !== 0 ? (
+              <>
+                <StyledInputHeader>
+                  Send to...
+                  <StyledInputHeaderButtons>
+                    <Button
+                      onClick={removeAllRecipients}
+                      type="secondary"
+                      size="small"
+                    >
+                      Deselect all
+                    </Button>
+                    <Spacer width={0.25} />
+                    <Button
+                      onClick={addAllRecipients}
+                      type="secondary"
+                      size="small"
+                    >
+                      Select all
+                    </Button>
+                  </StyledInputHeaderButtons>
+                </StyledInputHeader>
+                {receivers.map(receiver => {
+                  let selected = emailRecipients.indexOf(receiver.email) > -1
+                  return (
+                    <Receiver
+                      selected={selected}
+                      key={receiver.name}
+                      {...receiver}
+                      onClick={() => {
+                        if (!selected) {
+                          addEmailRecipient(receiver.email)
+                        } else {
+                          removeEmailRecipient(receiver.email)
+                        }
+                      }}
+                    />
+                  )
+                })}
+              </>
+            ) : null}
           </div>
           <Spacer height={5} />
         </StyledControlForm>
@@ -450,7 +461,12 @@ const Layout = ({
           <Spacer height={1} />
           <StyledModalText>
             More resources can be found at:{" "}
-            <a href={modalInfo.url}>{modalInfo.url}</a>
+            {modalInfo.url.map(url => (
+              <span key={url}>
+                <a href={url}>{url}</a>
+                <br />
+              </span>
+            ))}
           </StyledModalText>
           <Spacer height={2} />
           <hr />
