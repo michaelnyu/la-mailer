@@ -12,7 +12,7 @@ const StyledControlContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-colbmor: ${colors.whiteSecondary};
+  background-color: ${colors.whiteSecondary};
   ${props =>
     props.isMobile ? "flex: 1" : "flex: 0 0 ".concat(values.controlWidth)};
   width: ${props => (props.isMobile ? "100%;" : "auto;")}

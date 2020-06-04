@@ -9,7 +9,7 @@ import React, { useState, useMemo } from "react"
 import "./layout.css"
 import styled from "styled-components"
 import { emailIdTitleMap } from "../emails/email-builder"
-import { useDeviceQueries, MobileStates } from "../utils"
+import { useDeviceQueries, MobileStates, useIsClient } from "../utils"
 import Modal from "./Modal"
 import Preview from "./preview"
 import ControlAction from "./ControlAction"
@@ -44,6 +44,10 @@ const Layout = ({
   const [showModal, setShowModal] = useState(false)
 
   const { isMobile } = useDeviceQueries()
+
+  // idiot shit
+  const { isClient } = useIsClient()
+  if (!isClient) return null
 
   const controlActionComponent = (
     <ControlAction
