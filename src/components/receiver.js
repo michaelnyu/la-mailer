@@ -22,7 +22,12 @@ const StyledReceiver = styled.div`
       1px solid;
   }
   user-select: none;
+  transition: 0.1s;
   font-size: 0.875em;
+
+  & > svg {
+    opacity: ${props => (props.active ? 1 : 0)};
+  }
 `
 
 const StyledLabel = styled.p`
@@ -50,7 +55,7 @@ const Receiver = ({ label, name, email, onClick, selected }) => {
         </div>
         <StyledEmail>{email}</StyledEmail>
       </div>
-      <CheckSVG style={{ opacity: selected ? 1 : 0 }} />
+      <CheckSVG />
     </StyledReceiver>
   )
 }
