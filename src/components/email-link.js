@@ -26,7 +26,7 @@ const EmailLink = ({
   }
 
   href += `&subject=${subject}`
-  href += `&body=${body.replace(/\n\n/g, "%0A%0A")}`
+  href += `&body=${body.replace(/\n/g, "%0A")}`
 
   return (
     <StyledEmailLink href={href} style={style}>

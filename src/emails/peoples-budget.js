@@ -5,7 +5,7 @@ function buildEmail({ name, state }) {
     body: `Hello,\n\nMy name is ${
       name || "[YOUR NAME HERE]"
     } and I am a resident of ${
-      state || "[YOUR STATE HERE]"
+      state || "[YOUR CITY, STATE HERE]"
     }. We are in the midst of a health pandemic with severe economic consequences. Over 50% of Angelenos are unemployed — and we can expect 42% lasting unemployment. Over 50% of this city is renters — and if folx are unemployed, they cannot pay rent. Prior to the pandemic, there were around 60k unhoused folx; after evictions and economic insecurity due to COVID-19 and its fall out, we can expect thousands more. In this context, the Mayor is proposing an increase to LAPD, despite the fact that crime has fallen considerably during the past few months. LAPD has seen a rise in overtime which, more often than not, is paid out to officers harassing unhoused folx, and Black, Indigenous, people of color.\n\nWe are also in the midst of widespread upheaval over the systemic violence — embodied by the LAPD — which murders Black folx. We will no longer accept empty gestures and suggestions of “reform.”\n\nWe need to defund the LAPD. We need to #DefundThePolice. We need a budget that adequately and effectively meets the needs of Angelenos during this trying and uncertain time; and we need a budget that supports communities and supports their wellbeing, not which empowers the force(s) that tear them apart.\n\nAfter City Council cowardly avoided voting or revising your draconian budget proposal, the document is back in your hands. I am urging you to completely revise the LA budget for 2020-2021 and fund #CareNotCops. You need to adopt a People’s Budget.\n\nThank you for your time,\n\n${
       name || "[YOUR NAME HERE]"
     }`,
@@ -15,7 +15,7 @@ function buildEmail({ name, state }) {
         inputType: "text",
       },
       state: {
-        label: "State/city",
+        label: "City, State",
         inputType: "text",
       },
     },
