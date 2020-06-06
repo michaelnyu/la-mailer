@@ -8,19 +8,13 @@ function buildEmail({ city }) {
     args: {
       city: { label: "Your district", inputType: "text" },
     },
-    directRecipient: `mayoremail@sanjoseca.gov`,
+    directRecipient: `barbarabry@sandiego.gov`,
     receivers: [
       {
         name: "Kevin Faulconer",
         label: "City Mayor",
         autoSelect: true,
         email: "kevinfaulconer@sandiego.gov",
-      },
-      {
-        name: "Barbara Bry",
-        label: "Council President Pro Tem",
-        autoSelect: true,
-        email: "barbarabry@sandiego.gov",
       },
       {
         name: "Jennifer Campbell",
@@ -42,7 +36,7 @@ function buildEmail({ city }) {
       },
       {
         name: "Mark Kersey",
-        label: "District 5",
+        label: "District 5 Council",
         autoSelect: true,
         email: "markkersey@sandiego.gov",
       },

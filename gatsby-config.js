@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Email Los Angeles`,
+    title: `Demand Change`,
     description: `Quickly email your representatives with pre-made templates`,
   },
   plugins: [

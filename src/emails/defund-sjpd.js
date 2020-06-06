@@ -29,19 +29,19 @@ function buildEmail({ name, state }) {
         email: "sandra.cranford@sanjoseca.gov",
       },
       {
-        name: "District 1 Office",
+        name: "District 1",
         label: "District",
         autoSelect: true,
         email: "District1@sanjoseca.gov",
       },
       {
-        name: "District 2 Office",
+        name: "District 2",
         label: "District",
         autoSelect: true,
         email: "District2@sanjoseca.gov",
       },
       {
-        name: "District 3 Office",
+        name: "District 3",
         label: "District",
         autoSelect: true,
         email: "District3@sanjoseca.gov",
