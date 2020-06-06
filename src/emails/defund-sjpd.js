@@ -91,7 +91,7 @@ function buildEmail({ name, city }) {
     ],
     modalBody: `Budget discussions for the 2020-2021 fiscal year will be held on June 16. Use your voice to redirect budget funds into vital community services.`,
     modalTitle: `Email city council to defund San Jose police`,
-    modalUrl: [],
+    modalUrl: ["https://defund12.org/sanjose"],
   }
 }
 
