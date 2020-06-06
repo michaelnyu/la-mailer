@@ -50,12 +50,14 @@ const IndexPage = ({ location }) => {
       url: email.modalUrl,
     })
     setEmailRecipients(
-      email.receivers.reduce((recipients, receiver) => {
-        if (receiver.autoSelect) {
-          return [...recipients, receiver.email]
-        }
-        return recipients
-      }, [])
+      email.receivers
+        ? email.receivers.reduce((recipients, receiver) => {
+            if (receiver.autoSelect) {
+              return [...recipients, receiver.email]
+            }
+            return recipients
+          }, [])
+        : []
     )
   }, [emailId, emailBodyArgs])
 
