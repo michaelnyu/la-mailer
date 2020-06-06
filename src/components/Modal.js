@@ -91,15 +91,17 @@ export default function Modal({ setShowModal, modalInfo, isMobile }) {
         <StyledModalContent isMobile={isMobile}>
           <StyledModalText>{modalInfo.body}</StyledModalText>
           <Spacer height={1} />
-          <StyledModalText>
-            More resources can be found at:{" "}
-            {modalInfo.url.map(url => (
-              <span key={url}>
-                <a href={url}>{url}</a>
-                <br />
-              </span>
-            ))}
-          </StyledModalText>
+          {modalInfo.url.length > 0 && (
+            <StyledModalText>
+              More resources can be found at:{" "}
+              {modalInfo.url.map(url => (
+                <span key={url}>
+                  <a href={url}>{url}</a>
+                  <br />
+                </span>
+              ))}
+            </StyledModalText>
+          )}
           <Spacer height={2} />
           <hr />
           <StyledModalText type="heading">
