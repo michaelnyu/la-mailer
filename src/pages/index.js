@@ -26,7 +26,7 @@ const IndexPage = ({ location }) => {
     ) {
       setEmailId(location.hash.slice(2))
     } else {
-      setEmailId("defund-lapd")
+      setEmailId("peoples-budget")
     }
   }, [])
 

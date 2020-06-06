@@ -104,22 +104,20 @@ export default function Modal({ setShowModal, modalInfo, isMobile }) {
           )}
           <Spacer height={2} />
           <hr />
-          <StyledModalText type="heading">
-            About Email Los Angeles
-          </StyledModalText>
+          <StyledModalText type="heading">Demand Change</StyledModalText>
           <Spacer height={1} />
           <StyledModalText>
-            Email Los Angeles is a project started by some students from UCLA.
-            This is inspired by one of the many asks by Los Angeles based
-            organizers such as <a href="https://www.blmla.org/">BLM LA</a> and{" "}
+            Demand Change is a project started by some students from UCLA. This
+            is inspired by one of the many asks by Los Angeles based organizers
+            such as <a href="https://www.blmla.org/">BLM LA</a> and{" "}
             <a href="https://www.instagram.com/justicelanow/">Justice LA</a> to
             email local representatives demanding change in our community. As
             creators of this tool, we want to reiterate that emailing{" "}
             <b>IS NOT ENOUGH</b>. Support with your wallets, support at
             protests, and support by demanding change from those around you. If
             you're an organizer, let us know how we can support you at{" "}
-            <a href="mailto:activismemailer@gmail.com">
-              activismemailer@gmail.com
+            <a href="mailto:contact@demandchange.email">
+              contact@demandchange.email
             </a>
             .
           </StyledModalText>

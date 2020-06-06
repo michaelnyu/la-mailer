@@ -67,7 +67,7 @@ const Preview = ({
           {
             label: "From",
             content:
-              emailBodyArgs.name === ""
+              emailBodyArgs.name === "" || emailBodyArgs.name == null
                 ? "[No name inputted]"
                 : emailBodyArgs.name,
             hasUserInput:

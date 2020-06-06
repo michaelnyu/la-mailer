@@ -23,7 +23,7 @@ function buildEmail({ name, state }) {
     receivers: [
       {
         label: "CD1",
-        name: "Gil Dedillo",
+        name: "Gil Cedillo",
         email: "councilmember.cedillo@la.org",
         autoSelect: true,
       },
