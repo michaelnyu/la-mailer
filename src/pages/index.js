@@ -2,9 +2,9 @@ import React, { useEffect, useState, useMemo } from "react"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { buildEmailPreview } from "../emails/email-builder"
+import { buildEmailPreview, emailIdMap } from "../emails/email-builder"
 
-const IndexPage = () => {
+const IndexPage = ({ location }) => {
   const [emailId, setEmailId] = useState("")
   const [emailBody, setEmailBody] = useState("")
   const [emailSubject, setEmailSubject] = useState("")
@@ -19,7 +19,15 @@ const IndexPage = () => {
   // DELETE later.
   // set defaults
   useEffect(() => {
-    setEmailId("police-brutality-la")
+    if (
+      emailId === "" &&
+      location.hash.length > 2 &&
+      location.hash.slice(2) in emailIdMap
+    ) {
+      setEmailId(location.hash.slice(2))
+    } else {
+      setEmailId("defund-lapd")
+    }
   }, [])
 
   useEffect(() => {
@@ -42,12 +50,14 @@ const IndexPage = () => {
       url: email.modalUrl,
     })
     setEmailRecipients(
-      email.receivers.reduce((recipients, receiver) => {
-        if (receiver.autoSelect) {
-          return [...recipients, receiver.email]
-        }
-        return recipients
-      }, [])
+      email.receivers
+        ? email.receivers.reduce((recipients, receiver) => {
+            if (receiver.autoSelect) {
+              return [...recipients, receiver.email]
+            }
+            return recipients
+          }, [])
+        : []
     )
   }, [emailId, emailBodyArgs])
 

@@ -1,17 +1,30 @@
-import PoliceBrutalityLa from "./police-brutality-la"
+import DefundLAPD from "./defund-lapd"
 import BreonnaTaylor from "./breonna-taylor"
-import JackieLacy from "./jackie-lacy"
+import JackieLacey from "./jackie-lacey"
+import PeoplesBudget from "./peoples-budget"
+import DefundFremontPD from "./defund-fremontpd"
+import DefundOpd from "./defund-opd"
+import DefundSjpd from "./defund-sjpd"
+import DefundSdpd from "./defund-sdpd"
 
-const emailIdMap = {
-  "police-brutality-la": PoliceBrutalityLa,
-  "breonna-taylor": BreonnaTaylor,
-  "jackie-lacy": JackieLacy,
+export const emailIdMap = {
+  "defund-lapd": DefundLAPD,
+  "defund-opd": DefundOpd,
+  "defund-sjpd": DefundSjpd,
+  "defund-sdpd": DefundSdpd,
+  "defund-fremontpd": DefundFremontPD,
+  "peoples-budget": PeoplesBudget,
+  "jackie-lacey": JackieLacey,
 }
 
 export const emailIdTitleMap = {
-  "police-brutality-la": "Defund LAPD Template",
-  "breonna-taylor": "Justice for Breonna Taylor Template",
-  "jackie-lacy": "LA - Rescind Jackie Lacey Endorsement Template",
+  "defund-lapd": "Defund LAPD",
+  "defund-fremontpd": "Defund Fremont PD",
+  "defund-opd": "Defund OPD",
+  "defund-sjpd": "Defund SJPD",
+  "defund-sdpd": "Defund SDPD",
+  "jackie-lacey": "Rescind Jackie Lacey Endorsement - LA",
+  "peoples-budget": "Adopt a People's Budget - LA",
 }
 
 export function buildEmailPreview({ emailId, stringInputs }) {
