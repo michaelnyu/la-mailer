@@ -2,7 +2,7 @@ import PoliceBrutalityLa from "./police-brutality-la"
 import BreonnaTaylor from "./breonna-taylor"
 import JackieLacy from "./jackie-lacy"
 
-const emailIdMap = {
+export const emailIdMap = {
   "police-brutality-la": PoliceBrutalityLa,
   "breonna-taylor": BreonnaTaylor,
   "jackie-lacy": JackieLacy,
