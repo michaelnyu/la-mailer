@@ -13,7 +13,7 @@ export const emailIdMap = {
   "defund-fremontpd": DefundFremontPD,
   "breonna-taylor": BreonnaTaylor,
   "peoples-budget": PeoplesBudget,
-  "jackie-lacey": JackieLacy,
+  "jackie-lacey": JackieLacey,
 }
 
 export const emailIdTitleMap = {
