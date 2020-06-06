@@ -122,7 +122,7 @@ const ControlContainer = ({
       <StyledControlForm>
         {args &&
           Object.entries(args).map(([key, { label, inputType }]) => (
-            <div key={label} style={{ marginBottom: 10 }}>
+            <div key={key} style={{ marginBottom: 10 }}>
               <StyledInputHeader>{label}</StyledInputHeader>
               <StyledInput
                 value={emailBodyArgs[key] || ""}

@@ -5,7 +5,7 @@ function buildEmail({ name, state }) {
     body: `Police Chief Kimberly Petersen:
 
 My name is ${name || "[YOUR NAME HERE]"} and I am a resident of ${
-      state || ["YOUR CITY, STATE HERE"]
+      state || "[YOUR CITY, STATE HERE]"
     }. First and foremost, I would like to thank you for releasing a public statement regarding George Floyd’s death and making your officers partake in the Fair and Unbiased Policing training this week. However, that is not enough. Racially motivated violence and discrimination continue to persist in the United States. These are not isolated incidents; they are the result of systemic inequalities that are exacerbated by police brutality and lack of reform.
 
 While less than 4 percent of Fremont’s population is Black, they consist of 16% of the people arrested, and 36% of the people killed or seriously injured. You are in a position to put an end to the disproportionate use of police violence against Black residents. This needs to start with placing restrictions on police’s use of force -- including deadly force -- in your own police department.
@@ -74,6 +74,7 @@ I invite you to visit the websites where I gathered data and policy recommendati
     modalBody: ``,
     modalTitle: `Email Fremont Police Chief to defund Fremont PD`,
     modalUrl: [
+      `https://blacklivesmatter.com/defundthepolice/`,
       `https://docs.google.com/document/d/1pQBIrV9Jz9VqlJNNcnZcYRWfaxgjT8gIRX20nTP0q50/edit`,
     ],
   }
