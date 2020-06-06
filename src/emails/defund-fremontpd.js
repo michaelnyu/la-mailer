@@ -74,6 +74,7 @@ I invite you to visit the websites where I gathered data and policy recommendati
     modalBody: ``,
     modalTitle: `Email Fremont Police Chief to defund Fremont PD`,
     modalUrl: [
+      `https://blacklivesmatter.com/defundthepolice/`,
       `https://docs.google.com/document/d/1pQBIrV9Jz9VqlJNNcnZcYRWfaxgjT8gIRX20nTP0q50/edit`,
     ],
   }
