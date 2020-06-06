@@ -13,7 +13,6 @@ export const emailIdMap = {
   "defund-sjpd": DefundSjpd,
   "defund-sdpd": DefundSdpd,
   "defund-fremontpd": DefundFremontPD,
-  "breonna-taylor": BreonnaTaylor,
   "peoples-budget": PeoplesBudget,
   "jackie-lacey": JackieLacey,
 }
@@ -24,7 +23,6 @@ export const emailIdTitleMap = {
   "defund-opd": "Defund OPD",
   "defund-sjpd": "Defund SJPD",
   "defund-sdpd": "Defund SDPD",
-  "breonna-taylor": "Justice for Breonna Taylor",
   "jackie-lacey": "Rescind Jackie Lacey Endorsement - LA",
   "peoples-budget": "Adopt a People's Budget - LA",
 }
