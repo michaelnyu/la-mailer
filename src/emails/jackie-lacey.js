@@ -1,6 +1,6 @@
 function buildEmail({ name, state }) {
   return {
-    title: "Rescind Jackie Lacey Template",
+    title: "Rescind Jackie Lacey",
     subject: "Rescind Jackie Lacey Endorsement",
     body: `Dear Supervisor Kuehl,\n\nMy name is ${
       name || "[YOUR NAME HERE]"
@@ -14,11 +14,11 @@ function buildEmail({ name, state }) {
         label: "Your name",
         inputType: "text",
       },
-      state: { label: "State/location", inputType: "text" },
+      state: { label: "State/city", inputType: "text" },
     },
     directRecipient: `sheila@bos.lacounty.gov`,
     receivers: [],
-    modalBody: `Jackie Lacey has “served” as District Attorney since December 2012. Since that time, more than 600 people have been killed by law enforcement in Los Angeles county between sheriff’s deputies, LAPD and ones from cities around the county. \nIf that wasn’t enough, Lacey has fostered an environment where sexual harassment was normalized and protected. If this wasn’t costing real taxpayer dollars, that might be a different thing but the combination of neglect and creating a hostile work environment does not serve the interests of justice. Her behavior indicates that she doesn’t care who watches the watchmen.\nWithout Albert Ramon Dorsey or Grechario Mack or Wakiesha Wilson or Brendon Glenn or the scores of others robbed of their lives under her indifferent gaze, there would be cause for Jackie Lacey to be ousted from her position. With those names called out by grieving families, knowing justice has not been served, the evidence is overwhelming and her guilt is unmistakable.`,
+    modalBody: `BlackLivesMatter Los Angeles has demanded the immediate firing of Jackie Lacy.  Jackie Lacey has “served” as District Attorney since December 2012. Since that time, more than 600 people have been killed by law enforcement in Los Angeles county between sheriff’s deputies, LAPD and ones from cities around the county. \nIf that wasn’t enough, Lacey has fostered an environment where sexual harassment was normalized and protected. If this wasn’t costing real taxpayer dollars, that might be a different thing but the combination of neglect and creating a hostile work environment does not serve the interests of justice. Her behavior indicates that she doesn’t care who watches the watchmen.\nWithout Albert Ramon Dorsey or Grechario Mack or Wakiesha Wilson or Brendon Glenn or the scores of others robbed of their lives under her indifferent gaze, there would be cause for Jackie Lacey to be ousted from her position. With those names called out by grieving families, knowing justice has not been served, the evidence is overwhelming and her guilt is unmistakable.`,
     modalTitle: `Email LA County Supervisor Sheila Kuehl to Rescind Jackie Lacey Endorsement`,
     modalUrl: [
       `https://www.blmla.org/jackie-lacey-must-go`,

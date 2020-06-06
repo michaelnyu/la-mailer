@@ -1,17 +1,20 @@
-import PoliceBrutalityLa from "./police-brutality-la"
+import DefundLAPD from "./defund-lapd"
 import BreonnaTaylor from "./breonna-taylor"
 import JackieLacey from "./jackie-lacey"
+import PeoplesBudget from "./peoples-budget"
 
 export const emailIdMap = {
-  "police-brutality-la": PoliceBrutalityLa,
+  "defund-lapd": DefundLAPD,
   "breonna-taylor": BreonnaTaylor,
   "jackie-lacey": JackieLacey,
+  "peoples-budget": PeoplesBudget,
 }
 
 export const emailIdTitleMap = {
-  "police-brutality-la": "Defund LAPD Template",
-  "breonna-taylor": "Justice for Breonna Taylor Template",
-  "jackie-lacey": "LA - Rescind Jackie Lacey Endorsement Template",
+  "defund-lapd": "Defund LAPD Template - LA",
+  "breonna-taylor": "Justice for Breonna Taylor",
+  "jackie-lacey": "Rescind Jackie Lacey Endorsement Template - LA",
+  "peoples-budget": "Adopt a People's Budget - LA",
 }
 
 export function buildEmailPreview({ emailId, stringInputs }) {

@@ -1,8 +1,12 @@
-function buildEmail({ name }) {
+function buildEmail({ name, state }) {
   return {
-    title: "Defund LAPD Template",
-    subject: "Defund LAPD",
-    body: `Dear Council Members of the Budget and Finance Committee,\n\nI understand the city of Los Angeles is in the process of reviewing its 2020-2021 budget for the fiscal year. Obviously there is a need for overall cuts due to the financial impact of the COVID-19 pandemic, but this is not a time for dire cuts to some of its most important departments including: Emergency Management, Cultural Affairs, Parks and Recreation, Transportation and Housing, and Community Investments. Each of these departments provide extremely critical resources to the residents of Los Angeles. Funding should instead be cut from the LAPD, and their budget reallocated to the people and programs that need it most.\n\nIn light of recent events including the deaths of George Floyd, Ahmaud Arbery, Breonna Taylor, and many more and their impact nationally, this is an extremely crucial time to critically review the budget of the Los Angeles Police Department as well as strengthening its oversight.\n\nThe costs of this department overshadows the rest of the city's budget exponentially, more than half of the general fund, which could provide much needed and necessary support to other programs, programs that serve the public's needs so much more.\n\nIt is an imperative time that the LAPD's budget is fiscally reviewed. It is an imperative time that the city reflect upon its management of the LAPD, its overall oversight, and its relationship to its citizens and the harm they inflict upon them. The people of Los Angeles are imploring you to cut the funding for the LAPD.\n\nThank you for your time.\n\nFrom your constituent,\n\n${
+    title: "Adopt a People's Budget",
+    subject: "Adopt a People's Budget",
+    body: `Hello,\n\nMy name is ${
+      name || "[YOUR NAME HERE]"
+    } and I am a resident of ${
+      state || "[YOUR STATE HERE]"
+    }. We are in the midst of a health pandemic with severe economic consequences. Over 50% of Angelenos are unemployed — and we can expect 42% lasting unemployment. Over 50% of this city is renters — and if folx are unemployed, they cannot pay rent. Prior to the pandemic, there were around 60k unhoused folx; after evictions and economic insecurity due to COVID-19 and its fall out, we can expect thousands more. In this context, the Mayor is proposing an increase to LAPD, despite the fact that crime has fallen considerably during the past few months. LAPD has seen a rise in overtime which, more often than not, is paid out to officers harassing unhoused folx, and Black, Indigenous, people of color.\n\nWe are also in the midst of widespread upheaval over the systemic violence — embodied by the LAPD — which murders Black folx. We will no longer accept empty gestures and suggestions of “reform.”\n\nWe need to defund the LAPD. We need to #DefundThePolice. We need a budget that adequately and effectively meets the needs of Angelenos during this trying and uncertain time; and we need a budget that supports communities and supports their wellbeing, not which empowers the force(s) that tear them apart.\n\nAfter City Council cowardly avoided voting or revising your draconian budget proposal, the document is back in your hands. I am urging you to completely revise the LA budget for 2020-2021 and fund #CareNotCops. You need to adopt a People’s Budget.\n\nThank you for your time,\n\n${
       name || "[YOUR NAME HERE]"
     }`,
     args: {
@@ -10,8 +14,12 @@ function buildEmail({ name }) {
         label: "Your name",
         inputType: "text",
       },
+      state: {
+        label: "State/city",
+        inputType: "text",
+      },
     },
-    directRecipient: `clerk.budgetandfinancecommittee@lacity.org`,
+    directRecipient: `mayor.helpdesk@lacity.org`,
     receivers: [
       {
         label: "CD1",
@@ -95,7 +103,7 @@ function buildEmail({ name }) {
       },
       {
         label: "CD14",
-        name: "Jose Huizar (suspended)",
+        name: "Jose Huizar",
         email: "councilmember.huizar@lacity.org",
         autoSelect: true,
       },
@@ -107,8 +115,9 @@ function buildEmail({ name }) {
       },
     ],
     modalBody: `Mayor Garcetti has chosen to increase LAPD funding, at a time when Angelenos have made clear this does not align with their priorities and concerns. The City’s unemployment rate continues to rise — reaching around 55% in early May, and nationally the highest rate since the Great Depression. Many of its approximately 2 million renters are struggling to pay rent. 58,000 of our unhoused comrades remain on the streets, despite clear evidence that failing to house them is the equivalent of sentencing them to death. \n\nThe mayor has failed to commandeer hotel rooms, despite 100,000 rooms sitting vacant, many that were overwhelmingly built with public money or on public land. Incarcerated folx are not being released, though the risk of contracting COVID-19 is greater in congregate and institutionalized living settings. Garcetti has chosen to ignore these pressing concerns, furlough 16,000 non-police municipal workers, cut funding to services, and funnel more (and unnecessary) money towards the police department AS CRIME RATES HAVE DROPPED.`,
-    modalTitle: `Email councilmembers to defund LAPD`,
+    modalTitle: `Email Mayor Garcetti & councilmembers to adopt a People's Budget`,
     modalUrl: [
+      `https://peoplesbudgetla.com/`,
       `https://docs.google.com/document/u/1/d/1qbq7YfJs102qJbGwGO1-wFa0diG16LdGYqiOoQ-hRAI/mobilebasic`,
     ],
   }
