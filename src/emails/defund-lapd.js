@@ -95,7 +95,7 @@ function buildEmail({ name }) {
       },
       {
         label: "CD14",
-        name: "Jose Huizar (suspended)",
+        name: "Jose Huizar",
         email: "councilmember.huizar@lacity.org",
         autoSelect: true,
       },
