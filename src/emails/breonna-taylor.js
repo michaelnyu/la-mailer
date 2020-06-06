@@ -16,14 +16,8 @@ function buildEmail({ name, state }) {
       },
       state: { label: "City, State", inputType: "text" },
     },
-    directRecipient: `meredythm@louisvilleco.gov`,
+    directRecipient: `greg.fischer@louisvilleky.gov`,
     receivers: [
-      {
-        label: "Louisville Commonwealth Attorney",
-        name: "Tom Wine",
-        email: "tbwine@louisvilleprosecutor.com",
-        autoSelect: true,
-      },
       {
         label: "Asst. Chief of Police",
         name: "Robert Schroeder",
